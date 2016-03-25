@@ -1,0 +1,36 @@
+services:
+    pr.admin.pr_notification:
+        class: PrBundle\Admin\PrNotificationAdmin
+        arguments: [~, PrBundle\Entity\PrNotification, PrBundle:PrNotificationAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: PrNotification }
+
+    pr.admin.pr_vote_cast:
+        class: PrBundle\Admin\PrVoteCastAdmin
+        arguments: [~, PrBundle\Entity\PrVoteCast, PrBundle:PrVoteCastAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: PrVoteCast }
+
+    pr.admin.pr_pink_sheet:
+        class: PrBundle\Admin\PrPinkSheetAdmin
+        arguments: [~, PrBundle\Entity\PrPinkSheet, PrBundle:PrPinkSheetAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: PrPinkSheet }
+
+    pr.admin.pr_party:
+        class: PrBundle\Admin\PrPartyAdmin
+        arguments: [~, PrBundle\Entity\PrParty, PrBundle:PrPartyAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: PrParty }
+
+    pr.admin.pr_complaint:
+        class: PrBundle\Admin\PrComplaintAdmin
+        arguments: [~, PrBundle\Entity\PrComplaint, PrBundle:PrComplaintAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: PrComplaint }
+
+    pr.admin.pr_foot_print:
+        class: PrBundle\Admin\PrFootPrintAdmin
+        arguments: [~, PrBundle\Entity\PrFootPrint, PrBundle:PrFootPrintAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: PrFootPrint }

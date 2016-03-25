@@ -1,0 +1,14 @@
+PaBundle\Entity\PaParty:
+    pa_party_{1..10}:
+        name: <name()>
+        
+PaBundle\Entity\PaComplaint:
+    pa_complaint_{1..10}:
+        title: <name()>
+        description: <name()>
+        
+paBundle\Entity\PaFootPrint:
+    pa_foot_print_{1..10}:
+        who: <firstName()>
+        what: Add new PS - 2 Villa Health Center
+        place: <city()>

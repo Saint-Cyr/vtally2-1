@@ -1,0 +1,3 @@
+pr_homepage:
+    path:     /
+    defaults: { _controller: PrBundle:Default:index }

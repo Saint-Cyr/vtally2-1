@@ -1,0 +1,3 @@
+vtally_homepage:
+    path:     /
+    defaults: { _controller: VtallyBundle:Default:index }

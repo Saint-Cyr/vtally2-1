@@ -1,0 +1,30 @@
+services:
+    vtally.admin.constituency:
+        class: VtallyBundle\Admin\ConstituencyAdmin
+        arguments: [~, VtallyBundle\Entity\Constituency, VtallyBundle:ConstituencyAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Default, label: Constituency }
+
+    vtally.admin.collation_center:
+        class: VtallyBundle\Admin\CollationCenterAdmin
+        arguments: [~, VtallyBundle\Entity\CollationCenter, VtallyBundle:CollationCenterAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Default, label: CollationCenter }
+
+    vtally.admin.polling_station:
+        class: VtallyBundle\Admin\PollingStationAdmin
+        arguments: [~, VtallyBundle\Entity\PollingStation, VtallyBundle:PollingStationAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Default, label: PollingStation }
+
+    vtally.admin.region:
+        class: VtallyBundle\Admin\RegionAdmin
+        arguments: [~, VtallyBundle\Entity\Region, VtallyBundle:RegionAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Default, label: Region }
+
+    vtally.admin.setting:
+        class: VtallyBundle\Admin\SettingAdmin
+        arguments: [~, VtallyBundle\Entity\Setting, VtallyBundle:SettingAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Default, label: Setting }

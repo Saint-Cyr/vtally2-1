@@ -1,0 +1,8 @@
+services:
+    user.admin.user:
+        class: UserBundle\Admin\UserAdmin
+        arguments: [~, UserBundle\Entity\User, UserBundle:UserAdmin, "@fos_user.user_manager"]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: User / Security, label: User }
+        
+            

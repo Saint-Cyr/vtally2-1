@@ -1,0 +1,31 @@
+user_user:
+    resource: "@UserBundle/Controller/UserController.php"
+    type:     annotation
+
+user:
+    resource: "@UserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+pa:
+    resource: "@PaBundle/Resources/config/routing.yml"
+    prefix:   /
+
+pr:
+    resource: "@PrBundle/Resources/config/routing.yml"
+    prefix:   /
+
+vtally:
+    resource: "@VtallyBundle/Resources/config/routing.yml"
+    prefix:   /
+    
+admin_area:
+    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
+    prefix: admin
+    
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin

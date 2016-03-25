@@ -1,0 +1,10 @@
+prBundle\Entity\PrComplaint:
+    pr_complaint1_{1..20}:
+        title: <name()>
+        description: <name()>
+
+prBundle\Entity\PrFootPrint:
+    pr_foot_print_{1..10}:
+        who: <firstName()>
+        what: Add new PS - 2 Villa Health Center
+        place: <city()>

@@ -1,0 +1,124 @@
+VtallyBundle\Entity\Constituency:
+    constituency1_{1..10}:
+        name: <city()>
+        code: CT<numberBetween(1, 300)>
+        region: "@region1"
+        collationCenter (unique): "@collation_center*"
+        paParties: <numberBetween(1, 10)>x @pa_party*
+
+PaBundle\Entity\PaCandidate:
+    pa_candidate_{1..10}:
+        name: <name()>
+        paParty: "@pa_party*"
+        constituency: "@constituency*"
+        
+paBundle\Entity\PaVoteCast:
+    pa_vote_cast_{1..100}:
+        figureValue: 1322
+        wordValue: One Thousand three hundred twenty two
+        paCandidate: "@pa_candidate*"
+        pollingStation: "@polling_station*"
+        edited: false
+        
+prBundle\Entity\prParty:
+    pr_party1:
+        name: NPP
+        candidate: <name()>
+    pr_party2:
+        name: NDC
+        candidate: <name()>
+    pr_party3:
+        name: UFP
+        candidate: <name()>
+    pr_party4:
+        name: CPP
+        candidate: <name()>
+    pr_party5:
+        name: PPP
+        candidate: <name()>
+    pr_party6:
+        name: NCP
+        candidate: <name()>
+    pr_party7:
+        name: PCP
+        candidate: <name()>
+    pr_party8:
+        name: GFP
+        candidate: <name()>
+        
+prBundle\Entity\PrVoteCast:
+    pr_vote_cast_{1..100}:
+        figureValue: 2322
+        wordValue: Two Thousand three hundred twenty two
+        prParty: "@pr_party1"
+        pollingStation: "@polling_station*"
+        edited: false
+        
+VtallyBundle\Entity\Region:
+    region1:
+        name: Greater Accra
+    region2:
+        name: Ashanty Region
+    region3:
+        name: Brong Ahafo
+    region4:
+        name: Volta Region
+    
+VtallyBundle\Entity\CollationCenter:
+    collation_center_{1..10}:
+        name: Collation Center<current()>
+        returningOfficer (unique): "@returning_officer*"
+        
+VtallyBundle\Entity\ReturningOfficer:
+    returning_officer_{1..10}:
+        name: <name()>
+
+paBundle\Entity\PaNotification:
+    pa_notification_{1..100}:
+        pollingStation: "@polling_station*"
+        type: over-voting
+        firstVerifier: <firstName()> 0203458933
+        secondVerifier: <firstName()> 0587722110
+        
+prBundle\Entity\PrNotification:
+    pr_notification_{1..10}:
+        pollingStation: "@polling_station*"
+        type: over-voting
+        firstVerifier: <firstName()> 0203893316
+        secondVerifier: <firstName()> 0587727712
+        
+paBundle\Entity\PaPinkSheet:
+    pink_sheet2:
+        name: pa<numberBetween(1, 30000)>.jpg
+        pollingStation: "@polling_station*"
+        edited: false
+        
+prBundle\Entity\PrPinkSheet:
+    pink_sheet1:
+        name: pr<numberBetween(1, 30000)>.jpg
+        pollingStation: "@polling_station*"
+        edited: false
+        
+VtallyBundle\Entity\PollingStation:
+    polling_station1_{1..300}:
+        name: Bortianor Scl. Kassoa District
+        code: PS<current()>
+        constituency: "@constituency*"
+        district: <city()>
+
+VtallyBundle\Entity\Setting:
+    setting1:
+        type: default
+    setting2:
+        type: presidential
+    setting3:
+        type: parliamentary
+
+UserBundle\Entity\User:
+    User{1..80}:
+        username (unique): <username()>
+        email (unique): <email()>
+        plainPassword: test
+        firstName: <firstName()>
+        enabled: true
+        roles: [ROLE_ADMIN]
