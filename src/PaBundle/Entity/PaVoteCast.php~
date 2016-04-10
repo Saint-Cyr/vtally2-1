@@ -53,6 +53,18 @@ class PaVoteCast
      * @ORM\JoinColumn(nullable=false)
      */
     private $paCandidate;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="PaBundle\Entity\DependentCandidate", inversedBy="paVoteCasts")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $dependentCandidate;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="PaBundle\Entity\IndependentCandidate", inversedBy="paVoteCasts")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $independentCandidate;
 
 
     /**
@@ -159,29 +171,5 @@ class PaVoteCast
     public function getPollingStation()
     {
         return $this->pollingStation;
-    }
-
-    /**
-     * Set paCandidate
-     *
-     * @param \PaBundle\Entity\PaCandidate $paCandidate
-     *
-     * @return PaVoteCast
-     */
-    public function setPaCandidate(\PaBundle\Entity\PaCandidate $paCandidate)
-    {
-        $this->paCandidate = $paCandidate;
-
-        return $this;
-    }
-
-    /**
-     * Get paCandidate
-     *
-     * @return \PaBundle\Entity\PaCandidate
-     */
-    public function getPaCandidate()
-    {
-        return $this->paCandidate;
     }
 }

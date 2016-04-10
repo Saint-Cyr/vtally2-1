@@ -20,26 +20,10 @@ class UserAdmin extends Admin
     {
         $datagridMapper
             ->add('username')
-            ->add('usernameCanonical')
             ->add('email')
-            ->add('emailCanonical')
             ->add('enabled')
-            ->add('salt')
-            ->add('password')
-            ->add('lastLogin')
             ->add('locked')
-            ->add('expired')
-            ->add('expiresAt')
-            ->add('confirmationToken')
-            ->add('passwordRequestedAt')
-            ->add('roles')
-            ->add('credentialsExpired')
-            ->add('credentialsExpireAt')
-            ->add('id')
             ->add('firstName')
-            ->add('lastName')
-            ->add('createdAt')
-            ->add('image')
             ->add('address')
         ;
     }
@@ -49,30 +33,24 @@ class UserAdmin extends Admin
      */
     protected function configureListFields(ListMapper $listMapper)
     {
+        $option = false;
+        if($this->isGranted('EDIT')){
+            $option = true;
+        }
         
         $listMapper
+            ->add('id')
             ->add('username')
             ->add('email')
-            ->add('lastLogin')
-            ->add('expired', null, array('editable' => true))
-            ->add('expiresAt')
             ->add('firstName')
             ->add('lastName')
             ->add('address')
-            
         ;
         
-        if ($this->isGranted('ROLE_ENGINEER')) {
+        if ($this->isGranted('EDIT')) {
             $listMapper
-                ->add('enabled', 'checkbox', array(
-                    'label' => 'Account Enabled',
-                    'required' => false
-                    ))
-                ->add('locked', 'checkbox', array(
-                    'label' => 'Account Locked',
-                    'required' => false
-                    ))
-                ->add('roles')
+                ->add('enabled', null, array('editable' => $option))
+                ->add('locked', null, array('editable' => $option))
                 ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -89,6 +67,14 @@ class UserAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $typeContext = array('Verifier' => 'verifier',
+                             'Administrator' => 'administrator',
+                             'Manager' => 'manager');
+        
+        if($this->isGranted('ROLE_SUPER_ADMIN')){
+            $typeContext[]['Super-Admin'] = 'super-admin';
+        }
+        
         $passwordRequired = (preg_match('/_edit$/', $this->getRequest()->get('_route'))) ? false : true;
         $formMapper
             ->add('username')
@@ -106,7 +92,7 @@ class UserAdmin extends Admin
             ->add('image')
             ->add('address');
         
-        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+        if ($this->isGranted('EDIT')) {
             $formMapper
                 ->add('enabled', 'checkbox', array(
                     'label' => 'Account Enabled',
@@ -116,7 +102,8 @@ class UserAdmin extends Admin
                     'label' => 'Account Locked',
                     'required' => false
                     ))
-                ->add('roles')
+                ->add('type', 'choice', array('choices' => $typeContext,
+                                              'expanded' => true))
             ;
         }
         ;

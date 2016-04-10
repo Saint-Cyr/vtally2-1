@@ -1,36 +1,35 @@
 services:
-    pr.admin.pr_notification:
-        class: PrBundle\Admin\PrNotificationAdmin
-        arguments: [~, PrBundle\Entity\PrNotification, PrBundle:PrNotificationAdmin]
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: Presidential, label: PrNotification }
-
     pr.admin.pr_vote_cast:
         class: PrBundle\Admin\PrVoteCastAdmin
         arguments: [~, PrBundle\Entity\PrVoteCast, PrBundle:PrVoteCastAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Presidential, label: PrVoteCast }
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: Vote Cast }
 
     pr.admin.pr_pink_sheet:
         class: PrBundle\Admin\PrPinkSheetAdmin
         arguments: [~, PrBundle\Entity\PrPinkSheet, PrBundle:PrPinkSheetAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Presidential, label: PrPinkSheet }
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: Pink Sheet }
 
     pr.admin.pr_party:
         class: PrBundle\Admin\PrPartyAdmin
         arguments: [~, PrBundle\Entity\PrParty, PrBundle:PrPartyAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Presidential, label: PrParty }
-
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: Party }
+    pr.admin.pr_notification:
+        class: PrBundle\Admin\PrNotificationAdmin
+        arguments: [~, PrBundle\Entity\PrNotification, PrBundle:PrNotificationAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: Notification }
+            
     pr.admin.pr_complaint:
         class: PrBundle\Admin\PrComplaintAdmin
         arguments: [~, PrBundle\Entity\PrComplaint, PrBundle:PrComplaintAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Presidential, label: PrComplaint }
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: Complaint }
 
     pr.admin.pr_foot_print:
         class: PrBundle\Admin\PrFootPrintAdmin
         arguments: [~, PrBundle\Entity\PrFootPrint, PrBundle:PrFootPrintAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Presidential, label: PrFootPrint }
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: Foot Print }

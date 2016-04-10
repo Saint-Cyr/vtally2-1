@@ -21,6 +21,8 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+    
+    private $type;
 
     /**
      * @var string
@@ -56,6 +58,16 @@ class User extends BaseUser
      * @ORM\Column(name="address", type="string", length=255, nullable=true)
      */
     private $address;
+    
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+    
+    public function getType()
+    {
+        return $this->type;
+    }
     
     public function __construct() 
     {

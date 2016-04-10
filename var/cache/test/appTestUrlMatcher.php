@@ -100,102 +100,36 @@ class appTestUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
 
         }
 
-        if (0 === strpos($pathinfo, '/user')) {
-            // user_index
-            if (rtrim($pathinfo, '/') === '/user') {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_user_index;
-                }
-
-                if (substr($pathinfo, -1) !== '/') {
-                    return $this->redirect($pathinfo.'/', 'user_index');
-                }
-
-                return array (  '_controller' => 'UserBundle\\Controller\\UserController::indexAction',  '_route' => 'user_index',);
+        if (0 === strpos($pathinfo, '/pa')) {
+            // pa_national
+            if ($pathinfo === '/pa/national') {
+                return array (  '_controller' => 'PaBundle\\Controller\\ParliamentaryController::nationalAction',  '_route' => 'pa_national',);
             }
-            not_user_index:
 
-            // user_new
-            if ($pathinfo === '/user/new') {
-                if (!in_array($this->context->getMethod(), array('GET', 'POST', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'POST', 'HEAD'));
-                    goto not_user_new;
-                }
-
-                return array (  '_controller' => 'UserBundle\\Controller\\UserController::newAction',  '_route' => 'user_new',);
+            // pa_region
+            if (0 === strpos($pathinfo, '/pa/region') && preg_match('#^/pa/region/(?P<id>\\d+)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'pa_region')), array (  '_controller' => 'PaBundle\\Controller\\ParliamentaryController::regionAction',));
             }
-            not_user_new:
 
-            // user_show
-            if (preg_match('#^/user/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_user_show;
-                }
-
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'user_show')), array (  '_controller' => 'UserBundle\\Controller\\UserController::showAction',));
+            // pa_constituency
+            if (0 === strpos($pathinfo, '/pa/constituency') && preg_match('#^/pa/constituency/(?P<id>\\d+)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'pa_constituency')), array (  '_controller' => 'PaBundle\\Controller\\ParliamentaryController::constituencyAction',));
             }
-            not_user_show:
 
-            // user_edit
-            if (preg_match('#^/user/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
-                if (!in_array($this->context->getMethod(), array('GET', 'POST', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'POST', 'HEAD'));
-                    goto not_user_edit;
-                }
-
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'user_edit')), array (  '_controller' => 'UserBundle\\Controller\\UserController::editAction',));
+            // pa_polling_station
+            if (0 === strpos($pathinfo, '/pa/polling-station') && preg_match('#^/pa/polling\\-station/(?P<id>\\d+)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'pa_polling_station')), array (  '_controller' => 'PaBundle\\Controller\\ParliamentaryController::pollingStationAction',));
             }
-            not_user_edit:
-
-            // user_delete
-            if (preg_match('#^/user/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
-                if ($this->context->getMethod() != 'DELETE') {
-                    $allow[] = 'DELETE';
-                    goto not_user_delete;
-                }
-
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'user_delete')), array (  '_controller' => 'UserBundle\\Controller\\UserController::deleteAction',));
-            }
-            not_user_delete:
 
         }
 
-        // user_homepage
+        // vtally_dashboard
         if (rtrim($pathinfo, '/') === '') {
             if (substr($pathinfo, -1) !== '/') {
-                return $this->redirect($pathinfo.'/', 'user_homepage');
+                return $this->redirect($pathinfo.'/', 'vtally_dashboard');
             }
 
-            return array (  '_controller' => 'UserBundle:Default:index',  '_route' => 'user_homepage',);
-        }
-
-        // pa_homepage
-        if (rtrim($pathinfo, '/') === '') {
-            if (substr($pathinfo, -1) !== '/') {
-                return $this->redirect($pathinfo.'/', 'pa_homepage');
-            }
-
-            return array (  '_controller' => 'PaBundle\\Controller\\DefaultController::indexAction',  '_route' => 'pa_homepage',);
-        }
-
-        // pr_homepage
-        if (rtrim($pathinfo, '/') === '') {
-            if (substr($pathinfo, -1) !== '/') {
-                return $this->redirect($pathinfo.'/', 'pr_homepage');
-            }
-
-            return array (  '_controller' => 'PrBundle\\Controller\\DefaultController::indexAction',  '_route' => 'pr_homepage',);
-        }
-
-        // vtally_homepage
-        if (rtrim($pathinfo, '/') === '') {
-            if (substr($pathinfo, -1) !== '/') {
-                return $this->redirect($pathinfo.'/', 'vtally_homepage');
-            }
-
-            return array (  '_controller' => 'VtallyBundle\\Controller\\DefaultController::indexAction',  '_route' => 'vtally_homepage',);
+            return array (  '_controller' => 'VtallyBundle\\Controller\\DefaultController::dashboardAction',  '_route' => 'vtally_dashboard',);
         }
 
         if (0 === strpos($pathinfo, '/admin')) {
@@ -629,48 +563,48 @@ class appTestUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
 
                 }
 
+                if (0 === strpos($pathinfo, '/admin/vtally/returningofficer')) {
+                    // admin_vtally_returningofficer_list
+                    if ($pathinfo === '/admin/vtally/returningofficer/list') {
+                        return array (  '_controller' => 'VtallyBundle\\Controller\\ReturningOfficerAdminController::listAction',  '_sonata_admin' => 'vtally.admin.returning_officer',  '_sonata_name' => 'admin_vtally_returningofficer_list',  '_route' => 'admin_vtally_returningofficer_list',);
+                    }
+
+                    // admin_vtally_returningofficer_create
+                    if ($pathinfo === '/admin/vtally/returningofficer/create') {
+                        return array (  '_controller' => 'VtallyBundle\\Controller\\ReturningOfficerAdminController::createAction',  '_sonata_admin' => 'vtally.admin.returning_officer',  '_sonata_name' => 'admin_vtally_returningofficer_create',  '_route' => 'admin_vtally_returningofficer_create',);
+                    }
+
+                    // admin_vtally_returningofficer_batch
+                    if ($pathinfo === '/admin/vtally/returningofficer/batch') {
+                        return array (  '_controller' => 'VtallyBundle\\Controller\\ReturningOfficerAdminController::batchAction',  '_sonata_admin' => 'vtally.admin.returning_officer',  '_sonata_name' => 'admin_vtally_returningofficer_batch',  '_route' => 'admin_vtally_returningofficer_batch',);
+                    }
+
+                    // admin_vtally_returningofficer_edit
+                    if (preg_match('#^/admin/vtally/returningofficer/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                        return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_vtally_returningofficer_edit')), array (  '_controller' => 'VtallyBundle\\Controller\\ReturningOfficerAdminController::editAction',  '_sonata_admin' => 'vtally.admin.returning_officer',  '_sonata_name' => 'admin_vtally_returningofficer_edit',));
+                    }
+
+                    // admin_vtally_returningofficer_delete
+                    if (preg_match('#^/admin/vtally/returningofficer/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+                        return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_vtally_returningofficer_delete')), array (  '_controller' => 'VtallyBundle\\Controller\\ReturningOfficerAdminController::deleteAction',  '_sonata_admin' => 'vtally.admin.returning_officer',  '_sonata_name' => 'admin_vtally_returningofficer_delete',));
+                    }
+
+                    // admin_vtally_returningofficer_show
+                    if (preg_match('#^/admin/vtally/returningofficer/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
+                        return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_vtally_returningofficer_show')), array (  '_controller' => 'VtallyBundle\\Controller\\ReturningOfficerAdminController::showAction',  '_sonata_admin' => 'vtally.admin.returning_officer',  '_sonata_name' => 'admin_vtally_returningofficer_show',));
+                    }
+
+                    // admin_vtally_returningofficer_export
+                    if ($pathinfo === '/admin/vtally/returningofficer/export') {
+                        return array (  '_controller' => 'VtallyBundle\\Controller\\ReturningOfficerAdminController::exportAction',  '_sonata_admin' => 'vtally.admin.returning_officer',  '_sonata_name' => 'admin_vtally_returningofficer_export',  '_route' => 'admin_vtally_returningofficer_export',);
+                    }
+
+                }
+
             }
 
             if (0 === strpos($pathinfo, '/admin/p')) {
                 if (0 === strpos($pathinfo, '/admin/pr/pr')) {
-                    if (0 === strpos($pathinfo, '/admin/pr/prnotification')) {
-                        // admin_pr_prnotification_list
-                        if ($pathinfo === '/admin/pr/prnotification/list') {
-                            return array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::listAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_list',  '_route' => 'admin_pr_prnotification_list',);
-                        }
-
-                        // admin_pr_prnotification_create
-                        if ($pathinfo === '/admin/pr/prnotification/create') {
-                            return array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::createAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_create',  '_route' => 'admin_pr_prnotification_create',);
-                        }
-
-                        // admin_pr_prnotification_batch
-                        if ($pathinfo === '/admin/pr/prnotification/batch') {
-                            return array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::batchAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_batch',  '_route' => 'admin_pr_prnotification_batch',);
-                        }
-
-                        // admin_pr_prnotification_edit
-                        if (preg_match('#^/admin/pr/prnotification/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pr_prnotification_edit')), array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::editAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_edit',));
-                        }
-
-                        // admin_pr_prnotification_delete
-                        if (preg_match('#^/admin/pr/prnotification/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pr_prnotification_delete')), array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::deleteAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_delete',));
-                        }
-
-                        // admin_pr_prnotification_show
-                        if (preg_match('#^/admin/pr/prnotification/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pr_prnotification_show')), array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::showAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_show',));
-                        }
-
-                        // admin_pr_prnotification_export
-                        if ($pathinfo === '/admin/pr/prnotification/export') {
-                            return array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::exportAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_export',  '_route' => 'admin_pr_prnotification_export',);
-                        }
-
-                    }
-
                     if (0 === strpos($pathinfo, '/admin/pr/prvotecast')) {
                         // admin_pr_prvotecast_list
                         if ($pathinfo === '/admin/pr/prvotecast/list') {
@@ -788,6 +722,44 @@ class appTestUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
 
                     }
 
+                    if (0 === strpos($pathinfo, '/admin/pr/prnotification')) {
+                        // admin_pr_prnotification_list
+                        if ($pathinfo === '/admin/pr/prnotification/list') {
+                            return array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::listAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_list',  '_route' => 'admin_pr_prnotification_list',);
+                        }
+
+                        // admin_pr_prnotification_create
+                        if ($pathinfo === '/admin/pr/prnotification/create') {
+                            return array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::createAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_create',  '_route' => 'admin_pr_prnotification_create',);
+                        }
+
+                        // admin_pr_prnotification_batch
+                        if ($pathinfo === '/admin/pr/prnotification/batch') {
+                            return array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::batchAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_batch',  '_route' => 'admin_pr_prnotification_batch',);
+                        }
+
+                        // admin_pr_prnotification_edit
+                        if (preg_match('#^/admin/pr/prnotification/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pr_prnotification_edit')), array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::editAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_edit',));
+                        }
+
+                        // admin_pr_prnotification_delete
+                        if (preg_match('#^/admin/pr/prnotification/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pr_prnotification_delete')), array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::deleteAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_delete',));
+                        }
+
+                        // admin_pr_prnotification_show
+                        if (preg_match('#^/admin/pr/prnotification/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
+                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pr_prnotification_show')), array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::showAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_show',));
+                        }
+
+                        // admin_pr_prnotification_export
+                        if ($pathinfo === '/admin/pr/prnotification/export') {
+                            return array (  '_controller' => 'PrBundle\\Controller\\PrNotificationAdminController::exportAction',  '_sonata_admin' => 'pr.admin.pr_notification',  '_sonata_name' => 'admin_pr_prnotification_export',  '_route' => 'admin_pr_prnotification_export',);
+                        }
+
+                    }
+
                     if (0 === strpos($pathinfo, '/admin/pr/prcomplaint')) {
                         // admin_pr_prcomplaint_list
                         if ($pathinfo === '/admin/pr/prcomplaint/list') {
@@ -866,269 +838,310 @@ class appTestUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
 
                 }
 
-                if (0 === strpos($pathinfo, '/admin/pa/pa')) {
-                    if (0 === strpos($pathinfo, '/admin/pa/pacomplaint')) {
-                        // admin_pa_pacomplaint_list
-                        if ($pathinfo === '/admin/pa/pacomplaint/list') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_list',  '_route' => 'admin_pa_pacomplaint_list',);
+                if (0 === strpos($pathinfo, '/admin/pa')) {
+                    if (0 === strpos($pathinfo, '/admin/pa/pa')) {
+                        if (0 === strpos($pathinfo, '/admin/pa/pacomplaint')) {
+                            // admin_pa_pacomplaint_list
+                            if ($pathinfo === '/admin/pa/pacomplaint/list') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_list',  '_route' => 'admin_pa_pacomplaint_list',);
+                            }
+
+                            // admin_pa_pacomplaint_create
+                            if ($pathinfo === '/admin/pa/pacomplaint/create') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_create',  '_route' => 'admin_pa_pacomplaint_create',);
+                            }
+
+                            // admin_pa_pacomplaint_batch
+                            if ($pathinfo === '/admin/pa/pacomplaint/batch') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_batch',  '_route' => 'admin_pa_pacomplaint_batch',);
+                            }
+
+                            // admin_pa_pacomplaint_edit
+                            if (preg_match('#^/admin/pa/pacomplaint/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pacomplaint_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_edit',));
+                            }
+
+                            // admin_pa_pacomplaint_delete
+                            if (preg_match('#^/admin/pa/pacomplaint/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pacomplaint_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_delete',));
+                            }
+
+                            // admin_pa_pacomplaint_show
+                            if (preg_match('#^/admin/pa/pacomplaint/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pacomplaint_show')), array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_show',));
+                            }
+
+                            // admin_pa_pacomplaint_export
+                            if ($pathinfo === '/admin/pa/pacomplaint/export') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_export',  '_route' => 'admin_pa_pacomplaint_export',);
+                            }
+
                         }
 
-                        // admin_pa_pacomplaint_create
-                        if ($pathinfo === '/admin/pa/pacomplaint/create') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_create',  '_route' => 'admin_pa_pacomplaint_create',);
+                        if (0 === strpos($pathinfo, '/admin/pa/pavotecast')) {
+                            // admin_pa_pavotecast_list
+                            if ($pathinfo === '/admin/pa/pavotecast/list') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_list',  '_route' => 'admin_pa_pavotecast_list',);
+                            }
+
+                            // admin_pa_pavotecast_create
+                            if ($pathinfo === '/admin/pa/pavotecast/create') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_create',  '_route' => 'admin_pa_pavotecast_create',);
+                            }
+
+                            // admin_pa_pavotecast_batch
+                            if ($pathinfo === '/admin/pa/pavotecast/batch') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_batch',  '_route' => 'admin_pa_pavotecast_batch',);
+                            }
+
+                            // admin_pa_pavotecast_edit
+                            if (preg_match('#^/admin/pa/pavotecast/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pavotecast_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_edit',));
+                            }
+
+                            // admin_pa_pavotecast_delete
+                            if (preg_match('#^/admin/pa/pavotecast/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pavotecast_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_delete',));
+                            }
+
+                            // admin_pa_pavotecast_show
+                            if (preg_match('#^/admin/pa/pavotecast/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pavotecast_show')), array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_show',));
+                            }
+
+                            // admin_pa_pavotecast_export
+                            if ($pathinfo === '/admin/pa/pavotecast/export') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_export',  '_route' => 'admin_pa_pavotecast_export',);
+                            }
+
                         }
 
-                        // admin_pa_pacomplaint_batch
-                        if ($pathinfo === '/admin/pa/pacomplaint/batch') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_batch',  '_route' => 'admin_pa_pacomplaint_batch',);
+                        if (0 === strpos($pathinfo, '/admin/pa/paparty')) {
+                            // admin_pa_paparty_list
+                            if ($pathinfo === '/admin/pa/paparty/list') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_list',  '_route' => 'admin_pa_paparty_list',);
+                            }
+
+                            // admin_pa_paparty_create
+                            if ($pathinfo === '/admin/pa/paparty/create') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_create',  '_route' => 'admin_pa_paparty_create',);
+                            }
+
+                            // admin_pa_paparty_batch
+                            if ($pathinfo === '/admin/pa/paparty/batch') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_batch',  '_route' => 'admin_pa_paparty_batch',);
+                            }
+
+                            // admin_pa_paparty_edit
+                            if (preg_match('#^/admin/pa/paparty/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_paparty_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_edit',));
+                            }
+
+                            // admin_pa_paparty_delete
+                            if (preg_match('#^/admin/pa/paparty/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_paparty_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_delete',));
+                            }
+
+                            // admin_pa_paparty_show
+                            if (preg_match('#^/admin/pa/paparty/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_paparty_show')), array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_show',));
+                            }
+
+                            // admin_pa_paparty_export
+                            if ($pathinfo === '/admin/pa/paparty/export') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_export',  '_route' => 'admin_pa_paparty_export',);
+                            }
+
                         }
 
-                        // admin_pa_pacomplaint_edit
-                        if (preg_match('#^/admin/pa/pacomplaint/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pacomplaint_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_edit',));
+                        if (0 === strpos($pathinfo, '/admin/pa/pafootprint')) {
+                            // admin_pa_pafootprint_list
+                            if ($pathinfo === '/admin/pa/pafootprint/list') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_list',  '_route' => 'admin_pa_pafootprint_list',);
+                            }
+
+                            // admin_pa_pafootprint_create
+                            if ($pathinfo === '/admin/pa/pafootprint/create') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_create',  '_route' => 'admin_pa_pafootprint_create',);
+                            }
+
+                            // admin_pa_pafootprint_batch
+                            if ($pathinfo === '/admin/pa/pafootprint/batch') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_batch',  '_route' => 'admin_pa_pafootprint_batch',);
+                            }
+
+                            // admin_pa_pafootprint_edit
+                            if (preg_match('#^/admin/pa/pafootprint/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pafootprint_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_edit',));
+                            }
+
+                            // admin_pa_pafootprint_delete
+                            if (preg_match('#^/admin/pa/pafootprint/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pafootprint_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_delete',));
+                            }
+
+                            // admin_pa_pafootprint_show
+                            if (preg_match('#^/admin/pa/pafootprint/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pafootprint_show')), array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_show',));
+                            }
+
+                            // admin_pa_pafootprint_export
+                            if ($pathinfo === '/admin/pa/pafootprint/export') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_export',  '_route' => 'admin_pa_pafootprint_export',);
+                            }
+
                         }
 
-                        // admin_pa_pacomplaint_delete
-                        if (preg_match('#^/admin/pa/pacomplaint/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pacomplaint_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_delete',));
+                        if (0 === strpos($pathinfo, '/admin/pa/panotification')) {
+                            // admin_pa_panotification_list
+                            if ($pathinfo === '/admin/pa/panotification/list') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_list',  '_route' => 'admin_pa_panotification_list',);
+                            }
+
+                            // admin_pa_panotification_create
+                            if ($pathinfo === '/admin/pa/panotification/create') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_create',  '_route' => 'admin_pa_panotification_create',);
+                            }
+
+                            // admin_pa_panotification_batch
+                            if ($pathinfo === '/admin/pa/panotification/batch') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_batch',  '_route' => 'admin_pa_panotification_batch',);
+                            }
+
+                            // admin_pa_panotification_edit
+                            if (preg_match('#^/admin/pa/panotification/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_panotification_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_edit',));
+                            }
+
+                            // admin_pa_panotification_delete
+                            if (preg_match('#^/admin/pa/panotification/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_panotification_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_delete',));
+                            }
+
+                            // admin_pa_panotification_show
+                            if (preg_match('#^/admin/pa/panotification/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_panotification_show')), array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_show',));
+                            }
+
+                            // admin_pa_panotification_export
+                            if ($pathinfo === '/admin/pa/panotification/export') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_export',  '_route' => 'admin_pa_panotification_export',);
+                            }
+
                         }
 
-                        // admin_pa_pacomplaint_show
-                        if (preg_match('#^/admin/pa/pacomplaint/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pacomplaint_show')), array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_show',));
-                        }
+                        if (0 === strpos($pathinfo, '/admin/pa/papinksheet')) {
+                            // admin_pa_papinksheet_list
+                            if ($pathinfo === '/admin/pa/papinksheet/list') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_list',  '_route' => 'admin_pa_papinksheet_list',);
+                            }
 
-                        // admin_pa_pacomplaint_export
-                        if ($pathinfo === '/admin/pa/pacomplaint/export') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaComplaintAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_complaint',  '_sonata_name' => 'admin_pa_pacomplaint_export',  '_route' => 'admin_pa_pacomplaint_export',);
+                            // admin_pa_papinksheet_create
+                            if ($pathinfo === '/admin/pa/papinksheet/create') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_create',  '_route' => 'admin_pa_papinksheet_create',);
+                            }
+
+                            // admin_pa_papinksheet_batch
+                            if ($pathinfo === '/admin/pa/papinksheet/batch') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_batch',  '_route' => 'admin_pa_papinksheet_batch',);
+                            }
+
+                            // admin_pa_papinksheet_edit
+                            if (preg_match('#^/admin/pa/papinksheet/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_papinksheet_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_edit',));
+                            }
+
+                            // admin_pa_papinksheet_delete
+                            if (preg_match('#^/admin/pa/papinksheet/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_papinksheet_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_delete',));
+                            }
+
+                            // admin_pa_papinksheet_show
+                            if (preg_match('#^/admin/pa/papinksheet/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
+                                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_papinksheet_show')), array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_show',));
+                            }
+
+                            // admin_pa_papinksheet_export
+                            if ($pathinfo === '/admin/pa/papinksheet/export') {
+                                return array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_export',  '_route' => 'admin_pa_papinksheet_export',);
+                            }
+
                         }
 
                     }
 
-                    if (0 === strpos($pathinfo, '/admin/pa/pavotecast')) {
-                        // admin_pa_pavotecast_list
-                        if ($pathinfo === '/admin/pa/pavotecast/list') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_list',  '_route' => 'admin_pa_pavotecast_list',);
+                    if (0 === strpos($pathinfo, '/admin/pa/independentcandidate')) {
+                        // admin_pa_independentcandidate_list
+                        if ($pathinfo === '/admin/pa/independentcandidate/list') {
+                            return array (  '_controller' => 'PaBundle\\Controller\\IndependentCandidateAdminController::listAction',  '_sonata_admin' => 'pa.admin.independent_candidate',  '_sonata_name' => 'admin_pa_independentcandidate_list',  '_route' => 'admin_pa_independentcandidate_list',);
                         }
 
-                        // admin_pa_pavotecast_create
-                        if ($pathinfo === '/admin/pa/pavotecast/create') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_create',  '_route' => 'admin_pa_pavotecast_create',);
+                        // admin_pa_independentcandidate_create
+                        if ($pathinfo === '/admin/pa/independentcandidate/create') {
+                            return array (  '_controller' => 'PaBundle\\Controller\\IndependentCandidateAdminController::createAction',  '_sonata_admin' => 'pa.admin.independent_candidate',  '_sonata_name' => 'admin_pa_independentcandidate_create',  '_route' => 'admin_pa_independentcandidate_create',);
                         }
 
-                        // admin_pa_pavotecast_batch
-                        if ($pathinfo === '/admin/pa/pavotecast/batch') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_batch',  '_route' => 'admin_pa_pavotecast_batch',);
+                        // admin_pa_independentcandidate_batch
+                        if ($pathinfo === '/admin/pa/independentcandidate/batch') {
+                            return array (  '_controller' => 'PaBundle\\Controller\\IndependentCandidateAdminController::batchAction',  '_sonata_admin' => 'pa.admin.independent_candidate',  '_sonata_name' => 'admin_pa_independentcandidate_batch',  '_route' => 'admin_pa_independentcandidate_batch',);
                         }
 
-                        // admin_pa_pavotecast_edit
-                        if (preg_match('#^/admin/pa/pavotecast/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pavotecast_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_edit',));
+                        // admin_pa_independentcandidate_edit
+                        if (preg_match('#^/admin/pa/independentcandidate/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_independentcandidate_edit')), array (  '_controller' => 'PaBundle\\Controller\\IndependentCandidateAdminController::editAction',  '_sonata_admin' => 'pa.admin.independent_candidate',  '_sonata_name' => 'admin_pa_independentcandidate_edit',));
                         }
 
-                        // admin_pa_pavotecast_delete
-                        if (preg_match('#^/admin/pa/pavotecast/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pavotecast_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_delete',));
+                        // admin_pa_independentcandidate_delete
+                        if (preg_match('#^/admin/pa/independentcandidate/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_independentcandidate_delete')), array (  '_controller' => 'PaBundle\\Controller\\IndependentCandidateAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.independent_candidate',  '_sonata_name' => 'admin_pa_independentcandidate_delete',));
                         }
 
-                        // admin_pa_pavotecast_show
-                        if (preg_match('#^/admin/pa/pavotecast/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pavotecast_show')), array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_show',));
+                        // admin_pa_independentcandidate_show
+                        if (preg_match('#^/admin/pa/independentcandidate/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
+                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_independentcandidate_show')), array (  '_controller' => 'PaBundle\\Controller\\IndependentCandidateAdminController::showAction',  '_sonata_admin' => 'pa.admin.independent_candidate',  '_sonata_name' => 'admin_pa_independentcandidate_show',));
                         }
 
-                        // admin_pa_pavotecast_export
-                        if ($pathinfo === '/admin/pa/pavotecast/export') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaVoteCastAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_vote_cast',  '_sonata_name' => 'admin_pa_pavotecast_export',  '_route' => 'admin_pa_pavotecast_export',);
-                        }
-
-                    }
-
-                    if (0 === strpos($pathinfo, '/admin/pa/paparty')) {
-                        // admin_pa_paparty_list
-                        if ($pathinfo === '/admin/pa/paparty/list') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_list',  '_route' => 'admin_pa_paparty_list',);
-                        }
-
-                        // admin_pa_paparty_create
-                        if ($pathinfo === '/admin/pa/paparty/create') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_create',  '_route' => 'admin_pa_paparty_create',);
-                        }
-
-                        // admin_pa_paparty_batch
-                        if ($pathinfo === '/admin/pa/paparty/batch') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_batch',  '_route' => 'admin_pa_paparty_batch',);
-                        }
-
-                        // admin_pa_paparty_edit
-                        if (preg_match('#^/admin/pa/paparty/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_paparty_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_edit',));
-                        }
-
-                        // admin_pa_paparty_delete
-                        if (preg_match('#^/admin/pa/paparty/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_paparty_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_delete',));
-                        }
-
-                        // admin_pa_paparty_show
-                        if (preg_match('#^/admin/pa/paparty/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_paparty_show')), array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_show',));
-                        }
-
-                        // admin_pa_paparty_export
-                        if ($pathinfo === '/admin/pa/paparty/export') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaPartyAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_party',  '_sonata_name' => 'admin_pa_paparty_export',  '_route' => 'admin_pa_paparty_export',);
+                        // admin_pa_independentcandidate_export
+                        if ($pathinfo === '/admin/pa/independentcandidate/export') {
+                            return array (  '_controller' => 'PaBundle\\Controller\\IndependentCandidateAdminController::exportAction',  '_sonata_admin' => 'pa.admin.independent_candidate',  '_sonata_name' => 'admin_pa_independentcandidate_export',  '_route' => 'admin_pa_independentcandidate_export',);
                         }
 
                     }
 
-                    if (0 === strpos($pathinfo, '/admin/pa/pacandidate')) {
-                        // admin_pa_pacandidate_list
-                        if ($pathinfo === '/admin/pa/pacandidate/list') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaCandidateAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_candidate',  '_sonata_name' => 'admin_pa_pacandidate_list',  '_route' => 'admin_pa_pacandidate_list',);
+                    if (0 === strpos($pathinfo, '/admin/pa/dependentcandidate')) {
+                        // admin_pa_dependentcandidate_list
+                        if ($pathinfo === '/admin/pa/dependentcandidate/list') {
+                            return array (  '_controller' => 'PaBundle\\Controller\\DependentCandidateAdminController::listAction',  '_sonata_admin' => 'pa.admin.dependent_candidate',  '_sonata_name' => 'admin_pa_dependentcandidate_list',  '_route' => 'admin_pa_dependentcandidate_list',);
                         }
 
-                        // admin_pa_pacandidate_create
-                        if ($pathinfo === '/admin/pa/pacandidate/create') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaCandidateAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_candidate',  '_sonata_name' => 'admin_pa_pacandidate_create',  '_route' => 'admin_pa_pacandidate_create',);
+                        // admin_pa_dependentcandidate_create
+                        if ($pathinfo === '/admin/pa/dependentcandidate/create') {
+                            return array (  '_controller' => 'PaBundle\\Controller\\DependentCandidateAdminController::createAction',  '_sonata_admin' => 'pa.admin.dependent_candidate',  '_sonata_name' => 'admin_pa_dependentcandidate_create',  '_route' => 'admin_pa_dependentcandidate_create',);
                         }
 
-                        // admin_pa_pacandidate_batch
-                        if ($pathinfo === '/admin/pa/pacandidate/batch') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaCandidateAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_candidate',  '_sonata_name' => 'admin_pa_pacandidate_batch',  '_route' => 'admin_pa_pacandidate_batch',);
+                        // admin_pa_dependentcandidate_batch
+                        if ($pathinfo === '/admin/pa/dependentcandidate/batch') {
+                            return array (  '_controller' => 'PaBundle\\Controller\\DependentCandidateAdminController::batchAction',  '_sonata_admin' => 'pa.admin.dependent_candidate',  '_sonata_name' => 'admin_pa_dependentcandidate_batch',  '_route' => 'admin_pa_dependentcandidate_batch',);
                         }
 
-                        // admin_pa_pacandidate_edit
-                        if (preg_match('#^/admin/pa/pacandidate/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pacandidate_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaCandidateAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_candidate',  '_sonata_name' => 'admin_pa_pacandidate_edit',));
+                        // admin_pa_dependentcandidate_edit
+                        if (preg_match('#^/admin/pa/dependentcandidate/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_dependentcandidate_edit')), array (  '_controller' => 'PaBundle\\Controller\\DependentCandidateAdminController::editAction',  '_sonata_admin' => 'pa.admin.dependent_candidate',  '_sonata_name' => 'admin_pa_dependentcandidate_edit',));
                         }
 
-                        // admin_pa_pacandidate_delete
-                        if (preg_match('#^/admin/pa/pacandidate/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pacandidate_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaCandidateAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_candidate',  '_sonata_name' => 'admin_pa_pacandidate_delete',));
+                        // admin_pa_dependentcandidate_delete
+                        if (preg_match('#^/admin/pa/dependentcandidate/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
+                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_dependentcandidate_delete')), array (  '_controller' => 'PaBundle\\Controller\\DependentCandidateAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.dependent_candidate',  '_sonata_name' => 'admin_pa_dependentcandidate_delete',));
                         }
 
-                        // admin_pa_pacandidate_show
-                        if (preg_match('#^/admin/pa/pacandidate/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pacandidate_show')), array (  '_controller' => 'PaBundle\\Controller\\PaCandidateAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_candidate',  '_sonata_name' => 'admin_pa_pacandidate_show',));
+                        // admin_pa_dependentcandidate_show
+                        if (preg_match('#^/admin/pa/dependentcandidate/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
+                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_dependentcandidate_show')), array (  '_controller' => 'PaBundle\\Controller\\DependentCandidateAdminController::showAction',  '_sonata_admin' => 'pa.admin.dependent_candidate',  '_sonata_name' => 'admin_pa_dependentcandidate_show',));
                         }
 
-                        // admin_pa_pacandidate_export
-                        if ($pathinfo === '/admin/pa/pacandidate/export') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaCandidateAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_candidate',  '_sonata_name' => 'admin_pa_pacandidate_export',  '_route' => 'admin_pa_pacandidate_export',);
-                        }
-
-                    }
-
-                    if (0 === strpos($pathinfo, '/admin/pa/pafootprint')) {
-                        // admin_pa_pafootprint_list
-                        if ($pathinfo === '/admin/pa/pafootprint/list') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_list',  '_route' => 'admin_pa_pafootprint_list',);
-                        }
-
-                        // admin_pa_pafootprint_create
-                        if ($pathinfo === '/admin/pa/pafootprint/create') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_create',  '_route' => 'admin_pa_pafootprint_create',);
-                        }
-
-                        // admin_pa_pafootprint_batch
-                        if ($pathinfo === '/admin/pa/pafootprint/batch') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_batch',  '_route' => 'admin_pa_pafootprint_batch',);
-                        }
-
-                        // admin_pa_pafootprint_edit
-                        if (preg_match('#^/admin/pa/pafootprint/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pafootprint_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_edit',));
-                        }
-
-                        // admin_pa_pafootprint_delete
-                        if (preg_match('#^/admin/pa/pafootprint/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pafootprint_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_delete',));
-                        }
-
-                        // admin_pa_pafootprint_show
-                        if (preg_match('#^/admin/pa/pafootprint/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_pafootprint_show')), array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_show',));
-                        }
-
-                        // admin_pa_pafootprint_export
-                        if ($pathinfo === '/admin/pa/pafootprint/export') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaFootPrintAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_foot_print',  '_sonata_name' => 'admin_pa_pafootprint_export',  '_route' => 'admin_pa_pafootprint_export',);
-                        }
-
-                    }
-
-                    if (0 === strpos($pathinfo, '/admin/pa/panotification')) {
-                        // admin_pa_panotification_list
-                        if ($pathinfo === '/admin/pa/panotification/list') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_list',  '_route' => 'admin_pa_panotification_list',);
-                        }
-
-                        // admin_pa_panotification_create
-                        if ($pathinfo === '/admin/pa/panotification/create') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_create',  '_route' => 'admin_pa_panotification_create',);
-                        }
-
-                        // admin_pa_panotification_batch
-                        if ($pathinfo === '/admin/pa/panotification/batch') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_batch',  '_route' => 'admin_pa_panotification_batch',);
-                        }
-
-                        // admin_pa_panotification_edit
-                        if (preg_match('#^/admin/pa/panotification/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_panotification_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_edit',));
-                        }
-
-                        // admin_pa_panotification_delete
-                        if (preg_match('#^/admin/pa/panotification/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_panotification_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_delete',));
-                        }
-
-                        // admin_pa_panotification_show
-                        if (preg_match('#^/admin/pa/panotification/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_panotification_show')), array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_show',));
-                        }
-
-                        // admin_pa_panotification_export
-                        if ($pathinfo === '/admin/pa/panotification/export') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaNotificationAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_notification',  '_sonata_name' => 'admin_pa_panotification_export',  '_route' => 'admin_pa_panotification_export',);
-                        }
-
-                    }
-
-                    if (0 === strpos($pathinfo, '/admin/pa/papinksheet')) {
-                        // admin_pa_papinksheet_list
-                        if ($pathinfo === '/admin/pa/papinksheet/list') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::listAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_list',  '_route' => 'admin_pa_papinksheet_list',);
-                        }
-
-                        // admin_pa_papinksheet_create
-                        if ($pathinfo === '/admin/pa/papinksheet/create') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::createAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_create',  '_route' => 'admin_pa_papinksheet_create',);
-                        }
-
-                        // admin_pa_papinksheet_batch
-                        if ($pathinfo === '/admin/pa/papinksheet/batch') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::batchAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_batch',  '_route' => 'admin_pa_papinksheet_batch',);
-                        }
-
-                        // admin_pa_papinksheet_edit
-                        if (preg_match('#^/admin/pa/papinksheet/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_papinksheet_edit')), array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::editAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_edit',));
-                        }
-
-                        // admin_pa_papinksheet_delete
-                        if (preg_match('#^/admin/pa/papinksheet/(?P<id>[^/]++)/delete$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_papinksheet_delete')), array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::deleteAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_delete',));
-                        }
-
-                        // admin_pa_papinksheet_show
-                        if (preg_match('#^/admin/pa/papinksheet/(?P<id>[^/]++)/show$#s', $pathinfo, $matches)) {
-                            return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_pa_papinksheet_show')), array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::showAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_show',));
-                        }
-
-                        // admin_pa_papinksheet_export
-                        if ($pathinfo === '/admin/pa/papinksheet/export') {
-                            return array (  '_controller' => 'PaBundle\\Controller\\PaPinkSheetAdminController::exportAction',  '_sonata_admin' => 'pa.admin.pa_pink_sheet',  '_sonata_name' => 'admin_pa_papinksheet_export',  '_route' => 'admin_pa_papinksheet_export',);
+                        // admin_pa_dependentcandidate_export
+                        if ($pathinfo === '/admin/pa/dependentcandidate/export') {
+                            return array (  '_controller' => 'PaBundle\\Controller\\DependentCandidateAdminController::exportAction',  '_sonata_admin' => 'pa.admin.dependent_candidate',  '_sonata_name' => 'admin_pa_dependentcandidate_export',  '_route' => 'admin_pa_dependentcandidate_export',);
                         }
 
                     }

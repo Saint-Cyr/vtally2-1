@@ -40,10 +40,16 @@ class Constituency
      */
     private $pollingStations;
     
+    
     /**
-     * @ORM\OneToMany(targetEntity="PaBundle\Entity\PaCandidate", mappedBy="constituency", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="PaBundle\Entity\DependentCandidate", mappedBy="constituency", cascade={"remove", "persist"})
      */
-    private $paCandidates;
+    private $dependentCandidates;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="PaBundle\Entity\IndependentCandidate", mappedBy="constituency", cascade={"remove", "persist"})
+     */
+    private $independentCandidates;
     
     /**
      * @ORM\ManyToOne(targetEntity="VtallyBundle\Entity\Region", inversedBy="constituencies")
@@ -57,16 +63,55 @@ class Constituency
      */
     private $collationCenter;
     
-    /**
-     * @ORM\ManyToMany(targetEntity="PaBundle\Entity\PaParty", inversedBy="constituencies", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $paParties;
-    
     public function __toString() {
         return $this->name;
     }
+    
+    public function getWinner()
+    {
+        //return null if one Dependent or Independent candidate as been link to this consituency
+        if((count($this->getDependentCandidates())) != 0 || (count($this->getIndependentCandidates()) != 0)){
+            
+            foreach ($this->getDependentCandidates() as $depCandidate){
+                $tab[] = $depCandidate;
+            }
 
+            foreach ($this->getIndependentCandidates() as $indCandidate){
+                $tab[] = $indCandidate;
+            }
+
+            $candidates = array_merge($tab);
+
+            $winner = array('candidate' => null, 'voteCast' => null);
+
+            foreach ($candidates as $candidate){
+                if($winner['voteCast'] <= $candidate->getTotalVoteCast()){
+                    $winner['candidate'] = $candidate;
+                    $winner['voteCast'] = $candidate->getTotalVoteCast();
+                }
+            }
+
+            //If election is not yet started
+            $vote = false;
+
+            foreach ($candidates as $candidate){
+                if($candidate->getTotalVoteCast() != 0){
+                    $vote = true;
+                }
+            }
+
+            if($vote){
+                return $winner['candidate'];
+            }else{
+                //If election does not yet start (everybody vote cast is 0), the return null
+                return null;
+            }
+        }else{
+            return null;
+        }
+                
+    }
+    
     /**
      * Get id
      *
@@ -124,14 +169,8 @@ class Constituency
     {
         return $this->code;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->pollingStations = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->paParties = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    
+    
 
     /**
      * Add pollingStation
@@ -165,40 +204,6 @@ class Constituency
     public function getPollingStations()
     {
         return $this->pollingStations;
-    }
-
-    /**
-     * Add paCandidate
-     *
-     * @param \PaBundle\Entity\PaCandidate $paCandidate
-     *
-     * @return Constituency
-     */
-    public function addPaCandidate(\PaBundle\Entity\PaCandidate $paCandidate)
-    {
-        $this->paCandidates[] = $paCandidate;
-
-        return $this;
-    }
-
-    /**
-     * Remove paCandidate
-     *
-     * @param \PaBundle\Entity\PaCandidate $paCandidate
-     */
-    public function removePaCandidate(\PaBundle\Entity\PaCandidate $paCandidate)
-    {
-        $this->paCandidates->removeElement($paCandidate);
-    }
-
-    /**
-     * Get paCandidates
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPaCandidates()
-    {
-        return $this->paCandidates;
     }
 
     /**
@@ -250,36 +255,81 @@ class Constituency
     }
 
     /**
-     * Add paParty
+     * Add dependentCandidate
      *
-     * @param \PaBundle\Entity\PaParty $paParty
+     * @param \PaBundle\Entity\DependentCandidate $dependentCandidate
      *
      * @return Constituency
      */
-    public function addPaParty(\PaBundle\Entity\PaParty $paParty)
+    public function addDependentCandidate(\PaBundle\Entity\DependentCandidate $dependentCandidate)
     {
-        $this->paParties[] = $paParty;
+        $this->dependentCandidates[] = $dependentCandidate;
 
         return $this;
     }
 
     /**
-     * Remove paParty
+     * Remove dependentCandidate
      *
-     * @param \PaBundle\Entity\PaParty $paParty
+     * @param \PaBundle\Entity\DependentCandidate $dependentCandidate
      */
-    public function removePaParty(\PaBundle\Entity\PaParty $paParty)
+    public function removeDependentCandidate(\PaBundle\Entity\DependentCandidate $dependentCandidate)
     {
-        $this->paParties->removeElement($paParty);
+        $this->dependentCandidates->removeElement($dependentCandidate);
     }
 
     /**
-     * Get paParties
+     * Get dependentCandidates
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPaParties()
+    public function getDependentCandidates()
     {
-        return $this->paParties;
+        return $this->dependentCandidates;
     }
+
+    /**
+     * Add independentCandidate
+     *
+     * @param \PaBundle\Entity\IndependentCandidate $independentCandidate
+     *
+     * @return Constituency
+     */
+    public function addIndependentCandidate(\PaBundle\Entity\IndependentCandidate $independentCandidate)
+    {
+        $this->independentCandidates[] = $independentCandidate;
+
+        return $this;
+    }
+
+    /**
+     * Remove independentCandidate
+     *
+     * @param \PaBundle\Entity\IndependentCandidate $independentCandidate
+     */
+    public function removeIndependentCandidate(\PaBundle\Entity\IndependentCandidate $independentCandidate)
+    {
+        $this->independentCandidates->removeElement($independentCandidate);
+    }
+
+    /**
+     * Get independentCandidates
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIndependentCandidates()
+    {
+        return $this->independentCandidates;
+    }
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->pollingStations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->dependentCandidates = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->independentCandidates = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
 }

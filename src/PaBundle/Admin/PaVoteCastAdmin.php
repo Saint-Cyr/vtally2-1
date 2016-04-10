@@ -32,6 +32,7 @@ class PaVoteCastAdmin extends Admin
             ->add('figureValue')
             ->add('wordValue')
             ->add('edited')
+            ->add('dependentCandidate')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -50,6 +51,7 @@ class PaVoteCastAdmin extends Admin
         $formMapper
             ->add('figureValue')
             ->add('wordValue')
+            ->add('paCandidate')
             ->add('pollingStation', 'sonata_type_model_autocomplete', array('property' => 'code', 'to_string_callback' => function($entity, $property){return $entity->getCode();}))
         ;
     }

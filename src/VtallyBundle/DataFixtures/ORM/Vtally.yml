@@ -1,23 +1,281 @@
+PaBundle\Entity\PaParty:
+    pa_party1:
+        name: NPP
+    
+    pa_party2:
+        name: NDC
+        
+    pa_party3:
+        name: UFP
+
 VtallyBundle\Entity\Constituency:
-    constituency1_{1..10}:
-        name: <city()>
+    constituency1:
+        name: Constituency 1
         code: CT<numberBetween(1, 300)>
         region: "@region1"
         collationCenter (unique): "@collation_center*"
-        paParties: <numberBetween(1, 10)>x @pa_party*
+        
+    constituency2:
+        name: Constituency 2
+        code: CT<numberBetween(1, 300)>
+        region: "@region2"
+        collationCenter (unique): "@collation_center*"
+        
+    constituency3:
+        name: Constituency 3
+        code: CT<numberBetween(1, 300)>
+        region: "@region3"
+        collationCenter (unique): "@collation_center*"
+        
+    constituency4:
+        name: Constituency 4
+        code: CT<numberBetween(1, 300)>
+        region: "@region1"
+        collationCenter (unique): "@collation_center*"
+        
+    constituency5:
+        name: Constituency 5
+        code: CT<numberBetween(1, 300)>
+        region: "@region2"
+        collationCenter (unique): "@collation_center*"
+        
+    constituency6:
+        name: Constituency 6
+        code: CT<numberBetween(1, 300)>
+        region: "@region3"
+        collationCenter (unique): "@collation_center*"
+        
+    constituency7:
+        name: Constituency 7
+        code: CT<numberBetween(1, 300)>
+        region: "@region3"
+        collationCenter (unique): "@collation_center*"
 
-PaBundle\Entity\PaCandidate:
-    pa_candidate_{1..10}:
-        name: <name()>
-        paParty: "@pa_party*"
-        constituency: "@constituency*"
+PaBundle\Entity\DependentCandidate:
+    dependent_candidate1:
+        firstName: Jhon
+        lastName: JHON
+        candidacyNumber: 1
+        paParty: "@pa_party1"
+        constituency: "@constituency1"
+        
+    dependent_candidate2:
+        firstName: Jannette
+        lastName: JANNETTE
+        candidacyNumber: 2
+        paParty: "@pa_party2"
+        constituency: "@constituency1"
+        
+    dependent_candidate3:
+        firstName: Olga
+        lastName: OLGA
+        candidacyNumber: 1
+        paParty: "@pa_party1"
+        constituency: "@constituency2"
+        
+    dependent_candidate4:
+        firstName: Barnabas
+        lastName: BARNABAS
+        candidacyNumber: 2
+        paParty: "@pa_party2"
+        constituency: "@constituency2"
+        
+    dependent_candidate5:
+        firstName: Jephte
+        lastName: JEPHTE
+        candidacyNumber: 2
+        paParty: "@pa_party1"
+        constituency: "@constituency3"
+        
+    dependent_candidate6:
+        firstName: Jiram
+        lastName: JIRAM
+        candidacyNumber: 7
+        paParty: "@pa_party2"
+        constituency: "@constituency3"
+        
+    dependent_candidate7:
+        firstName: Victorien
+        lastName: VICTORIEN
+        candidacyNumber: 8
+        paParty: "@pa_party3"
+        constituency: "@constituency4"
+        
+PaBundle\Entity\IndependentCandidate:
+    independent_candidate1:
+        firstName: Vivien
+        lastName: VIVIEN
+        candidacyNumber: 1
+        constituency: "@constituency1"
+        
+    independent_candidate2:
+        firstName: Joel
+        lastName: JOEL
+        candidacyNumber: 2
+        constituency: "@constituency1"
+        
+    independent_candidate3:
+        firstName: Adde
+        lastName: ADDE
+        candidacyNumber: 5
+        constituency: "@constituency1"
+        
+    independent_candidate4:
+        firstName: Sonde
+        lastName: SONDE
+        candidacyNumber: 10
+        constituency: "@constituency2"
+        
+    independent_candidate5:
+        firstName: Panda
+        lastName: PANDA
+        candidacyNumber: 8
+        constituency: "@constituency2"
+        
+    independent_candidate6:
+        firstName: Nadege
+        lastName: NADEGE
+        candidacyNumber: 7
+        constituency: "@constituency3"
+    
+    independent_candidate7:
+        firstName: Mamadou
+        lastName: MAMADOU
+        candidacyNumber: 33
+        constituency: "@constituency3"
+        
+    independent_candidate8:
+        firstName: Issa
+        lastName: ISSA
+        candidacyNumber: 11
+        constituency: "@constituency3"
+        
+    independent_candidate9:
+        firstName: Sadina
+        lastName: SADINA
+        candidacyNumber: 12
+        constituency: "@constituency3"
+        
+    independent_candidate10:
+        firstName: Socen
+        lastName: SOCEN
+        candidacyNumber: 13
+        constituency: "@constituency4"
+    
+    independent_candidate11:
+        firstName: Olo
+        lastName: OLO
+        candidacyNumber: 14
+        constituency: "@constituency4"
+        
+    independent_candidate12:
+        firstName: Dodegue
+        lastName: DODEGUE
+        candidacyNumber: 15
+        constituency: "@constituency5"
+    
+    independent_candidate13:
+        firstName: Saka
+        lastName: SAKA
+        candidacyNumber: 16
+        constituency: "@constituency5"
+    
+    independent_candidate14:
+        firstName: Baden
+        lastName: BADEN
+        candidacyNumber: 17
+        constituency: "@constituency6"
         
 paBundle\Entity\PaVoteCast:
-    pa_vote_cast_{1..100}:
-        figureValue: 1322
+    pa_vote_cast1:
+        figureValue: 100
         wordValue: One Thousand three hundred twenty two
-        paCandidate: "@pa_candidate*"
-        pollingStation: "@polling_station*"
+        dependentCandidate: "@dependent_candidate1"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pa_vote_cast2:
+        figureValue: 600
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate1"
+        pollingStation: "@polling_station2"
+        edited: false
+    
+    pa_vote_cast3:
+        figureValue: 200
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate1"
+        pollingStation: "@polling_station3"
+        edited: false
+        
+    pa_vote_cast4:
+        figureValue: 350
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate2"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pa_vote_cast5:
+        figureValue: 100
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate2"
+        pollingStation: "@polling_station2"
+        edited: false
+        
+    pa_vote_cast6:
+        figureValue: 250
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate2"
+        pollingStation: "@polling_station3"
+        edited: false
+    
+    pa_vote_cast7:
+        figureValue: 721
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate3"
+        pollingStation: "@polling_station4"
+        edited: false
+        
+    pa_vote_cast8:
+        figureValue: 703
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate4"
+        pollingStation: "@polling_station4"
+        edited: false
+        
+    pa_vote_cast9:
+        figureValue: 595
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate5"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pa_vote_cast10:
+        figureValue: 634
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate6"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pa_vote_cast11:
+        figureValue: 702
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate6"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pa_vote_cast12:
+        figureValue: 800
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate7"
+        pollingStation: "@polling_station6"
+        edited: false
+        
+    pa_vote_cast13:
+        figureValue: 600
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate1"
+        pollingStation: "@polling_station1"
         edited: false
         
 prBundle\Entity\prParty:
@@ -47,7 +305,7 @@ prBundle\Entity\prParty:
         candidate: <name()>
         
 prBundle\Entity\PrVoteCast:
-    pr_vote_cast_{1..100}:
+    pr_vote_cast_{1..10}:
         figureValue: 2322
         wordValue: Two Thousand three hundred twenty two
         prParty: "@pr_party1"
@@ -70,40 +328,56 @@ VtallyBundle\Entity\CollationCenter:
         returningOfficer (unique): "@returning_officer*"
         
 VtallyBundle\Entity\ReturningOfficer:
-    returning_officer_{1..10}:
+    returning_officer_{1..20}:
         name: <name()>
-
-paBundle\Entity\PaNotification:
-    pa_notification_{1..100}:
-        pollingStation: "@polling_station*"
-        type: over-voting
-        firstVerifier: <firstName()> 0203458933
-        secondVerifier: <firstName()> 0587722110
-        
-prBundle\Entity\PrNotification:
-    pr_notification_{1..10}:
-        pollingStation: "@polling_station*"
-        type: over-voting
-        firstVerifier: <firstName()> 0203893316
-        secondVerifier: <firstName()> 0587727712
-        
-paBundle\Entity\PaPinkSheet:
-    pink_sheet2:
-        name: pa<numberBetween(1, 30000)>.jpg
-        pollingStation: "@polling_station*"
-        edited: false
-        
-prBundle\Entity\PrPinkSheet:
-    pink_sheet1:
-        name: pr<numberBetween(1, 30000)>.jpg
-        pollingStation: "@polling_station*"
-        edited: false
         
 VtallyBundle\Entity\PollingStation:
-    polling_station1_{1..300}:
-        name: Bortianor Scl. Kassoa District
-        code: PS<current()>
-        constituency: "@constituency*"
+    polling_station1:
+        name: Pol. Station 1
+        code: PS 1
+        constituency: "@constituency1"
+        district: <city()>
+        
+    polling_station2:
+        name: Pol. Station 2
+        code: PS 2
+        constituency: "@constituency1"
+        district: <city()>
+        
+    polling_station3:
+        name: Pol. Station 3
+        code: PS 3
+        constituency: "@constituency1"
+        district: <city()>
+        
+    polling_station4:
+        name: Pol. Station 4
+        code: PS 4
+        constituency: "@constituency2"
+        district: <city()>
+        
+    polling_station5:
+        name: Pol. Station 5
+        code: PS 5
+        constituency: "@constituency3"
+        district: <city()>
+        
+    polling_station6:
+        name: Pol. Station 6
+        code: PS 6
+        constituency: "@constituency4"
+        district: <city()>
+        
+    polling_station7:
+        name: Pol. Station 7
+        code: PS 7
+        constituency: "@constituency5"
+        district: <city()>
+        
+    polling_station8:
+        name: Pol. Station 8
+        code: PS 8
+        constituency: "@constituency6"
         district: <city()>
 
 VtallyBundle\Entity\Setting:
@@ -115,10 +389,42 @@ VtallyBundle\Entity\Setting:
         type: parliamentary
 
 UserBundle\Entity\User:
-    User{1..80}:
+    Super-admin:
+        username (unique): super-admin
+        email (unique): super-admin@vtally.com
+        plainPassword: test
+        firstName: <firstName()>
+        enabled: true
+        roles: [ROLE_SUPER_ADMIN]
+        
+    Admin:
+        username (unique): admin
+        email (unique): admin@vtally.com
+        plainPassword: test
+        firstName: <firstName()>
+        enabled: true
+        roles: [ROLE_ADMIN]
+    
+    Manager:
+        username (unique): manager
+        email (unique): manager@vtally.com
+        plainPassword: test
+        firstName: <firstName()>
+        enabled: true
+        roles: [ROLE_MANAGER]
+        
+    Third_party:
+        username (unique): third-party
+        email (unique): third-party@vtally.com
+        plainPassword: third-party
+        firstName: <firstName()>
+        enabled: true
+        roles: [ROLE_THIRD_PARTY]
+        
+    Verifier{1..5}:
         username (unique): <username()>
         email (unique): <email()>
         plainPassword: test
         firstName: <firstName()>
         enabled: true
-        roles: [ROLE_ADMIN]
+        roles: [ROLE_VERIFIER]

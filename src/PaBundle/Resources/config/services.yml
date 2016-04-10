@@ -3,40 +3,46 @@ services:
         class: PaBundle\Admin\PaComplaintAdmin
         arguments: [~, PaBundle\Entity\PaComplaint, PaBundle:PaComplaintAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: PaComplaint }
+            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: Complaint }
 
     pa.admin.pa_vote_cast:
         class: PaBundle\Admin\PaVoteCastAdmin
         arguments: [~, PaBundle\Entity\PaVoteCast, PaBundle:PaVoteCastAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: PaVoteCast }
+            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: Vote Cast }
 
     pa.admin.pa_party:
         class: PaBundle\Admin\PaPartyAdmin
         arguments: [~, PaBundle\Entity\PaParty, PaBundle:PaPartyAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: PaParty }
-
-    pa.admin.pa_candidate:
-        class: PaBundle\Admin\PaCandidateAdmin
-        arguments: [~, PaBundle\Entity\PaCandidate, PaBundle:PaCandidateAdmin]
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: PaCandidate }
+            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: Party }
 
     pa.admin.pa_foot_print:
         class: PaBundle\Admin\PaFootPrintAdmin
         arguments: [~, PaBundle\Entity\PaFootPrint, PaBundle:PaFootPrintAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: PaFootPrint }
+            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: Foot Print }
 
     pa.admin.pa_notification:
         class: PaBundle\Admin\PaNotificationAdmin
         arguments: [~, PaBundle\Entity\PaNotification, PaBundle:PaNotificationAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: PaNotification }
+            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: Notification }
 
     pa.admin.pa_pink_sheet:
         class: PaBundle\Admin\PaPinkSheetAdmin
         arguments: [~, PaBundle\Entity\PaPinkSheet, PaBundle:PaPinkSheetAdmin]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: PaPinkSheet }
+            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: Pink Sheet }
+
+    pa.admin.independent_candidate:
+        class: PaBundle\Admin\IndependentCandidateAdmin
+        arguments: [~, PaBundle\Entity\IndependentCandidate, PaBundle:IndependentCandidateAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: Independent Candidate }
+
+    pa.admin.dependent_candidate:
+        class: PaBundle\Admin\DependentCandidateAdmin
+        arguments: [~, PaBundle\Entity\DependentCandidate, PaBundle:DependentCandidateAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: Dependent Candidate }

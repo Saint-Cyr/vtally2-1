@@ -49,10 +49,16 @@ class PaVoteCast
     private $pollingStation;
     
     /**
-     * @ORM\ManyToOne(targetEntity="PaBundle\Entity\PaCandidate", inversedBy="paVoteCasts")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="PaBundle\Entity\DependentCandidate", inversedBy="paVoteCasts")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $paCandidate;
+    private $dependentCandidate;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="PaBundle\Entity\IndependentCandidate", inversedBy="paVoteCasts")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $independentCandidate;
 
 
     /**
@@ -162,26 +168,50 @@ class PaVoteCast
     }
 
     /**
-     * Set paCandidate
+     * Set dependentCandidate
      *
-     * @param \PaBundle\Entity\PaCandidate $paCandidate
+     * @param \PaBundle\Entity\DependentCandidate $dependentCandidate
      *
      * @return PaVoteCast
      */
-    public function setPaCandidate(\PaBundle\Entity\PaCandidate $paCandidate)
+    public function setDependentCandidate(\PaBundle\Entity\DependentCandidate $dependentCandidate = null)
     {
-        $this->paCandidate = $paCandidate;
+        $this->dependentCandidate = $dependentCandidate;
 
         return $this;
     }
 
     /**
-     * Get paCandidate
+     * Get dependentCandidate
      *
-     * @return \PaBundle\Entity\PaCandidate
+     * @return \PaBundle\Entity\DependentCandidate
      */
-    public function getPaCandidate()
+    public function getDependentCandidate()
     {
-        return $this->paCandidate;
+        return $this->dependentCandidate;
+    }
+
+    /**
+     * Set independentCandidate
+     *
+     * @param \PaBundle\Entity\IndependentCandidate $independentCandidate
+     *
+     * @return PaVoteCast
+     */
+    public function setIndependentCandidate(\PaBundle\Entity\IndependentCandidate $independentCandidate = null)
+    {
+        $this->independentCandidate = $independentCandidate;
+
+        return $this;
+    }
+
+    /**
+     * Get independentCandidate
+     *
+     * @return \PaBundle\Entity\IndependentCandidate
+     */
+    public function getIndependentCandidate()
+    {
+        return $this->independentCandidate;
     }
 }

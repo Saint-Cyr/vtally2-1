@@ -29,15 +29,19 @@ class PaParty
     private $name;
     
     /**
-     * @ORM\OneToMany(targetEntity="PaBundle\Entity\PaCandidate", mappedBy="paParty", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="PaBundle\Entity\DependentCandidate", mappedBy="paParty", cascade={"remove", "persist"})
      */
-    private $paCandidates;
+    private $dependentCandidates;
     
-     /**
-     * @ORM\ManyToMany(targetEntity="VtallyBundle\Entity\Constituency", mappedBy="paParties")
-     */
-    private $constituencies;
-
+    public function __toString() {
+        return $this->name;
+    }
+    
+    public function getSiteNumber()
+    {
+        
+    }
+    
     /**
      * Get id
      *
@@ -71,80 +75,12 @@ class PaParty
     {
         return $this->name;
     }
+    
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->paCandidates = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->constituencies = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add paCandidate
-     *
-     * @param \PaBundle\Entity\PaCandidate $paCandidate
-     *
-     * @return PaParty
-     */
-    public function addPaCandidate(\PaBundle\Entity\PaCandidate $paCandidate)
-    {
-        $this->paCandidates[] = $paCandidate;
-
-        return $this;
-    }
-
-    /**
-     * Remove paCandidate
-     *
-     * @param \PaBundle\Entity\PaCandidate $paCandidate
-     */
-    public function removePaCandidate(\PaBundle\Entity\PaCandidate $paCandidate)
-    {
-        $this->paCandidates->removeElement($paCandidate);
-    }
-
-    /**
-     * Get paCandidates
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPaCandidates()
-    {
-        return $this->paCandidates;
-    }
-
-    /**
-     * Add constituency
-     *
-     * @param \VtallyBundle\Entity\Constituency $constituency
-     *
-     * @return PaParty
-     */
-    public function addConstituency(\VtallyBundle\Entity\Constituency $constituency)
-    {
-        $this->constituencies[] = $constituency;
-
-        return $this;
-    }
-
-    /**
-     * Remove constituency
-     *
-     * @param \VtallyBundle\Entity\Constituency $constituency
-     */
-    public function removeConstituency(\VtallyBundle\Entity\Constituency $constituency)
-    {
-        $this->constituencies->removeElement($constituency);
-    }
-
-    /**
-     * Get constituencies
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getConstituencies()
-    {
-        return $this->constituencies;
+        $this->dependentCandidates = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }

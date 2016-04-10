@@ -38,6 +38,11 @@ class CollationCenter
      * @ORM\OneToOne(targetEntity="VtallyBundle\Entity\Constituency", mappedBy="collationCenter", cascade={"persist"})
      */
     private $constituency;
+    
+    public function __toString() 
+    {
+        return $this->getName();
+    }
 
     /**
      * Get id

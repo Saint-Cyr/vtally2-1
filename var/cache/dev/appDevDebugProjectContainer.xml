@@ -36,7 +36,7 @@
     <parameter key="kernel.container_class">appDevDebugProjectContainer</parameter>
     <parameter key="database_host">127.0.0.1</parameter>
     <parameter key="database_port">null</parameter>
-    <parameter key="database_name">vtally2</parameter>
+    <parameter key="database_name">vtally2_test</parameter>
     <parameter key="database_user">root</parameter>
     <parameter key="database_password">null</parameter>
     <parameter key="mailer_transport">smtp</parameter>
@@ -92,13 +92,233 @@
     <parameter key="security.authentication.trust_resolver.anonymous_class">Symfony\Component\Security\Core\Authentication\Token\AnonymousToken</parameter>
     <parameter key="security.authentication.trust_resolver.rememberme_class">Symfony\Component\Security\Core\Authentication\Token\RememberMeToken</parameter>
     <parameter key="security.role_hierarchy.roles" type="collection">
+      <parameter key="ROLE_POLLING_STATION_READER" type="collection">
+        <parameter>ROLE_VTALLY_ADMIN_POLLING_STATION_LIST</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_POLLING_STATION_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_POLLING_STATION_EDITOR" type="collection">
+        <parameter>ROLE_VTALLY_ADMIN_POLLING_STATION_CREATE</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_POLLING_STATION_EDIT</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_POLLING_STATION_DELETE</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_POLLING_STATION_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_CONSTITUENCY_READER" type="collection">
+        <parameter>ROLE_VTALLY_ADMIN_CONSTITUENCY_LIST</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_CONSTITUENCY_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_CONSTITUENCY_EDITOR" type="collection">
+        <parameter>ROLE_VTALLY_ADMIN_CONSTITUENCY_CREATE</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_CONSTITUENCY_EDIT</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_CONSTITUENCY_DELETE</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_CONSTITUENCY_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_COLLATION_CENTER_READER" type="collection">
+        <parameter>ROLE_VTALLY_ADMIN_COLLATION_CENTER_LIST</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_COLLATION_CENTER_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_COLLATION_CENTER_EDITOR" type="collection">
+        <parameter>ROLE_VTALLY_ADMIN_COLLATION_CENTER_CREATE</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_COLLATION_CENTER_EDIT</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_COLLATION_CENTER_DELETE</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_COLLATION_CENTER_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_RETURNING_OFFICER_READER" type="collection">
+        <parameter>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_LIST</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_RETURNING_OFFICER_EDITOR" type="collection">
+        <parameter>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_CREATE</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_EDIT</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_DELETE</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_PR_PARTY_READER" type="collection">
+        <parameter>ROLE_PR_ADMIN_PR_PARTY_LIST</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_PARTY_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_PR_PARTY_EDITOR" type="collection">
+        <parameter>ROLE_PR_ADMIN_PR_PARTY_CREATE</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_PARTY_EDIT</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_PARTY_DELETE</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_PARTY_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_PA_PARTY_READER" type="collection">
+        <parameter>ROLE_PA_ADMIN_PA_PARTY_LIST</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_PARTY_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_PA_PARTY_EDITOR" type="collection">
+        <parameter>ROLE_PA_ADMIN_PA_PARTY_CREATE</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_PARTY_EDIT</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_PARTY_DELETE</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_PARTY_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_PA_FOOT_PRINT_READER" type="collection">
+        <parameter>ROLE_PA_ADMIN_PA_FOOT_PRINT_LIST</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_FOOT_PRINT_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_PA_FOOT_PRINT_EDITOR" type="collection">
+        <parameter>ROLE_PA_ADMIN_PA_FOOT_PRINT_CREATE</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_FOOT_PRINT_EDIT</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_FOOT_PRINT_DELETE</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_FOOT_PRINT_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_PR_FOOT_PRINT_READER" type="collection">
+        <parameter>ROLE_PR_ADMIN_PR_FOOT_PRINT_LIST</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_FOOT_PRINT_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_PR_FOOT_PRINT_EDITOR" type="collection">
+        <parameter>ROLE_PR_ADMIN_PR_FOOT_PRINT_CREATE</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_FOOT_PRINT_EDIT</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_FOOT_PRINT_DELETE</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_FOOT_PRINT_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_PR_VOTE_CAST_READER" type="collection">
+        <parameter>ROLE_PR_ADMIN_PR_VOTE_CAST_LIST</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_VOTE_CAST_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_PR_VOTE_CAST_EDITOR" type="collection">
+        <parameter>ROLE_PR_ADMIN_PR_VOTE_CAST_CREATE</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_VOTE_CAST_EDIT</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_VOTE_CAST_DELETE</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_VOTE_CAST_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_PR_NOTIFICATION_READER" type="collection">
+        <parameter>ROLE_PR_ADMIN_PR_NOTIFICATION_LIST</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_NOTIFICATION_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_PR_NOTIFICATION_EDITOR" type="collection">
+        <parameter>ROLE_PR_ADMIN_PR_NOTIFICATION_CREATE</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_NOTIFICATION_EDIT</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_NOTIFICATION_DELETE</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_NOTIFICATION_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_PA_NOTIFICATION_READER" type="collection">
+        <parameter>ROLE_PA_ADMIN_PA_NOTIFICATION_LIST</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_NOTIFICATION_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_PA_NOTIFICATION_EDITOR" type="collection">
+        <parameter>ROLE_PA_ADMIN_PA_NOTIFICATION_CREATE</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_NOTIFICATION_EDIT</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_NOTIFICATION_DELETE</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_NOTIFICATION_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_PR_COMPLAINT_READER" type="collection">
+        <parameter>ROLE_PR_ADMIN_PR_COMPLAINT_LIST</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_COMPLAINT_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_PR_COMPLAINT_EDITOR" type="collection">
+        <parameter>ROLE_PR_ADMIN_PR_COMPLAINT_CREATE</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_COMPLAINT_EDIT</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_COMPLAINT_DELETE</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_COMPLAINT_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_PA_COMPLAINT_READER" type="collection">
+        <parameter>ROLE_PA_ADMIN_PA_COMPLAINT_LIST</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_COMPLAINT_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_PA_COMPLAINT_EDITOR" type="collection">
+        <parameter>ROLE_PA_ADMIN_PA_COMPLAINT_CREATE</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_COMPLAINT_EDIT</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_COMPLAINT_DELETE</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_COMPLAINT_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_PR_PINK_SHEET_READER" type="collection">
+        <parameter>ROLE_PR_ADMIN_PR_PINK_SHEET_LIST</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_PINK_SHEET_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_PR_PINK_SHEET_EDITOR" type="collection">
+        <parameter>ROLE_PR_ADMIN_PR_PINK_SHEET_CREATE</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_PINK_SHEET_EDIT</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_PINK_SHEET_DELETE</parameter>
+        <parameter>ROLE_PR_ADMIN_PR_PINK_SHEET_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_PA_PINK_SHEET_READER" type="collection">
+        <parameter>ROLE_PA_ADMIN_PA_PINK_SHEET_LIST</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_PINK_SHEET_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_PA_PINK_SHEET_EDITOR" type="collection">
+        <parameter>ROLE_PA_ADMIN_PA_PINK_SHEET_CREATE</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_PINK_SHEET_EDIT</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_PINK_SHEET_DELETE</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_PINK_SHEET_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_PA_VOTE_CAST_READER" type="collection">
+        <parameter>ROLE_PA_ADMIN_PA_VOTE_CAST_LIST</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_VOTE_CAST_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_PA_VOTE_CAST_EDITOR" type="collection">
+        <parameter>ROLE_PA_ADMIN_PA_VOTE_CAST_CREATE</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_VOTE_CAST_EDIT</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_VOTE_CAST_DELETE</parameter>
+        <parameter>ROLE_PA_ADMIN_PA_VOTE_CAST_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_REGION_READER" type="collection">
+        <parameter>ROLE_VTALLY_ADMIN_REGION_LIST</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_REGION_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_REGION_EDITOR" type="collection">
+        <parameter>ROLE_VTALLY_ADMIN_REGION_CREATE</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_REGION_EDIT</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_REGION_DELETE</parameter>
+        <parameter>ROLE_VTALLY_ADMIN_REGION_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_USER_READER" type="collection">
+        <parameter>ROLE_USER_ADMIN_USER_LIST</parameter>
+        <parameter>ROLE_USER_ADMIN_USER_VIEW</parameter>
+      </parameter>
+      <parameter key="ROLE_USER_EDITOR" type="collection">
+        <parameter>ROLE_USER_ADMIN_USER_CREATE</parameter>
+        <parameter>ROLE_USER_ADMIN_USER_EDIT</parameter>
+        <parameter>ROLE_USER_ADMIN_USER_DELETE</parameter>
+        <parameter>ROLE_USER_ADMIN_USER_EXPORT</parameter>
+      </parameter>
+      <parameter key="ROLE_MANAGER" type="collection">
+        <parameter>ROLE_POLLING_STATION_READER</parameter>
+        <parameter>ROLE_POLLING_STATION_EDITOR</parameter>
+        <parameter>ROLE_USER_READER</parameter>
+        <parameter>ROLE_USER_EDITOR</parameter>
+        <parameter>ROLE_CONSTITUENCY_READER</parameter>
+        <parameter>ROLE_CONSTITUENCY_EDITOR</parameter>
+        <parameter>ROLE_REGION_READER</parameter>
+        <parameter>ROLE_REGION_EDITOR</parameter>
+        <parameter>ROLE_COLLATION_CENTER_READER</parameter>
+        <parameter>ROLE_COLLATION_CENTER_EDITOR</parameter>
+        <parameter>ROLE_RETURNING_OFFICER_READER</parameter>
+        <parameter>ROLE_RETURNING_OFFICER_EDITOR</parameter>
+        <parameter>ROLE_PR_PARTY_READER</parameter>
+        <parameter>ROLE_PR_PARTY_EDITOR</parameter>
+        <parameter>ROLE_PA_PARTY_READER</parameter>
+        <parameter>ROLE_PA_PARTY_EDITOR</parameter>
+        <parameter>ROLE_PA_FOOT_PRINT_READER</parameter>
+        <parameter>ROLE_PA_FOOT_PRINT_EDITOR</parameter>
+        <parameter>ROLE_PR_FOOT_PRINT_READER</parameter>
+        <parameter>ROLE_PR_FOOT_PRINT_EDITOR</parameter>
+        <parameter>ROLE_PR_VOTE_CAST_READER</parameter>
+        <parameter>ROLE_PR_VOTE_CAST_EDITOR</parameter>
+        <parameter>ROLE_PA_VOTE_CAST_READER</parameter>
+        <parameter>ROLE_PA_VOTE_CAST_EDITOR</parameter>
+        <parameter>ROLE_PR_NOTIFICATION_READER</parameter>
+        <parameter>ROLE_PR_NOTIFICATION_EDITOR</parameter>
+        <parameter>ROLE_PA_NOTIFICATION_READER</parameter>
+        <parameter>ROLE_PA_NOTIFICATION_EDITOR</parameter>
+        <parameter>ROLE_PR_COMPLAINT_READER</parameter>
+        <parameter>ROLE_PR_COMPLAINT_EDITOR</parameter>
+        <parameter>ROLE_PA_COMPLAINT_READER</parameter>
+        <parameter>ROLE_PA_COMPLAINT_EDITOR</parameter>
+        <parameter>ROLE_PR_PINK_SHEET_READER</parameter>
+        <parameter>ROLE_PR_PINK_SHEET_EDITOR</parameter>
+        <parameter>ROLE_PA_PINK_SHEET_READER</parameter>
+        <parameter>ROLE_PA_PINK_SHEET_EDITOR</parameter>
+      </parameter>
       <parameter key="ROLE_ADMIN" type="collection">
-        <parameter>ROLE_USER</parameter>
+        <parameter>ROLE_MANAGER</parameter>
+        <parameter>ROLE_THIRD_PARTY</parameter>
+        <parameter>ROLE_VERIFIER</parameter>
       </parameter>
       <parameter key="ROLE_SUPER_ADMIN" type="collection">
         <parameter>ROLE_ADMIN</parameter>
       </parameter>
-      <parameter key="ROLE_ENGINEER" type="collection">
+      <parameter key="ROLE_ALLOW_SWITCH" type="collection">
         <parameter>ROLE_SUPER_ADMIN</parameter>
       </parameter>
     </parameter>
@@ -510,7 +730,32 @@
     </parameter>
     <parameter key="sonata.admin.configuration.sort_admins">false</parameter>
     <parameter key="sonata.admin.security.acl_user_manager">fos_user.user_manager</parameter>
-    <parameter key="sonata.admin.configuration.security.information" type="collection"/>
+    <parameter key="sonata.admin.configuration.security.information" type="collection">
+      <parameter key="EDIT" type="collection">
+        <parameter>EDIT</parameter>
+      </parameter>
+      <parameter key="LIST" type="collection">
+        <parameter>LIST</parameter>
+      </parameter>
+      <parameter key="CREATE" type="collection">
+        <parameter>CREATE</parameter>
+      </parameter>
+      <parameter key="VIEW" type="collection">
+        <parameter>VIEW</parameter>
+      </parameter>
+      <parameter key="DELETE" type="collection">
+        <parameter>DELETE</parameter>
+      </parameter>
+      <parameter key="EXPORT" type="collection">
+        <parameter>EXPORT</parameter>
+      </parameter>
+      <parameter key="OPERATOR" type="collection">
+        <parameter>OPERATOR</parameter>
+      </parameter>
+      <parameter key="MASTER" type="collection">
+        <parameter>MASTER</parameter>
+      </parameter>
+    </parameter>
     <parameter key="sonata.admin.configuration.security.admin_permissions" type="collection">
       <parameter>CREATE</parameter>
       <parameter>LIST</parameter>
@@ -856,7 +1101,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -966,7 +1236,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -1076,7 +1371,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -1186,7 +1506,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -1296,18 +1641,43 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
         <argument type="service" id="sonata.admin.event.extension"/>
       </call>
     </service>
-    <service id="pr.admin.pr_notification" class="PrBundle\Admin\PrNotificationAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Presidential" label="PrNotification"/>
-      <argument>pr.admin.pr_notification</argument>
-      <argument>PrBundle\Entity\PrNotification</argument>
-      <argument>PrBundle:PrNotificationAdmin</argument>
+    <service id="vtally.admin.returning_officer" class="VtallyBundle\Admin\ReturningOfficerAdmin" shared="false">
+      <tag name="sonata.admin" manager_type="orm" group="Default" label="Returning Officer"/>
+      <argument>vtally.admin.returning_officer</argument>
+      <argument>VtallyBundle\Entity\ReturningOfficer</argument>
+      <argument>VtallyBundle:ReturningOfficerAdmin</argument>
       <call method="setFormTheme">
         <argument type="collection">
           <argument>SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig</argument>
@@ -1364,7 +1734,7 @@
         <argument>default</argument>
       </call>
       <call method="setLabel">
-        <argument>PrNotification</argument>
+        <argument>Returning Officer</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
@@ -1406,15 +1776,43 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
         <argument type="service" id="sonata.admin.event.extension"/>
       </call>
     </service>
+    <service id="vtally.statistic_handler" class="VtallyBundle\Component\StatisticHandler">
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+    </service>
     <service id="pr.admin.pr_vote_cast" class="PrBundle\Admin\PrVoteCastAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Presidential" label="PrVoteCast"/>
+      <tag name="sonata.admin" manager_type="orm" group="Presidential" label="Vote Cast"/>
       <argument>pr.admin.pr_vote_cast</argument>
       <argument>PrBundle\Entity\PrVoteCast</argument>
       <argument>PrBundle:PrVoteCastAdmin</argument>
@@ -1474,7 +1872,7 @@
         <argument>default</argument>
       </call>
       <call method="setLabel">
-        <argument>PrVoteCast</argument>
+        <argument>Vote Cast</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
@@ -1516,7 +1914,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -1524,7 +1947,7 @@
       </call>
     </service>
     <service id="pr.admin.pr_pink_sheet" class="PrBundle\Admin\PrPinkSheetAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Presidential" label="PrPinkSheet"/>
+      <tag name="sonata.admin" manager_type="orm" group="Presidential" label="Pink Sheet"/>
       <argument>pr.admin.pr_pink_sheet</argument>
       <argument>PrBundle\Entity\PrPinkSheet</argument>
       <argument>PrBundle:PrPinkSheetAdmin</argument>
@@ -1584,7 +2007,7 @@
         <argument>default</argument>
       </call>
       <call method="setLabel">
-        <argument>PrPinkSheet</argument>
+        <argument>Pink Sheet</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
@@ -1626,7 +2049,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -1634,7 +2082,7 @@
       </call>
     </service>
     <service id="pr.admin.pr_party" class="PrBundle\Admin\PrPartyAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Presidential" label="PrParty"/>
+      <tag name="sonata.admin" manager_type="orm" group="Presidential" label="Party"/>
       <argument>pr.admin.pr_party</argument>
       <argument>PrBundle\Entity\PrParty</argument>
       <argument>PrBundle:PrPartyAdmin</argument>
@@ -1694,7 +2142,7 @@
         <argument>default</argument>
       </call>
       <call method="setLabel">
-        <argument>PrParty</argument>
+        <argument>Party</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
@@ -1736,7 +2184,167 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
+      </call>
+      <call method="initialize"/>
+      <call method="addExtension">
+        <argument type="service" id="sonata.admin.event.extension"/>
+      </call>
+    </service>
+    <service id="pr.admin.pr_notification" class="PrBundle\Admin\PrNotificationAdmin" shared="false">
+      <tag name="sonata.admin" manager_type="orm" group="Presidential" label="Notification"/>
+      <argument>pr.admin.pr_notification</argument>
+      <argument>PrBundle\Entity\PrNotification</argument>
+      <argument>PrBundle:PrNotificationAdmin</argument>
+      <call method="setFormTheme">
+        <argument type="collection">
+          <argument>SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig</argument>
+        </argument>
+      </call>
+      <call method="setFilterTheme">
+        <argument type="collection">
+          <argument>SonataDoctrineORMAdminBundle:Form:filter_admin_fields.html.twig</argument>
+        </argument>
+      </call>
+      <call method="setManagerType">
+        <argument>orm</argument>
+      </call>
+      <call method="setModelManager">
+        <argument type="service" id="sonata.admin.manager.orm"/>
+      </call>
+      <call method="setFormContractor">
+        <argument type="service" id="sonata.admin.builder.orm_form"/>
+      </call>
+      <call method="setShowBuilder">
+        <argument type="service" id="sonata.admin.builder.orm_show"/>
+      </call>
+      <call method="setListBuilder">
+        <argument type="service" id="sonata.admin.builder.orm_list"/>
+      </call>
+      <call method="setDatagridBuilder">
+        <argument type="service" id="sonata.admin.builder.orm_datagrid"/>
+      </call>
+      <call method="setTranslator">
+        <argument type="service" id="translator"/>
+      </call>
+      <call method="setConfigurationPool">
+        <argument type="service" id="sonata.admin.pool"/>
+      </call>
+      <call method="setRouteGenerator">
+        <argument type="service" id="sonata.admin.route.default_generator"/>
+      </call>
+      <call method="setValidator">
+        <argument type="service" id="validator"/>
+      </call>
+      <call method="setSecurityHandler">
+        <argument type="service" id="sonata.admin.security.handler"/>
+      </call>
+      <call method="setMenuFactory">
+        <argument type="service" id="knp_menu.factory"/>
+      </call>
+      <call method="setRouteBuilder">
+        <argument type="service" id="sonata.admin.route.path_info"/>
+      </call>
+      <call method="setLabelTranslatorStrategy">
+        <argument type="service" id="sonata.admin.label.strategy.native"/>
+      </call>
+      <call method="setPagerType">
+        <argument>default</argument>
+      </call>
+      <call method="setLabel">
+        <argument>Notification</argument>
+      </call>
+      <call method="setPersistFilters">
+        <argument>false</argument>
+      </call>
+      <call method="setTemplates">
+        <argument type="collection">
+          <argument key="user_block">SonataAdminBundle:Core:user_block.html.twig</argument>
+          <argument key="add_block">SonataAdminBundle:Core:add_block.html.twig</argument>
+          <argument key="layout">SonataAdminBundle::standard_layout.html.twig</argument>
+          <argument key="ajax">SonataAdminBundle::ajax_layout.html.twig</argument>
+          <argument key="dashboard">SonataAdminBundle:Core:dashboard.html.twig</argument>
+          <argument key="list">SonataAdminBundle:CRUD:list.html.twig</argument>
+          <argument key="filter">SonataAdminBundle:Form:filter_admin_fields.html.twig</argument>
+          <argument key="show">SonataAdminBundle:CRUD:show.html.twig</argument>
+          <argument key="show_compare">SonataAdminBundle:CRUD:show_compare.html.twig</argument>
+          <argument key="edit">SonataAdminBundle:CRUD:edit.html.twig</argument>
+          <argument key="history">SonataAdminBundle:CRUD:history.html.twig</argument>
+          <argument key="history_revision_timestamp">SonataAdminBundle:CRUD:history_revision_timestamp.html.twig</argument>
+          <argument key="acl">SonataAdminBundle:CRUD:acl.html.twig</argument>
+          <argument key="action">SonataAdminBundle:CRUD:action.html.twig</argument>
+          <argument key="short_object_description">SonataAdminBundle:Helper:short-object-description.html.twig</argument>
+          <argument key="preview">SonataAdminBundle:CRUD:preview.html.twig</argument>
+          <argument key="list_block">SonataAdminBundle:Block:block_admin_list.html.twig</argument>
+          <argument key="delete">SonataAdminBundle:CRUD:delete.html.twig</argument>
+          <argument key="batch">SonataAdminBundle:CRUD:list__batch.html.twig</argument>
+          <argument key="select">SonataAdminBundle:CRUD:list__select.html.twig</argument>
+          <argument key="batch_confirmation">SonataAdminBundle:CRUD:batch_confirmation.html.twig</argument>
+          <argument key="inner_list_row">SonataAdminBundle:CRUD:list_inner_row.html.twig</argument>
+          <argument key="base_list_field">SonataAdminBundle:CRUD:base_list_field.html.twig</argument>
+          <argument key="pager_links">SonataAdminBundle:Pager:links.html.twig</argument>
+          <argument key="pager_results">SonataAdminBundle:Pager:results.html.twig</argument>
+          <argument key="tab_menu_template">SonataAdminBundle:Core:tab_menu_template.html.twig</argument>
+          <argument key="knp_menu_template">SonataAdminBundle:Menu:sonata_menu.html.twig</argument>
+          <argument key="outer_list_rows_mosaic">SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig</argument>
+          <argument key="outer_list_rows_list">SonataAdminBundle:CRUD:list_outer_rows_list.html.twig</argument>
+          <argument key="outer_list_rows_tree">SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig</argument>
+          <argument key="search">SonataAdminBundle:Core:search.html.twig</argument>
+          <argument key="search_result_block">SonataAdminBundle:Block:block_search_result.html.twig</argument>
+        </argument>
+      </call>
+      <call method="setSecurityInformation">
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -1744,7 +2352,7 @@
       </call>
     </service>
     <service id="pr.admin.pr_complaint" class="PrBundle\Admin\PrComplaintAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Presidential" label="PrComplaint"/>
+      <tag name="sonata.admin" manager_type="orm" group="Presidential" label="Complaint"/>
       <argument>pr.admin.pr_complaint</argument>
       <argument>PrBundle\Entity\PrComplaint</argument>
       <argument>PrBundle:PrComplaintAdmin</argument>
@@ -1804,7 +2412,7 @@
         <argument>default</argument>
       </call>
       <call method="setLabel">
-        <argument>PrComplaint</argument>
+        <argument>Complaint</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
@@ -1846,7 +2454,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -1854,7 +2487,7 @@
       </call>
     </service>
     <service id="pr.admin.pr_foot_print" class="PrBundle\Admin\PrFootPrintAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Presidential" label="PrFootPrint"/>
+      <tag name="sonata.admin" manager_type="orm" group="Presidential" label="Foot Print"/>
       <argument>pr.admin.pr_foot_print</argument>
       <argument>PrBundle\Entity\PrFootPrint</argument>
       <argument>PrBundle:PrFootPrintAdmin</argument>
@@ -1914,7 +2547,7 @@
         <argument>default</argument>
       </call>
       <call method="setLabel">
-        <argument>PrFootPrint</argument>
+        <argument>Foot Print</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
@@ -1956,7 +2589,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -1964,7 +2622,7 @@
       </call>
     </service>
     <service id="pa.admin.pa_complaint" class="PaBundle\Admin\PaComplaintAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="PaComplaint"/>
+      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="Complaint"/>
       <argument>pa.admin.pa_complaint</argument>
       <argument>PaBundle\Entity\PaComplaint</argument>
       <argument>PaBundle:PaComplaintAdmin</argument>
@@ -2024,7 +2682,7 @@
         <argument>default</argument>
       </call>
       <call method="setLabel">
-        <argument>PaComplaint</argument>
+        <argument>Complaint</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
@@ -2066,7 +2724,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -2074,7 +2757,7 @@
       </call>
     </service>
     <service id="pa.admin.pa_vote_cast" class="PaBundle\Admin\PaVoteCastAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="PaVoteCast"/>
+      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="Vote Cast"/>
       <argument>pa.admin.pa_vote_cast</argument>
       <argument>PaBundle\Entity\PaVoteCast</argument>
       <argument>PaBundle:PaVoteCastAdmin</argument>
@@ -2134,7 +2817,7 @@
         <argument>default</argument>
       </call>
       <call method="setLabel">
-        <argument>PaVoteCast</argument>
+        <argument>Vote Cast</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
@@ -2176,7 +2859,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -2184,7 +2892,7 @@
       </call>
     </service>
     <service id="pa.admin.pa_party" class="PaBundle\Admin\PaPartyAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="PaParty"/>
+      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="Party"/>
       <argument>pa.admin.pa_party</argument>
       <argument>PaBundle\Entity\PaParty</argument>
       <argument>PaBundle:PaPartyAdmin</argument>
@@ -2244,7 +2952,7 @@
         <argument>default</argument>
       </call>
       <call method="setLabel">
-        <argument>PaParty</argument>
+        <argument>Party</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
@@ -2286,117 +2994,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
-      </call>
-      <call method="initialize"/>
-      <call method="addExtension">
-        <argument type="service" id="sonata.admin.event.extension"/>
-      </call>
-    </service>
-    <service id="pa.admin.pa_candidate" class="PaBundle\Admin\PaCandidateAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="PaCandidate"/>
-      <argument>pa.admin.pa_candidate</argument>
-      <argument>PaBundle\Entity\PaCandidate</argument>
-      <argument>PaBundle:PaCandidateAdmin</argument>
-      <call method="setFormTheme">
         <argument type="collection">
-          <argument>SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig</argument>
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
         </argument>
-      </call>
-      <call method="setFilterTheme">
-        <argument type="collection">
-          <argument>SonataDoctrineORMAdminBundle:Form:filter_admin_fields.html.twig</argument>
-        </argument>
-      </call>
-      <call method="setManagerType">
-        <argument>orm</argument>
-      </call>
-      <call method="setModelManager">
-        <argument type="service" id="sonata.admin.manager.orm"/>
-      </call>
-      <call method="setFormContractor">
-        <argument type="service" id="sonata.admin.builder.orm_form"/>
-      </call>
-      <call method="setShowBuilder">
-        <argument type="service" id="sonata.admin.builder.orm_show"/>
-      </call>
-      <call method="setListBuilder">
-        <argument type="service" id="sonata.admin.builder.orm_list"/>
-      </call>
-      <call method="setDatagridBuilder">
-        <argument type="service" id="sonata.admin.builder.orm_datagrid"/>
-      </call>
-      <call method="setTranslator">
-        <argument type="service" id="translator"/>
-      </call>
-      <call method="setConfigurationPool">
-        <argument type="service" id="sonata.admin.pool"/>
-      </call>
-      <call method="setRouteGenerator">
-        <argument type="service" id="sonata.admin.route.default_generator"/>
-      </call>
-      <call method="setValidator">
-        <argument type="service" id="validator"/>
-      </call>
-      <call method="setSecurityHandler">
-        <argument type="service" id="sonata.admin.security.handler"/>
-      </call>
-      <call method="setMenuFactory">
-        <argument type="service" id="knp_menu.factory"/>
-      </call>
-      <call method="setRouteBuilder">
-        <argument type="service" id="sonata.admin.route.path_info"/>
-      </call>
-      <call method="setLabelTranslatorStrategy">
-        <argument type="service" id="sonata.admin.label.strategy.native"/>
-      </call>
-      <call method="setPagerType">
-        <argument>default</argument>
-      </call>
-      <call method="setLabel">
-        <argument>PaCandidate</argument>
-      </call>
-      <call method="setPersistFilters">
-        <argument>false</argument>
-      </call>
-      <call method="setTemplates">
-        <argument type="collection">
-          <argument key="user_block">SonataAdminBundle:Core:user_block.html.twig</argument>
-          <argument key="add_block">SonataAdminBundle:Core:add_block.html.twig</argument>
-          <argument key="layout">SonataAdminBundle::standard_layout.html.twig</argument>
-          <argument key="ajax">SonataAdminBundle::ajax_layout.html.twig</argument>
-          <argument key="dashboard">SonataAdminBundle:Core:dashboard.html.twig</argument>
-          <argument key="list">SonataAdminBundle:CRUD:list.html.twig</argument>
-          <argument key="filter">SonataAdminBundle:Form:filter_admin_fields.html.twig</argument>
-          <argument key="show">SonataAdminBundle:CRUD:show.html.twig</argument>
-          <argument key="show_compare">SonataAdminBundle:CRUD:show_compare.html.twig</argument>
-          <argument key="edit">SonataAdminBundle:CRUD:edit.html.twig</argument>
-          <argument key="history">SonataAdminBundle:CRUD:history.html.twig</argument>
-          <argument key="history_revision_timestamp">SonataAdminBundle:CRUD:history_revision_timestamp.html.twig</argument>
-          <argument key="acl">SonataAdminBundle:CRUD:acl.html.twig</argument>
-          <argument key="action">SonataAdminBundle:CRUD:action.html.twig</argument>
-          <argument key="short_object_description">SonataAdminBundle:Helper:short-object-description.html.twig</argument>
-          <argument key="preview">SonataAdminBundle:CRUD:preview.html.twig</argument>
-          <argument key="list_block">SonataAdminBundle:Block:block_admin_list.html.twig</argument>
-          <argument key="delete">SonataAdminBundle:CRUD:delete.html.twig</argument>
-          <argument key="batch">SonataAdminBundle:CRUD:list__batch.html.twig</argument>
-          <argument key="select">SonataAdminBundle:CRUD:list__select.html.twig</argument>
-          <argument key="batch_confirmation">SonataAdminBundle:CRUD:batch_confirmation.html.twig</argument>
-          <argument key="inner_list_row">SonataAdminBundle:CRUD:list_inner_row.html.twig</argument>
-          <argument key="base_list_field">SonataAdminBundle:CRUD:base_list_field.html.twig</argument>
-          <argument key="pager_links">SonataAdminBundle:Pager:links.html.twig</argument>
-          <argument key="pager_results">SonataAdminBundle:Pager:results.html.twig</argument>
-          <argument key="tab_menu_template">SonataAdminBundle:Core:tab_menu_template.html.twig</argument>
-          <argument key="knp_menu_template">SonataAdminBundle:Menu:sonata_menu.html.twig</argument>
-          <argument key="outer_list_rows_mosaic">SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig</argument>
-          <argument key="outer_list_rows_list">SonataAdminBundle:CRUD:list_outer_rows_list.html.twig</argument>
-          <argument key="outer_list_rows_tree">SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig</argument>
-          <argument key="search">SonataAdminBundle:Core:search.html.twig</argument>
-          <argument key="search_result_block">SonataAdminBundle:Block:block_search_result.html.twig</argument>
-        </argument>
-      </call>
-      <call method="setSecurityInformation">
-        <argument type="collection"/>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -2404,7 +3027,7 @@
       </call>
     </service>
     <service id="pa.admin.pa_foot_print" class="PaBundle\Admin\PaFootPrintAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="PaFootPrint"/>
+      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="Foot Print"/>
       <argument>pa.admin.pa_foot_print</argument>
       <argument>PaBundle\Entity\PaFootPrint</argument>
       <argument>PaBundle:PaFootPrintAdmin</argument>
@@ -2464,7 +3087,7 @@
         <argument>default</argument>
       </call>
       <call method="setLabel">
-        <argument>PaFootPrint</argument>
+        <argument>Foot Print</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
@@ -2506,7 +3129,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -2514,7 +3162,7 @@
       </call>
     </service>
     <service id="pa.admin.pa_notification" class="PaBundle\Admin\PaNotificationAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="PaNotification"/>
+      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="Notification"/>
       <argument>pa.admin.pa_notification</argument>
       <argument>PaBundle\Entity\PaNotification</argument>
       <argument>PaBundle:PaNotificationAdmin</argument>
@@ -2574,7 +3222,7 @@
         <argument>default</argument>
       </call>
       <call method="setLabel">
-        <argument>PaNotification</argument>
+        <argument>Notification</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
@@ -2616,7 +3264,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -2624,7 +3297,7 @@
       </call>
     </service>
     <service id="pa.admin.pa_pink_sheet" class="PaBundle\Admin\PaPinkSheetAdmin" shared="false">
-      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="PaPinkSheet"/>
+      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="Pink Sheet"/>
       <argument>pa.admin.pa_pink_sheet</argument>
       <argument>PaBundle\Entity\PaPinkSheet</argument>
       <argument>PaBundle:PaPinkSheetAdmin</argument>
@@ -2684,7 +3357,7 @@
         <argument>default</argument>
       </call>
       <call method="setLabel">
-        <argument>PaPinkSheet</argument>
+        <argument>Pink Sheet</argument>
       </call>
       <call method="setPersistFilters">
         <argument>false</argument>
@@ -2726,12 +3399,313 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
         <argument type="service" id="sonata.admin.event.extension"/>
       </call>
+    </service>
+    <service id="pa.admin.independent_candidate" class="PaBundle\Admin\IndependentCandidateAdmin" shared="false">
+      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="Independent Candidate"/>
+      <argument>pa.admin.independent_candidate</argument>
+      <argument>PaBundle\Entity\IndependentCandidate</argument>
+      <argument>PaBundle:IndependentCandidateAdmin</argument>
+      <call method="setFormTheme">
+        <argument type="collection">
+          <argument>SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig</argument>
+        </argument>
+      </call>
+      <call method="setFilterTheme">
+        <argument type="collection">
+          <argument>SonataDoctrineORMAdminBundle:Form:filter_admin_fields.html.twig</argument>
+        </argument>
+      </call>
+      <call method="setManagerType">
+        <argument>orm</argument>
+      </call>
+      <call method="setModelManager">
+        <argument type="service" id="sonata.admin.manager.orm"/>
+      </call>
+      <call method="setFormContractor">
+        <argument type="service" id="sonata.admin.builder.orm_form"/>
+      </call>
+      <call method="setShowBuilder">
+        <argument type="service" id="sonata.admin.builder.orm_show"/>
+      </call>
+      <call method="setListBuilder">
+        <argument type="service" id="sonata.admin.builder.orm_list"/>
+      </call>
+      <call method="setDatagridBuilder">
+        <argument type="service" id="sonata.admin.builder.orm_datagrid"/>
+      </call>
+      <call method="setTranslator">
+        <argument type="service" id="translator"/>
+      </call>
+      <call method="setConfigurationPool">
+        <argument type="service" id="sonata.admin.pool"/>
+      </call>
+      <call method="setRouteGenerator">
+        <argument type="service" id="sonata.admin.route.default_generator"/>
+      </call>
+      <call method="setValidator">
+        <argument type="service" id="validator"/>
+      </call>
+      <call method="setSecurityHandler">
+        <argument type="service" id="sonata.admin.security.handler"/>
+      </call>
+      <call method="setMenuFactory">
+        <argument type="service" id="knp_menu.factory"/>
+      </call>
+      <call method="setRouteBuilder">
+        <argument type="service" id="sonata.admin.route.path_info"/>
+      </call>
+      <call method="setLabelTranslatorStrategy">
+        <argument type="service" id="sonata.admin.label.strategy.native"/>
+      </call>
+      <call method="setPagerType">
+        <argument>default</argument>
+      </call>
+      <call method="setLabel">
+        <argument>Independent Candidate</argument>
+      </call>
+      <call method="setPersistFilters">
+        <argument>false</argument>
+      </call>
+      <call method="setTemplates">
+        <argument type="collection">
+          <argument key="user_block">SonataAdminBundle:Core:user_block.html.twig</argument>
+          <argument key="add_block">SonataAdminBundle:Core:add_block.html.twig</argument>
+          <argument key="layout">SonataAdminBundle::standard_layout.html.twig</argument>
+          <argument key="ajax">SonataAdminBundle::ajax_layout.html.twig</argument>
+          <argument key="dashboard">SonataAdminBundle:Core:dashboard.html.twig</argument>
+          <argument key="list">SonataAdminBundle:CRUD:list.html.twig</argument>
+          <argument key="filter">SonataAdminBundle:Form:filter_admin_fields.html.twig</argument>
+          <argument key="show">SonataAdminBundle:CRUD:show.html.twig</argument>
+          <argument key="show_compare">SonataAdminBundle:CRUD:show_compare.html.twig</argument>
+          <argument key="edit">SonataAdminBundle:CRUD:edit.html.twig</argument>
+          <argument key="history">SonataAdminBundle:CRUD:history.html.twig</argument>
+          <argument key="history_revision_timestamp">SonataAdminBundle:CRUD:history_revision_timestamp.html.twig</argument>
+          <argument key="acl">SonataAdminBundle:CRUD:acl.html.twig</argument>
+          <argument key="action">SonataAdminBundle:CRUD:action.html.twig</argument>
+          <argument key="short_object_description">SonataAdminBundle:Helper:short-object-description.html.twig</argument>
+          <argument key="preview">SonataAdminBundle:CRUD:preview.html.twig</argument>
+          <argument key="list_block">SonataAdminBundle:Block:block_admin_list.html.twig</argument>
+          <argument key="delete">SonataAdminBundle:CRUD:delete.html.twig</argument>
+          <argument key="batch">SonataAdminBundle:CRUD:list__batch.html.twig</argument>
+          <argument key="select">SonataAdminBundle:CRUD:list__select.html.twig</argument>
+          <argument key="batch_confirmation">SonataAdminBundle:CRUD:batch_confirmation.html.twig</argument>
+          <argument key="inner_list_row">SonataAdminBundle:CRUD:list_inner_row.html.twig</argument>
+          <argument key="base_list_field">SonataAdminBundle:CRUD:base_list_field.html.twig</argument>
+          <argument key="pager_links">SonataAdminBundle:Pager:links.html.twig</argument>
+          <argument key="pager_results">SonataAdminBundle:Pager:results.html.twig</argument>
+          <argument key="tab_menu_template">SonataAdminBundle:Core:tab_menu_template.html.twig</argument>
+          <argument key="knp_menu_template">SonataAdminBundle:Menu:sonata_menu.html.twig</argument>
+          <argument key="outer_list_rows_mosaic">SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig</argument>
+          <argument key="outer_list_rows_list">SonataAdminBundle:CRUD:list_outer_rows_list.html.twig</argument>
+          <argument key="outer_list_rows_tree">SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig</argument>
+          <argument key="search">SonataAdminBundle:Core:search.html.twig</argument>
+          <argument key="search_result_block">SonataAdminBundle:Block:block_search_result.html.twig</argument>
+        </argument>
+      </call>
+      <call method="setSecurityInformation">
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
+      </call>
+      <call method="initialize"/>
+      <call method="addExtension">
+        <argument type="service" id="sonata.admin.event.extension"/>
+      </call>
+    </service>
+    <service id="pa.admin.dependent_candidate" class="PaBundle\Admin\DependentCandidateAdmin" shared="false">
+      <tag name="sonata.admin" manager_type="orm" group="Parliamentary" label="Dependent Candidate"/>
+      <argument>pa.admin.dependent_candidate</argument>
+      <argument>PaBundle\Entity\DependentCandidate</argument>
+      <argument>PaBundle:DependentCandidateAdmin</argument>
+      <call method="setFormTheme">
+        <argument type="collection">
+          <argument>SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig</argument>
+        </argument>
+      </call>
+      <call method="setFilterTheme">
+        <argument type="collection">
+          <argument>SonataDoctrineORMAdminBundle:Form:filter_admin_fields.html.twig</argument>
+        </argument>
+      </call>
+      <call method="setManagerType">
+        <argument>orm</argument>
+      </call>
+      <call method="setModelManager">
+        <argument type="service" id="sonata.admin.manager.orm"/>
+      </call>
+      <call method="setFormContractor">
+        <argument type="service" id="sonata.admin.builder.orm_form"/>
+      </call>
+      <call method="setShowBuilder">
+        <argument type="service" id="sonata.admin.builder.orm_show"/>
+      </call>
+      <call method="setListBuilder">
+        <argument type="service" id="sonata.admin.builder.orm_list"/>
+      </call>
+      <call method="setDatagridBuilder">
+        <argument type="service" id="sonata.admin.builder.orm_datagrid"/>
+      </call>
+      <call method="setTranslator">
+        <argument type="service" id="translator"/>
+      </call>
+      <call method="setConfigurationPool">
+        <argument type="service" id="sonata.admin.pool"/>
+      </call>
+      <call method="setRouteGenerator">
+        <argument type="service" id="sonata.admin.route.default_generator"/>
+      </call>
+      <call method="setValidator">
+        <argument type="service" id="validator"/>
+      </call>
+      <call method="setSecurityHandler">
+        <argument type="service" id="sonata.admin.security.handler"/>
+      </call>
+      <call method="setMenuFactory">
+        <argument type="service" id="knp_menu.factory"/>
+      </call>
+      <call method="setRouteBuilder">
+        <argument type="service" id="sonata.admin.route.path_info"/>
+      </call>
+      <call method="setLabelTranslatorStrategy">
+        <argument type="service" id="sonata.admin.label.strategy.native"/>
+      </call>
+      <call method="setPagerType">
+        <argument>default</argument>
+      </call>
+      <call method="setLabel">
+        <argument>Dependent Candidate</argument>
+      </call>
+      <call method="setPersistFilters">
+        <argument>false</argument>
+      </call>
+      <call method="setTemplates">
+        <argument type="collection">
+          <argument key="user_block">SonataAdminBundle:Core:user_block.html.twig</argument>
+          <argument key="add_block">SonataAdminBundle:Core:add_block.html.twig</argument>
+          <argument key="layout">SonataAdminBundle::standard_layout.html.twig</argument>
+          <argument key="ajax">SonataAdminBundle::ajax_layout.html.twig</argument>
+          <argument key="dashboard">SonataAdminBundle:Core:dashboard.html.twig</argument>
+          <argument key="list">SonataAdminBundle:CRUD:list.html.twig</argument>
+          <argument key="filter">SonataAdminBundle:Form:filter_admin_fields.html.twig</argument>
+          <argument key="show">SonataAdminBundle:CRUD:show.html.twig</argument>
+          <argument key="show_compare">SonataAdminBundle:CRUD:show_compare.html.twig</argument>
+          <argument key="edit">SonataAdminBundle:CRUD:edit.html.twig</argument>
+          <argument key="history">SonataAdminBundle:CRUD:history.html.twig</argument>
+          <argument key="history_revision_timestamp">SonataAdminBundle:CRUD:history_revision_timestamp.html.twig</argument>
+          <argument key="acl">SonataAdminBundle:CRUD:acl.html.twig</argument>
+          <argument key="action">SonataAdminBundle:CRUD:action.html.twig</argument>
+          <argument key="short_object_description">SonataAdminBundle:Helper:short-object-description.html.twig</argument>
+          <argument key="preview">SonataAdminBundle:CRUD:preview.html.twig</argument>
+          <argument key="list_block">SonataAdminBundle:Block:block_admin_list.html.twig</argument>
+          <argument key="delete">SonataAdminBundle:CRUD:delete.html.twig</argument>
+          <argument key="batch">SonataAdminBundle:CRUD:list__batch.html.twig</argument>
+          <argument key="select">SonataAdminBundle:CRUD:list__select.html.twig</argument>
+          <argument key="batch_confirmation">SonataAdminBundle:CRUD:batch_confirmation.html.twig</argument>
+          <argument key="inner_list_row">SonataAdminBundle:CRUD:list_inner_row.html.twig</argument>
+          <argument key="base_list_field">SonataAdminBundle:CRUD:base_list_field.html.twig</argument>
+          <argument key="pager_links">SonataAdminBundle:Pager:links.html.twig</argument>
+          <argument key="pager_results">SonataAdminBundle:Pager:results.html.twig</argument>
+          <argument key="tab_menu_template">SonataAdminBundle:Core:tab_menu_template.html.twig</argument>
+          <argument key="knp_menu_template">SonataAdminBundle:Menu:sonata_menu.html.twig</argument>
+          <argument key="outer_list_rows_mosaic">SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig</argument>
+          <argument key="outer_list_rows_list">SonataAdminBundle:CRUD:list_outer_rows_list.html.twig</argument>
+          <argument key="outer_list_rows_tree">SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig</argument>
+          <argument key="search">SonataAdminBundle:Core:search.html.twig</argument>
+          <argument key="search_result_block">SonataAdminBundle:Block:block_search_result.html.twig</argument>
+        </argument>
+      </call>
+      <call method="setSecurityInformation">
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
+      </call>
+      <call method="initialize"/>
+      <call method="addExtension">
+        <argument type="service" id="sonata.admin.event.extension"/>
+      </call>
+    </service>
+    <service id="user.admin_show_filter" class="UserBundle\Event\UserCustomAction">
+      <tag name="kernel.event_listener" event="sonata.admin.event.configure.show" method="sonataAdminCheckUserRights"/>
+    </service>
+    <service id="user.admin_form_filter" class="UserBundle\Event\UserCustomAction">
+      <tag name="kernel.event_listener" event="sonata.admin.event.configure.form" method="sonataAdminCheckUserRights"/>
     </service>
     <service id="user.admin.user" class="UserBundle\Admin\UserAdmin" shared="false">
       <tag name="sonata.admin" manager_type="orm" group="User / Security" label="User"/>
@@ -2837,7 +3811,32 @@
         </argument>
       </call>
       <call method="setSecurityInformation">
-        <argument type="collection"/>
+        <argument type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
       </call>
       <call method="initialize"/>
       <call method="addExtension">
@@ -4197,6 +5196,22 @@
       <argument type="service" id="debug.stopwatch"/>
       <argument type="service" id="monolog.logger.event" on-invalid="null"/>
       <call method="addListenerService">
+        <argument>sonata.admin.event.configure.show</argument>
+        <argument type="collection">
+          <argument>user.admin_show_filter</argument>
+          <argument>sonataAdminCheckUserRights</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListenerService">
+        <argument>sonata.admin.event.configure.form</argument>
+        <argument type="collection">
+          <argument>user.admin_form_filter</argument>
+          <argument>sonataAdminCheckUserRights</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListenerService">
         <argument>kernel.controller</argument>
         <argument type="collection">
           <argument>data_collector.router</argument>
@@ -4360,7 +5375,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>56f5c009101139.19719258</argument>
+            <argument>570795f1b80185.37510433</argument>
           </service>
         </argument>
       </argument>
@@ -4413,13 +5428,233 @@
     </service>
     <service id="security.role_hierarchy" class="Symfony\Component\Security\Core\Role\RoleHierarchy" public="false">
       <argument type="collection">
+        <argument key="ROLE_POLLING_STATION_READER" type="collection">
+          <argument>ROLE_VTALLY_ADMIN_POLLING_STATION_LIST</argument>
+          <argument>ROLE_VTALLY_ADMIN_POLLING_STATION_VIEW</argument>
+        </argument>
+        <argument key="ROLE_POLLING_STATION_EDITOR" type="collection">
+          <argument>ROLE_VTALLY_ADMIN_POLLING_STATION_CREATE</argument>
+          <argument>ROLE_VTALLY_ADMIN_POLLING_STATION_EDIT</argument>
+          <argument>ROLE_VTALLY_ADMIN_POLLING_STATION_DELETE</argument>
+          <argument>ROLE_VTALLY_ADMIN_POLLING_STATION_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_CONSTITUENCY_READER" type="collection">
+          <argument>ROLE_VTALLY_ADMIN_CONSTITUENCY_LIST</argument>
+          <argument>ROLE_VTALLY_ADMIN_CONSTITUENCY_VIEW</argument>
+        </argument>
+        <argument key="ROLE_CONSTITUENCY_EDITOR" type="collection">
+          <argument>ROLE_VTALLY_ADMIN_CONSTITUENCY_CREATE</argument>
+          <argument>ROLE_VTALLY_ADMIN_CONSTITUENCY_EDIT</argument>
+          <argument>ROLE_VTALLY_ADMIN_CONSTITUENCY_DELETE</argument>
+          <argument>ROLE_VTALLY_ADMIN_CONSTITUENCY_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_COLLATION_CENTER_READER" type="collection">
+          <argument>ROLE_VTALLY_ADMIN_COLLATION_CENTER_LIST</argument>
+          <argument>ROLE_VTALLY_ADMIN_COLLATION_CENTER_VIEW</argument>
+        </argument>
+        <argument key="ROLE_COLLATION_CENTER_EDITOR" type="collection">
+          <argument>ROLE_VTALLY_ADMIN_COLLATION_CENTER_CREATE</argument>
+          <argument>ROLE_VTALLY_ADMIN_COLLATION_CENTER_EDIT</argument>
+          <argument>ROLE_VTALLY_ADMIN_COLLATION_CENTER_DELETE</argument>
+          <argument>ROLE_VTALLY_ADMIN_COLLATION_CENTER_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_RETURNING_OFFICER_READER" type="collection">
+          <argument>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_LIST</argument>
+          <argument>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_VIEW</argument>
+        </argument>
+        <argument key="ROLE_RETURNING_OFFICER_EDITOR" type="collection">
+          <argument>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_CREATE</argument>
+          <argument>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_EDIT</argument>
+          <argument>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_DELETE</argument>
+          <argument>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_PR_PARTY_READER" type="collection">
+          <argument>ROLE_PR_ADMIN_PR_PARTY_LIST</argument>
+          <argument>ROLE_PR_ADMIN_PR_PARTY_VIEW</argument>
+        </argument>
+        <argument key="ROLE_PR_PARTY_EDITOR" type="collection">
+          <argument>ROLE_PR_ADMIN_PR_PARTY_CREATE</argument>
+          <argument>ROLE_PR_ADMIN_PR_PARTY_EDIT</argument>
+          <argument>ROLE_PR_ADMIN_PR_PARTY_DELETE</argument>
+          <argument>ROLE_PR_ADMIN_PR_PARTY_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_PA_PARTY_READER" type="collection">
+          <argument>ROLE_PA_ADMIN_PA_PARTY_LIST</argument>
+          <argument>ROLE_PA_ADMIN_PA_PARTY_VIEW</argument>
+        </argument>
+        <argument key="ROLE_PA_PARTY_EDITOR" type="collection">
+          <argument>ROLE_PA_ADMIN_PA_PARTY_CREATE</argument>
+          <argument>ROLE_PA_ADMIN_PA_PARTY_EDIT</argument>
+          <argument>ROLE_PA_ADMIN_PA_PARTY_DELETE</argument>
+          <argument>ROLE_PA_ADMIN_PA_PARTY_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_PA_FOOT_PRINT_READER" type="collection">
+          <argument>ROLE_PA_ADMIN_PA_FOOT_PRINT_LIST</argument>
+          <argument>ROLE_PA_ADMIN_PA_FOOT_PRINT_VIEW</argument>
+        </argument>
+        <argument key="ROLE_PA_FOOT_PRINT_EDITOR" type="collection">
+          <argument>ROLE_PA_ADMIN_PA_FOOT_PRINT_CREATE</argument>
+          <argument>ROLE_PA_ADMIN_PA_FOOT_PRINT_EDIT</argument>
+          <argument>ROLE_PA_ADMIN_PA_FOOT_PRINT_DELETE</argument>
+          <argument>ROLE_PA_ADMIN_PA_FOOT_PRINT_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_PR_FOOT_PRINT_READER" type="collection">
+          <argument>ROLE_PR_ADMIN_PR_FOOT_PRINT_LIST</argument>
+          <argument>ROLE_PR_ADMIN_PR_FOOT_PRINT_VIEW</argument>
+        </argument>
+        <argument key="ROLE_PR_FOOT_PRINT_EDITOR" type="collection">
+          <argument>ROLE_PR_ADMIN_PR_FOOT_PRINT_CREATE</argument>
+          <argument>ROLE_PR_ADMIN_PR_FOOT_PRINT_EDIT</argument>
+          <argument>ROLE_PR_ADMIN_PR_FOOT_PRINT_DELETE</argument>
+          <argument>ROLE_PR_ADMIN_PR_FOOT_PRINT_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_PR_VOTE_CAST_READER" type="collection">
+          <argument>ROLE_PR_ADMIN_PR_VOTE_CAST_LIST</argument>
+          <argument>ROLE_PR_ADMIN_PR_VOTE_CAST_VIEW</argument>
+        </argument>
+        <argument key="ROLE_PR_VOTE_CAST_EDITOR" type="collection">
+          <argument>ROLE_PR_ADMIN_PR_VOTE_CAST_CREATE</argument>
+          <argument>ROLE_PR_ADMIN_PR_VOTE_CAST_EDIT</argument>
+          <argument>ROLE_PR_ADMIN_PR_VOTE_CAST_DELETE</argument>
+          <argument>ROLE_PR_ADMIN_PR_VOTE_CAST_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_PR_NOTIFICATION_READER" type="collection">
+          <argument>ROLE_PR_ADMIN_PR_NOTIFICATION_LIST</argument>
+          <argument>ROLE_PR_ADMIN_PR_NOTIFICATION_VIEW</argument>
+        </argument>
+        <argument key="ROLE_PR_NOTIFICATION_EDITOR" type="collection">
+          <argument>ROLE_PR_ADMIN_PR_NOTIFICATION_CREATE</argument>
+          <argument>ROLE_PR_ADMIN_PR_NOTIFICATION_EDIT</argument>
+          <argument>ROLE_PR_ADMIN_PR_NOTIFICATION_DELETE</argument>
+          <argument>ROLE_PR_ADMIN_PR_NOTIFICATION_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_PA_NOTIFICATION_READER" type="collection">
+          <argument>ROLE_PA_ADMIN_PA_NOTIFICATION_LIST</argument>
+          <argument>ROLE_PA_ADMIN_PA_NOTIFICATION_VIEW</argument>
+        </argument>
+        <argument key="ROLE_PA_NOTIFICATION_EDITOR" type="collection">
+          <argument>ROLE_PA_ADMIN_PA_NOTIFICATION_CREATE</argument>
+          <argument>ROLE_PA_ADMIN_PA_NOTIFICATION_EDIT</argument>
+          <argument>ROLE_PA_ADMIN_PA_NOTIFICATION_DELETE</argument>
+          <argument>ROLE_PA_ADMIN_PA_NOTIFICATION_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_PR_COMPLAINT_READER" type="collection">
+          <argument>ROLE_PR_ADMIN_PR_COMPLAINT_LIST</argument>
+          <argument>ROLE_PR_ADMIN_PR_COMPLAINT_VIEW</argument>
+        </argument>
+        <argument key="ROLE_PR_COMPLAINT_EDITOR" type="collection">
+          <argument>ROLE_PR_ADMIN_PR_COMPLAINT_CREATE</argument>
+          <argument>ROLE_PR_ADMIN_PR_COMPLAINT_EDIT</argument>
+          <argument>ROLE_PR_ADMIN_PR_COMPLAINT_DELETE</argument>
+          <argument>ROLE_PR_ADMIN_PR_COMPLAINT_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_PA_COMPLAINT_READER" type="collection">
+          <argument>ROLE_PA_ADMIN_PA_COMPLAINT_LIST</argument>
+          <argument>ROLE_PA_ADMIN_PA_COMPLAINT_VIEW</argument>
+        </argument>
+        <argument key="ROLE_PA_COMPLAINT_EDITOR" type="collection">
+          <argument>ROLE_PA_ADMIN_PA_COMPLAINT_CREATE</argument>
+          <argument>ROLE_PA_ADMIN_PA_COMPLAINT_EDIT</argument>
+          <argument>ROLE_PA_ADMIN_PA_COMPLAINT_DELETE</argument>
+          <argument>ROLE_PA_ADMIN_PA_COMPLAINT_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_PR_PINK_SHEET_READER" type="collection">
+          <argument>ROLE_PR_ADMIN_PR_PINK_SHEET_LIST</argument>
+          <argument>ROLE_PR_ADMIN_PR_PINK_SHEET_VIEW</argument>
+        </argument>
+        <argument key="ROLE_PR_PINK_SHEET_EDITOR" type="collection">
+          <argument>ROLE_PR_ADMIN_PR_PINK_SHEET_CREATE</argument>
+          <argument>ROLE_PR_ADMIN_PR_PINK_SHEET_EDIT</argument>
+          <argument>ROLE_PR_ADMIN_PR_PINK_SHEET_DELETE</argument>
+          <argument>ROLE_PR_ADMIN_PR_PINK_SHEET_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_PA_PINK_SHEET_READER" type="collection">
+          <argument>ROLE_PA_ADMIN_PA_PINK_SHEET_LIST</argument>
+          <argument>ROLE_PA_ADMIN_PA_PINK_SHEET_VIEW</argument>
+        </argument>
+        <argument key="ROLE_PA_PINK_SHEET_EDITOR" type="collection">
+          <argument>ROLE_PA_ADMIN_PA_PINK_SHEET_CREATE</argument>
+          <argument>ROLE_PA_ADMIN_PA_PINK_SHEET_EDIT</argument>
+          <argument>ROLE_PA_ADMIN_PA_PINK_SHEET_DELETE</argument>
+          <argument>ROLE_PA_ADMIN_PA_PINK_SHEET_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_PA_VOTE_CAST_READER" type="collection">
+          <argument>ROLE_PA_ADMIN_PA_VOTE_CAST_LIST</argument>
+          <argument>ROLE_PA_ADMIN_PA_VOTE_CAST_VIEW</argument>
+        </argument>
+        <argument key="ROLE_PA_VOTE_CAST_EDITOR" type="collection">
+          <argument>ROLE_PA_ADMIN_PA_VOTE_CAST_CREATE</argument>
+          <argument>ROLE_PA_ADMIN_PA_VOTE_CAST_EDIT</argument>
+          <argument>ROLE_PA_ADMIN_PA_VOTE_CAST_DELETE</argument>
+          <argument>ROLE_PA_ADMIN_PA_VOTE_CAST_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_REGION_READER" type="collection">
+          <argument>ROLE_VTALLY_ADMIN_REGION_LIST</argument>
+          <argument>ROLE_VTALLY_ADMIN_REGION_VIEW</argument>
+        </argument>
+        <argument key="ROLE_REGION_EDITOR" type="collection">
+          <argument>ROLE_VTALLY_ADMIN_REGION_CREATE</argument>
+          <argument>ROLE_VTALLY_ADMIN_REGION_EDIT</argument>
+          <argument>ROLE_VTALLY_ADMIN_REGION_DELETE</argument>
+          <argument>ROLE_VTALLY_ADMIN_REGION_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_USER_READER" type="collection">
+          <argument>ROLE_USER_ADMIN_USER_LIST</argument>
+          <argument>ROLE_USER_ADMIN_USER_VIEW</argument>
+        </argument>
+        <argument key="ROLE_USER_EDITOR" type="collection">
+          <argument>ROLE_USER_ADMIN_USER_CREATE</argument>
+          <argument>ROLE_USER_ADMIN_USER_EDIT</argument>
+          <argument>ROLE_USER_ADMIN_USER_DELETE</argument>
+          <argument>ROLE_USER_ADMIN_USER_EXPORT</argument>
+        </argument>
+        <argument key="ROLE_MANAGER" type="collection">
+          <argument>ROLE_POLLING_STATION_READER</argument>
+          <argument>ROLE_POLLING_STATION_EDITOR</argument>
+          <argument>ROLE_USER_READER</argument>
+          <argument>ROLE_USER_EDITOR</argument>
+          <argument>ROLE_CONSTITUENCY_READER</argument>
+          <argument>ROLE_CONSTITUENCY_EDITOR</argument>
+          <argument>ROLE_REGION_READER</argument>
+          <argument>ROLE_REGION_EDITOR</argument>
+          <argument>ROLE_COLLATION_CENTER_READER</argument>
+          <argument>ROLE_COLLATION_CENTER_EDITOR</argument>
+          <argument>ROLE_RETURNING_OFFICER_READER</argument>
+          <argument>ROLE_RETURNING_OFFICER_EDITOR</argument>
+          <argument>ROLE_PR_PARTY_READER</argument>
+          <argument>ROLE_PR_PARTY_EDITOR</argument>
+          <argument>ROLE_PA_PARTY_READER</argument>
+          <argument>ROLE_PA_PARTY_EDITOR</argument>
+          <argument>ROLE_PA_FOOT_PRINT_READER</argument>
+          <argument>ROLE_PA_FOOT_PRINT_EDITOR</argument>
+          <argument>ROLE_PR_FOOT_PRINT_READER</argument>
+          <argument>ROLE_PR_FOOT_PRINT_EDITOR</argument>
+          <argument>ROLE_PR_VOTE_CAST_READER</argument>
+          <argument>ROLE_PR_VOTE_CAST_EDITOR</argument>
+          <argument>ROLE_PA_VOTE_CAST_READER</argument>
+          <argument>ROLE_PA_VOTE_CAST_EDITOR</argument>
+          <argument>ROLE_PR_NOTIFICATION_READER</argument>
+          <argument>ROLE_PR_NOTIFICATION_EDITOR</argument>
+          <argument>ROLE_PA_NOTIFICATION_READER</argument>
+          <argument>ROLE_PA_NOTIFICATION_EDITOR</argument>
+          <argument>ROLE_PR_COMPLAINT_READER</argument>
+          <argument>ROLE_PR_COMPLAINT_EDITOR</argument>
+          <argument>ROLE_PA_COMPLAINT_READER</argument>
+          <argument>ROLE_PA_COMPLAINT_EDITOR</argument>
+          <argument>ROLE_PR_PINK_SHEET_READER</argument>
+          <argument>ROLE_PR_PINK_SHEET_EDITOR</argument>
+          <argument>ROLE_PA_PINK_SHEET_READER</argument>
+          <argument>ROLE_PA_PINK_SHEET_EDITOR</argument>
+        </argument>
         <argument key="ROLE_ADMIN" type="collection">
-          <argument>ROLE_USER</argument>
+          <argument>ROLE_MANAGER</argument>
+          <argument>ROLE_THIRD_PARTY</argument>
+          <argument>ROLE_VERIFIER</argument>
         </argument>
         <argument key="ROLE_SUPER_ADMIN" type="collection">
           <argument>ROLE_ADMIN</argument>
         </argument>
-        <argument key="ROLE_ENGINEER" type="collection">
+        <argument key="ROLE_ALLOW_SWITCH" type="collection">
           <argument>ROLE_SUPER_ADMIN</argument>
         </argument>
       </argument>
@@ -4528,7 +5763,7 @@
                     </service>
                   </argument>
                   <argument type="collection">
-                    <argument>ROLE_ADMIN</argument>
+                    <argument>ROLE_USER</argument>
                   </argument>
                   <argument>null</argument>
                 </call>
@@ -4661,7 +5896,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.token_storage"/>
-            <argument>56f5c009101139.19719258</argument>
+            <argument>570795f1b80185.37510433</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -4713,7 +5948,7 @@
                     </service>
                   </argument>
                   <argument type="collection">
-                    <argument>ROLE_ADMIN</argument>
+                    <argument>ROLE_USER</argument>
                   </argument>
                   <argument>null</argument>
                 </call>
@@ -5072,7 +6307,7 @@
         <argument key="driver">pdo_mysql</argument>
         <argument key="host">127.0.0.1</argument>
         <argument key="port">null</argument>
-        <argument key="dbname">vtally2</argument>
+        <argument key="dbname">vtally2_test</argument>
         <argument key="user">root</argument>
         <argument key="password">null</argument>
         <argument key="charset">UTF8</argument>
@@ -5930,19 +7165,21 @@
           <argument>vtally.admin.polling_station</argument>
           <argument>vtally.admin.region</argument>
           <argument>vtally.admin.setting</argument>
-          <argument>pr.admin.pr_notification</argument>
+          <argument>vtally.admin.returning_officer</argument>
           <argument>pr.admin.pr_vote_cast</argument>
           <argument>pr.admin.pr_pink_sheet</argument>
           <argument>pr.admin.pr_party</argument>
+          <argument>pr.admin.pr_notification</argument>
           <argument>pr.admin.pr_complaint</argument>
           <argument>pr.admin.pr_foot_print</argument>
           <argument>pa.admin.pa_complaint</argument>
           <argument>pa.admin.pa_vote_cast</argument>
           <argument>pa.admin.pa_party</argument>
-          <argument>pa.admin.pa_candidate</argument>
           <argument>pa.admin.pa_foot_print</argument>
           <argument>pa.admin.pa_notification</argument>
           <argument>pa.admin.pa_pink_sheet</argument>
+          <argument>pa.admin.independent_candidate</argument>
+          <argument>pa.admin.dependent_candidate</argument>
           <argument>user.admin.user</argument>
         </argument>
       </call>
@@ -5984,6 +7221,12 @@
                 <argument key="route"></argument>
                 <argument key="route_params" type="collection"/>
               </argument>
+              <argument type="collection">
+                <argument key="admin">vtally.admin.returning_officer</argument>
+                <argument key="label">Returning Officer</argument>
+                <argument key="route"></argument>
+                <argument key="route_params" type="collection"/>
+              </argument>
             </argument>
           </argument>
           <argument key="Presidential" type="collection">
@@ -5993,38 +7236,38 @@
             <argument key="roles" type="collection"/>
             <argument key="items" type="collection">
               <argument type="collection">
-                <argument key="admin">pr.admin.pr_notification</argument>
-                <argument key="label">PrNotification</argument>
-                <argument key="route"></argument>
-                <argument key="route_params" type="collection"/>
-              </argument>
-              <argument type="collection">
                 <argument key="admin">pr.admin.pr_vote_cast</argument>
-                <argument key="label">PrVoteCast</argument>
+                <argument key="label">Vote Cast</argument>
                 <argument key="route"></argument>
                 <argument key="route_params" type="collection"/>
               </argument>
               <argument type="collection">
                 <argument key="admin">pr.admin.pr_pink_sheet</argument>
-                <argument key="label">PrPinkSheet</argument>
+                <argument key="label">Pink Sheet</argument>
                 <argument key="route"></argument>
                 <argument key="route_params" type="collection"/>
               </argument>
               <argument type="collection">
                 <argument key="admin">pr.admin.pr_party</argument>
-                <argument key="label">PrParty</argument>
+                <argument key="label">Party</argument>
+                <argument key="route"></argument>
+                <argument key="route_params" type="collection"/>
+              </argument>
+              <argument type="collection">
+                <argument key="admin">pr.admin.pr_notification</argument>
+                <argument key="label">Notification</argument>
                 <argument key="route"></argument>
                 <argument key="route_params" type="collection"/>
               </argument>
               <argument type="collection">
                 <argument key="admin">pr.admin.pr_complaint</argument>
-                <argument key="label">PrComplaint</argument>
+                <argument key="label">Complaint</argument>
                 <argument key="route"></argument>
                 <argument key="route_params" type="collection"/>
               </argument>
               <argument type="collection">
                 <argument key="admin">pr.admin.pr_foot_print</argument>
-                <argument key="label">PrFootPrint</argument>
+                <argument key="label">Foot Print</argument>
                 <argument key="route"></argument>
                 <argument key="route_params" type="collection"/>
               </argument>
@@ -6038,43 +7281,49 @@
             <argument key="items" type="collection">
               <argument type="collection">
                 <argument key="admin">pa.admin.pa_complaint</argument>
-                <argument key="label">PaComplaint</argument>
+                <argument key="label">Complaint</argument>
                 <argument key="route"></argument>
                 <argument key="route_params" type="collection"/>
               </argument>
               <argument type="collection">
                 <argument key="admin">pa.admin.pa_vote_cast</argument>
-                <argument key="label">PaVoteCast</argument>
+                <argument key="label">Vote Cast</argument>
                 <argument key="route"></argument>
                 <argument key="route_params" type="collection"/>
               </argument>
               <argument type="collection">
                 <argument key="admin">pa.admin.pa_party</argument>
-                <argument key="label">PaParty</argument>
-                <argument key="route"></argument>
-                <argument key="route_params" type="collection"/>
-              </argument>
-              <argument type="collection">
-                <argument key="admin">pa.admin.pa_candidate</argument>
-                <argument key="label">PaCandidate</argument>
+                <argument key="label">Party</argument>
                 <argument key="route"></argument>
                 <argument key="route_params" type="collection"/>
               </argument>
               <argument type="collection">
                 <argument key="admin">pa.admin.pa_foot_print</argument>
-                <argument key="label">PaFootPrint</argument>
+                <argument key="label">Foot Print</argument>
                 <argument key="route"></argument>
                 <argument key="route_params" type="collection"/>
               </argument>
               <argument type="collection">
                 <argument key="admin">pa.admin.pa_notification</argument>
-                <argument key="label">PaNotification</argument>
+                <argument key="label">Notification</argument>
                 <argument key="route"></argument>
                 <argument key="route_params" type="collection"/>
               </argument>
               <argument type="collection">
                 <argument key="admin">pa.admin.pa_pink_sheet</argument>
-                <argument key="label">PaPinkSheet</argument>
+                <argument key="label">Pink Sheet</argument>
+                <argument key="route"></argument>
+                <argument key="route_params" type="collection"/>
+              </argument>
+              <argument type="collection">
+                <argument key="admin">pa.admin.independent_candidate</argument>
+                <argument key="label">Independent Candidate</argument>
+                <argument key="route"></argument>
+                <argument key="route_params" type="collection"/>
+              </argument>
+              <argument type="collection">
+                <argument key="admin">pa.admin.dependent_candidate</argument>
+                <argument key="label">Dependent Candidate</argument>
                 <argument key="route"></argument>
                 <argument key="route_params" type="collection"/>
               </argument>
@@ -6113,8 +7362,8 @@
           <argument key="VtallyBundle\Entity\Setting" type="collection">
             <argument>vtally.admin.setting</argument>
           </argument>
-          <argument key="PrBundle\Entity\PrNotification" type="collection">
-            <argument>pr.admin.pr_notification</argument>
+          <argument key="VtallyBundle\Entity\ReturningOfficer" type="collection">
+            <argument>vtally.admin.returning_officer</argument>
           </argument>
           <argument key="PrBundle\Entity\PrVoteCast" type="collection">
             <argument>pr.admin.pr_vote_cast</argument>
@@ -6124,6 +7373,9 @@
           </argument>
           <argument key="PrBundle\Entity\PrParty" type="collection">
             <argument>pr.admin.pr_party</argument>
+          </argument>
+          <argument key="PrBundle\Entity\PrNotification" type="collection">
+            <argument>pr.admin.pr_notification</argument>
           </argument>
           <argument key="PrBundle\Entity\PrComplaint" type="collection">
             <argument>pr.admin.pr_complaint</argument>
@@ -6140,9 +7392,6 @@
           <argument key="PaBundle\Entity\PaParty" type="collection">
             <argument>pa.admin.pa_party</argument>
           </argument>
-          <argument key="PaBundle\Entity\PaCandidate" type="collection">
-            <argument>pa.admin.pa_candidate</argument>
-          </argument>
           <argument key="PaBundle\Entity\PaFootPrint" type="collection">
             <argument>pa.admin.pa_foot_print</argument>
           </argument>
@@ -6151,6 +7400,12 @@
           </argument>
           <argument key="PaBundle\Entity\PaPinkSheet" type="collection">
             <argument>pa.admin.pa_pink_sheet</argument>
+          </argument>
+          <argument key="PaBundle\Entity\IndependentCandidate" type="collection">
+            <argument>pa.admin.independent_candidate</argument>
+          </argument>
+          <argument key="PaBundle\Entity\DependentCandidate" type="collection">
+            <argument>pa.admin.dependent_candidate</argument>
           </argument>
           <argument key="UserBundle\Entity\User" type="collection">
             <argument>user.admin.user</argument>
@@ -6167,19 +7422,21 @@
         <argument>vtally.admin.polling_station</argument>
         <argument>vtally.admin.region</argument>
         <argument>vtally.admin.setting</argument>
-        <argument>pr.admin.pr_notification</argument>
+        <argument>vtally.admin.returning_officer</argument>
         <argument>pr.admin.pr_vote_cast</argument>
         <argument>pr.admin.pr_pink_sheet</argument>
         <argument>pr.admin.pr_party</argument>
+        <argument>pr.admin.pr_notification</argument>
         <argument>pr.admin.pr_complaint</argument>
         <argument>pr.admin.pr_foot_print</argument>
         <argument>pa.admin.pa_complaint</argument>
         <argument>pa.admin.pa_vote_cast</argument>
         <argument>pa.admin.pa_party</argument>
-        <argument>pa.admin.pa_candidate</argument>
         <argument>pa.admin.pa_foot_print</argument>
         <argument>pa.admin.pa_notification</argument>
         <argument>pa.admin.pa_pink_sheet</argument>
+        <argument>pa.admin.independent_candidate</argument>
+        <argument>pa.admin.dependent_candidate</argument>
         <argument>user.admin.user</argument>
       </argument>
       <argument type="service" id="service_container"/>
@@ -6690,7 +7947,7 @@
         <argument key="kernel.container_class">appDevDebugProjectContainer</argument>
         <argument key="database_host">127.0.0.1</argument>
         <argument key="database_port">null</argument>
-        <argument key="database_name">vtally2</argument>
+        <argument key="database_name">vtally2_test</argument>
         <argument key="database_user">root</argument>
         <argument key="database_password">null</argument>
         <argument key="mailer_transport">smtp</argument>
@@ -6746,13 +8003,233 @@
         <argument key="security.authentication.trust_resolver.anonymous_class">Symfony\Component\Security\Core\Authentication\Token\AnonymousToken</argument>
         <argument key="security.authentication.trust_resolver.rememberme_class">Symfony\Component\Security\Core\Authentication\Token\RememberMeToken</argument>
         <argument key="security.role_hierarchy.roles" type="collection">
+          <argument key="ROLE_POLLING_STATION_READER" type="collection">
+            <argument>ROLE_VTALLY_ADMIN_POLLING_STATION_LIST</argument>
+            <argument>ROLE_VTALLY_ADMIN_POLLING_STATION_VIEW</argument>
+          </argument>
+          <argument key="ROLE_POLLING_STATION_EDITOR" type="collection">
+            <argument>ROLE_VTALLY_ADMIN_POLLING_STATION_CREATE</argument>
+            <argument>ROLE_VTALLY_ADMIN_POLLING_STATION_EDIT</argument>
+            <argument>ROLE_VTALLY_ADMIN_POLLING_STATION_DELETE</argument>
+            <argument>ROLE_VTALLY_ADMIN_POLLING_STATION_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_CONSTITUENCY_READER" type="collection">
+            <argument>ROLE_VTALLY_ADMIN_CONSTITUENCY_LIST</argument>
+            <argument>ROLE_VTALLY_ADMIN_CONSTITUENCY_VIEW</argument>
+          </argument>
+          <argument key="ROLE_CONSTITUENCY_EDITOR" type="collection">
+            <argument>ROLE_VTALLY_ADMIN_CONSTITUENCY_CREATE</argument>
+            <argument>ROLE_VTALLY_ADMIN_CONSTITUENCY_EDIT</argument>
+            <argument>ROLE_VTALLY_ADMIN_CONSTITUENCY_DELETE</argument>
+            <argument>ROLE_VTALLY_ADMIN_CONSTITUENCY_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_COLLATION_CENTER_READER" type="collection">
+            <argument>ROLE_VTALLY_ADMIN_COLLATION_CENTER_LIST</argument>
+            <argument>ROLE_VTALLY_ADMIN_COLLATION_CENTER_VIEW</argument>
+          </argument>
+          <argument key="ROLE_COLLATION_CENTER_EDITOR" type="collection">
+            <argument>ROLE_VTALLY_ADMIN_COLLATION_CENTER_CREATE</argument>
+            <argument>ROLE_VTALLY_ADMIN_COLLATION_CENTER_EDIT</argument>
+            <argument>ROLE_VTALLY_ADMIN_COLLATION_CENTER_DELETE</argument>
+            <argument>ROLE_VTALLY_ADMIN_COLLATION_CENTER_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_RETURNING_OFFICER_READER" type="collection">
+            <argument>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_LIST</argument>
+            <argument>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_VIEW</argument>
+          </argument>
+          <argument key="ROLE_RETURNING_OFFICER_EDITOR" type="collection">
+            <argument>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_CREATE</argument>
+            <argument>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_EDIT</argument>
+            <argument>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_DELETE</argument>
+            <argument>ROLE_VTALLY_ADMIN_RETURNING_OFFICER_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_PR_PARTY_READER" type="collection">
+            <argument>ROLE_PR_ADMIN_PR_PARTY_LIST</argument>
+            <argument>ROLE_PR_ADMIN_PR_PARTY_VIEW</argument>
+          </argument>
+          <argument key="ROLE_PR_PARTY_EDITOR" type="collection">
+            <argument>ROLE_PR_ADMIN_PR_PARTY_CREATE</argument>
+            <argument>ROLE_PR_ADMIN_PR_PARTY_EDIT</argument>
+            <argument>ROLE_PR_ADMIN_PR_PARTY_DELETE</argument>
+            <argument>ROLE_PR_ADMIN_PR_PARTY_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_PA_PARTY_READER" type="collection">
+            <argument>ROLE_PA_ADMIN_PA_PARTY_LIST</argument>
+            <argument>ROLE_PA_ADMIN_PA_PARTY_VIEW</argument>
+          </argument>
+          <argument key="ROLE_PA_PARTY_EDITOR" type="collection">
+            <argument>ROLE_PA_ADMIN_PA_PARTY_CREATE</argument>
+            <argument>ROLE_PA_ADMIN_PA_PARTY_EDIT</argument>
+            <argument>ROLE_PA_ADMIN_PA_PARTY_DELETE</argument>
+            <argument>ROLE_PA_ADMIN_PA_PARTY_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_PA_FOOT_PRINT_READER" type="collection">
+            <argument>ROLE_PA_ADMIN_PA_FOOT_PRINT_LIST</argument>
+            <argument>ROLE_PA_ADMIN_PA_FOOT_PRINT_VIEW</argument>
+          </argument>
+          <argument key="ROLE_PA_FOOT_PRINT_EDITOR" type="collection">
+            <argument>ROLE_PA_ADMIN_PA_FOOT_PRINT_CREATE</argument>
+            <argument>ROLE_PA_ADMIN_PA_FOOT_PRINT_EDIT</argument>
+            <argument>ROLE_PA_ADMIN_PA_FOOT_PRINT_DELETE</argument>
+            <argument>ROLE_PA_ADMIN_PA_FOOT_PRINT_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_PR_FOOT_PRINT_READER" type="collection">
+            <argument>ROLE_PR_ADMIN_PR_FOOT_PRINT_LIST</argument>
+            <argument>ROLE_PR_ADMIN_PR_FOOT_PRINT_VIEW</argument>
+          </argument>
+          <argument key="ROLE_PR_FOOT_PRINT_EDITOR" type="collection">
+            <argument>ROLE_PR_ADMIN_PR_FOOT_PRINT_CREATE</argument>
+            <argument>ROLE_PR_ADMIN_PR_FOOT_PRINT_EDIT</argument>
+            <argument>ROLE_PR_ADMIN_PR_FOOT_PRINT_DELETE</argument>
+            <argument>ROLE_PR_ADMIN_PR_FOOT_PRINT_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_PR_VOTE_CAST_READER" type="collection">
+            <argument>ROLE_PR_ADMIN_PR_VOTE_CAST_LIST</argument>
+            <argument>ROLE_PR_ADMIN_PR_VOTE_CAST_VIEW</argument>
+          </argument>
+          <argument key="ROLE_PR_VOTE_CAST_EDITOR" type="collection">
+            <argument>ROLE_PR_ADMIN_PR_VOTE_CAST_CREATE</argument>
+            <argument>ROLE_PR_ADMIN_PR_VOTE_CAST_EDIT</argument>
+            <argument>ROLE_PR_ADMIN_PR_VOTE_CAST_DELETE</argument>
+            <argument>ROLE_PR_ADMIN_PR_VOTE_CAST_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_PR_NOTIFICATION_READER" type="collection">
+            <argument>ROLE_PR_ADMIN_PR_NOTIFICATION_LIST</argument>
+            <argument>ROLE_PR_ADMIN_PR_NOTIFICATION_VIEW</argument>
+          </argument>
+          <argument key="ROLE_PR_NOTIFICATION_EDITOR" type="collection">
+            <argument>ROLE_PR_ADMIN_PR_NOTIFICATION_CREATE</argument>
+            <argument>ROLE_PR_ADMIN_PR_NOTIFICATION_EDIT</argument>
+            <argument>ROLE_PR_ADMIN_PR_NOTIFICATION_DELETE</argument>
+            <argument>ROLE_PR_ADMIN_PR_NOTIFICATION_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_PA_NOTIFICATION_READER" type="collection">
+            <argument>ROLE_PA_ADMIN_PA_NOTIFICATION_LIST</argument>
+            <argument>ROLE_PA_ADMIN_PA_NOTIFICATION_VIEW</argument>
+          </argument>
+          <argument key="ROLE_PA_NOTIFICATION_EDITOR" type="collection">
+            <argument>ROLE_PA_ADMIN_PA_NOTIFICATION_CREATE</argument>
+            <argument>ROLE_PA_ADMIN_PA_NOTIFICATION_EDIT</argument>
+            <argument>ROLE_PA_ADMIN_PA_NOTIFICATION_DELETE</argument>
+            <argument>ROLE_PA_ADMIN_PA_NOTIFICATION_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_PR_COMPLAINT_READER" type="collection">
+            <argument>ROLE_PR_ADMIN_PR_COMPLAINT_LIST</argument>
+            <argument>ROLE_PR_ADMIN_PR_COMPLAINT_VIEW</argument>
+          </argument>
+          <argument key="ROLE_PR_COMPLAINT_EDITOR" type="collection">
+            <argument>ROLE_PR_ADMIN_PR_COMPLAINT_CREATE</argument>
+            <argument>ROLE_PR_ADMIN_PR_COMPLAINT_EDIT</argument>
+            <argument>ROLE_PR_ADMIN_PR_COMPLAINT_DELETE</argument>
+            <argument>ROLE_PR_ADMIN_PR_COMPLAINT_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_PA_COMPLAINT_READER" type="collection">
+            <argument>ROLE_PA_ADMIN_PA_COMPLAINT_LIST</argument>
+            <argument>ROLE_PA_ADMIN_PA_COMPLAINT_VIEW</argument>
+          </argument>
+          <argument key="ROLE_PA_COMPLAINT_EDITOR" type="collection">
+            <argument>ROLE_PA_ADMIN_PA_COMPLAINT_CREATE</argument>
+            <argument>ROLE_PA_ADMIN_PA_COMPLAINT_EDIT</argument>
+            <argument>ROLE_PA_ADMIN_PA_COMPLAINT_DELETE</argument>
+            <argument>ROLE_PA_ADMIN_PA_COMPLAINT_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_PR_PINK_SHEET_READER" type="collection">
+            <argument>ROLE_PR_ADMIN_PR_PINK_SHEET_LIST</argument>
+            <argument>ROLE_PR_ADMIN_PR_PINK_SHEET_VIEW</argument>
+          </argument>
+          <argument key="ROLE_PR_PINK_SHEET_EDITOR" type="collection">
+            <argument>ROLE_PR_ADMIN_PR_PINK_SHEET_CREATE</argument>
+            <argument>ROLE_PR_ADMIN_PR_PINK_SHEET_EDIT</argument>
+            <argument>ROLE_PR_ADMIN_PR_PINK_SHEET_DELETE</argument>
+            <argument>ROLE_PR_ADMIN_PR_PINK_SHEET_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_PA_PINK_SHEET_READER" type="collection">
+            <argument>ROLE_PA_ADMIN_PA_PINK_SHEET_LIST</argument>
+            <argument>ROLE_PA_ADMIN_PA_PINK_SHEET_VIEW</argument>
+          </argument>
+          <argument key="ROLE_PA_PINK_SHEET_EDITOR" type="collection">
+            <argument>ROLE_PA_ADMIN_PA_PINK_SHEET_CREATE</argument>
+            <argument>ROLE_PA_ADMIN_PA_PINK_SHEET_EDIT</argument>
+            <argument>ROLE_PA_ADMIN_PA_PINK_SHEET_DELETE</argument>
+            <argument>ROLE_PA_ADMIN_PA_PINK_SHEET_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_PA_VOTE_CAST_READER" type="collection">
+            <argument>ROLE_PA_ADMIN_PA_VOTE_CAST_LIST</argument>
+            <argument>ROLE_PA_ADMIN_PA_VOTE_CAST_VIEW</argument>
+          </argument>
+          <argument key="ROLE_PA_VOTE_CAST_EDITOR" type="collection">
+            <argument>ROLE_PA_ADMIN_PA_VOTE_CAST_CREATE</argument>
+            <argument>ROLE_PA_ADMIN_PA_VOTE_CAST_EDIT</argument>
+            <argument>ROLE_PA_ADMIN_PA_VOTE_CAST_DELETE</argument>
+            <argument>ROLE_PA_ADMIN_PA_VOTE_CAST_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_REGION_READER" type="collection">
+            <argument>ROLE_VTALLY_ADMIN_REGION_LIST</argument>
+            <argument>ROLE_VTALLY_ADMIN_REGION_VIEW</argument>
+          </argument>
+          <argument key="ROLE_REGION_EDITOR" type="collection">
+            <argument>ROLE_VTALLY_ADMIN_REGION_CREATE</argument>
+            <argument>ROLE_VTALLY_ADMIN_REGION_EDIT</argument>
+            <argument>ROLE_VTALLY_ADMIN_REGION_DELETE</argument>
+            <argument>ROLE_VTALLY_ADMIN_REGION_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_USER_READER" type="collection">
+            <argument>ROLE_USER_ADMIN_USER_LIST</argument>
+            <argument>ROLE_USER_ADMIN_USER_VIEW</argument>
+          </argument>
+          <argument key="ROLE_USER_EDITOR" type="collection">
+            <argument>ROLE_USER_ADMIN_USER_CREATE</argument>
+            <argument>ROLE_USER_ADMIN_USER_EDIT</argument>
+            <argument>ROLE_USER_ADMIN_USER_DELETE</argument>
+            <argument>ROLE_USER_ADMIN_USER_EXPORT</argument>
+          </argument>
+          <argument key="ROLE_MANAGER" type="collection">
+            <argument>ROLE_POLLING_STATION_READER</argument>
+            <argument>ROLE_POLLING_STATION_EDITOR</argument>
+            <argument>ROLE_USER_READER</argument>
+            <argument>ROLE_USER_EDITOR</argument>
+            <argument>ROLE_CONSTITUENCY_READER</argument>
+            <argument>ROLE_CONSTITUENCY_EDITOR</argument>
+            <argument>ROLE_REGION_READER</argument>
+            <argument>ROLE_REGION_EDITOR</argument>
+            <argument>ROLE_COLLATION_CENTER_READER</argument>
+            <argument>ROLE_COLLATION_CENTER_EDITOR</argument>
+            <argument>ROLE_RETURNING_OFFICER_READER</argument>
+            <argument>ROLE_RETURNING_OFFICER_EDITOR</argument>
+            <argument>ROLE_PR_PARTY_READER</argument>
+            <argument>ROLE_PR_PARTY_EDITOR</argument>
+            <argument>ROLE_PA_PARTY_READER</argument>
+            <argument>ROLE_PA_PARTY_EDITOR</argument>
+            <argument>ROLE_PA_FOOT_PRINT_READER</argument>
+            <argument>ROLE_PA_FOOT_PRINT_EDITOR</argument>
+            <argument>ROLE_PR_FOOT_PRINT_READER</argument>
+            <argument>ROLE_PR_FOOT_PRINT_EDITOR</argument>
+            <argument>ROLE_PR_VOTE_CAST_READER</argument>
+            <argument>ROLE_PR_VOTE_CAST_EDITOR</argument>
+            <argument>ROLE_PA_VOTE_CAST_READER</argument>
+            <argument>ROLE_PA_VOTE_CAST_EDITOR</argument>
+            <argument>ROLE_PR_NOTIFICATION_READER</argument>
+            <argument>ROLE_PR_NOTIFICATION_EDITOR</argument>
+            <argument>ROLE_PA_NOTIFICATION_READER</argument>
+            <argument>ROLE_PA_NOTIFICATION_EDITOR</argument>
+            <argument>ROLE_PR_COMPLAINT_READER</argument>
+            <argument>ROLE_PR_COMPLAINT_EDITOR</argument>
+            <argument>ROLE_PA_COMPLAINT_READER</argument>
+            <argument>ROLE_PA_COMPLAINT_EDITOR</argument>
+            <argument>ROLE_PR_PINK_SHEET_READER</argument>
+            <argument>ROLE_PR_PINK_SHEET_EDITOR</argument>
+            <argument>ROLE_PA_PINK_SHEET_READER</argument>
+            <argument>ROLE_PA_PINK_SHEET_EDITOR</argument>
+          </argument>
           <argument key="ROLE_ADMIN" type="collection">
-            <argument>ROLE_USER</argument>
+            <argument>ROLE_MANAGER</argument>
+            <argument>ROLE_THIRD_PARTY</argument>
+            <argument>ROLE_VERIFIER</argument>
           </argument>
           <argument key="ROLE_SUPER_ADMIN" type="collection">
             <argument>ROLE_ADMIN</argument>
           </argument>
-          <argument key="ROLE_ENGINEER" type="collection">
+          <argument key="ROLE_ALLOW_SWITCH" type="collection">
             <argument>ROLE_SUPER_ADMIN</argument>
           </argument>
         </argument>
@@ -7165,7 +8642,32 @@
         </argument>
         <argument key="sonata.admin.configuration.sort_admins">false</argument>
         <argument key="sonata.admin.security.acl_user_manager">fos_user.user_manager</argument>
-        <argument key="sonata.admin.configuration.security.information" type="collection"/>
+        <argument key="sonata.admin.configuration.security.information" type="collection">
+          <argument key="EDIT" type="collection">
+            <argument>EDIT</argument>
+          </argument>
+          <argument key="LIST" type="collection">
+            <argument>LIST</argument>
+          </argument>
+          <argument key="CREATE" type="collection">
+            <argument>CREATE</argument>
+          </argument>
+          <argument key="VIEW" type="collection">
+            <argument>VIEW</argument>
+          </argument>
+          <argument key="DELETE" type="collection">
+            <argument>DELETE</argument>
+          </argument>
+          <argument key="EXPORT" type="collection">
+            <argument>EXPORT</argument>
+          </argument>
+          <argument key="OPERATOR" type="collection">
+            <argument>OPERATOR</argument>
+          </argument>
+          <argument key="MASTER" type="collection">
+            <argument>MASTER</argument>
+          </argument>
+        </argument>
         <argument key="sonata.admin.configuration.security.admin_permissions" type="collection">
           <argument>CREATE</argument>
           <argument>LIST</argument>
@@ -7819,7 +9321,12 @@
         <argument>null</argument>
       </call>
     </service>
-    <service id="sonata.admin.security.handler" class="Sonata\AdminBundle\Security\Handler\NoopSecurityHandler"/>
+    <service id="sonata.admin.security.handler" class="Sonata\AdminBundle\Security\Handler\RoleSecurityHandler">
+      <argument type="service" id="security.authorization_checker"/>
+      <argument type="collection">
+        <argument>ROLE_SUPER_ADMIN</argument>
+      </argument>
+    </service>
     <service id="fos_user.mailer" class="FOS\UserBundle\Mailer\Mailer">
       <argument type="service" id="swiftmailer.mailer.default"/>
       <argument type="service" id="router"/>

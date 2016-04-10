@@ -15,8 +15,8 @@ class __TwigTemplate_b0c7fd63e2e076fe683444cfe1f5a97d5c456dd89cf966fd33f772a0bb9
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_0753648e4503e9b1f53b20db255ba0d15d7871405ab5069b3daa0bc0241b70a0 = $this->env->getExtension("native_profiler");
-        $__internal_0753648e4503e9b1f53b20db255ba0d15d7871405ab5069b3daa0bc0241b70a0->enter($__internal_0753648e4503e9b1f53b20db255ba0d15d7871405ab5069b3daa0bc0241b70a0_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "SonataCoreBundle:FlashMessage:render.html.twig"));
+        $__internal_42c6ac1d9686bf070f6988a5b1823f1e4be45b0f6a156b161188f1a7d7d0542b = $this->env->getExtension("native_profiler");
+        $__internal_42c6ac1d9686bf070f6988a5b1823f1e4be45b0f6a156b161188f1a7d7d0542b->enter($__internal_42c6ac1d9686bf070f6988a5b1823f1e4be45b0f6a156b161188f1a7d7d0542b_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "SonataCoreBundle:FlashMessage:render.html.twig"));
 
         // line 11
         $context['_parent'] = $context;
@@ -50,7 +50,7 @@ class __TwigTemplate_b0c7fd63e2e076fe683444cfe1f5a97d5c456dd89cf966fd33f772a0bb9
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['type'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
         
-        $__internal_0753648e4503e9b1f53b20db255ba0d15d7871405ab5069b3daa0bc0241b70a0->leave($__internal_0753648e4503e9b1f53b20db255ba0d15d7871405ab5069b3daa0bc0241b70a0_prof);
+        $__internal_42c6ac1d9686bf070f6988a5b1823f1e4be45b0f6a156b161188f1a7d7d0542b->leave($__internal_42c6ac1d9686bf070f6988a5b1823f1e4be45b0f6a156b161188f1a7d7d0542b_prof);
 
     }
 

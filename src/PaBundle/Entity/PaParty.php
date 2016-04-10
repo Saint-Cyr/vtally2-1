@@ -20,6 +20,8 @@ class PaParty
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    private $site = 0;
 
     /**
      * @var string
@@ -29,17 +31,22 @@ class PaParty
     private $name;
     
     /**
-     * @ORM\OneToMany(targetEntity="PaBundle\Entity\PaCandidate", mappedBy="paParty", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="PaBundle\Entity\DependentCandidate", mappedBy="paParty", cascade={"remove", "persist"})
      */
-    private $paCandidates;
-    
-    /**
-     * @ORM\ManyToMany(targetEntity="VtallyBundle\Entity\Constituency", mappedBy="paParties")
-     */
-    private $constituencies;
+    private $dependentCandidates;
     
     public function __toString() {
         return $this->name;
+    }
+    
+    public function increaseSiteNumber()
+    {
+        $this->site = $this->site + 1;
+    }
+    
+    public function getSiteNumber()
+    {
+        return $this->site;
     }
     
     /**
@@ -75,80 +82,46 @@ class PaParty
     {
         return $this->name;
     }
+    
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->paCandidates = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->constituencies = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->dependentCandidates = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Add paCandidate
+     * Add dependentCandidate
      *
-     * @param \PaBundle\Entity\PaCandidate $paCandidate
+     * @param \PaBundle\Entity\DependentCandidate $dependentCandidate
      *
      * @return PaParty
      */
-    public function addPaCandidate(\PaBundle\Entity\PaCandidate $paCandidate)
+    public function addDependentCandidate(\PaBundle\Entity\DependentCandidate $dependentCandidate)
     {
-        $this->paCandidates[] = $paCandidate;
+        $this->dependentCandidates[] = $dependentCandidate;
 
         return $this;
     }
 
     /**
-     * Remove paCandidate
+     * Remove dependentCandidate
      *
-     * @param \PaBundle\Entity\PaCandidate $paCandidate
+     * @param \PaBundle\Entity\DependentCandidate $dependentCandidate
      */
-    public function removePaCandidate(\PaBundle\Entity\PaCandidate $paCandidate)
+    public function removeDependentCandidate(\PaBundle\Entity\DependentCandidate $dependentCandidate)
     {
-        $this->paCandidates->removeElement($paCandidate);
+        $this->dependentCandidates->removeElement($dependentCandidate);
     }
 
     /**
-     * Get paCandidates
+     * Get dependentCandidates
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPaCandidates()
+    public function getDependentCandidates()
     {
-        return $this->paCandidates;
-    }
-
-    /**
-     * Add constituency
-     *
-     * @param \VtallyBundle\Entity\Constituency $constituency
-     *
-     * @return PaParty
-     */
-    public function addConstituency(\VtallyBundle\Entity\Constituency $constituency)
-    {
-        $this->constituencies[] = $constituency;
-
-        return $this;
-    }
-
-    /**
-     * Remove constituency
-     *
-     * @param \VtallyBundle\Entity\Constituency $constituency
-     */
-    public function removeConstituency(\VtallyBundle\Entity\Constituency $constituency)
-    {
-        $this->constituencies->removeElement($constituency);
-    }
-
-    /**
-     * Get constituencies
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getConstituencies()
-    {
-        return $this->constituencies;
+        return $this->dependentCandidates;
     }
 }
