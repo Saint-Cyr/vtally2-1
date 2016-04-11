@@ -7,7 +7,6 @@
             <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/DataFixtures/ORM/Vtally.yml</file>
             <file>file:/opt/lampp/htdocs/VTALLY/src/PaBundle/DataFixtures/ORM/parliamentary.yml</file>
             <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Tests/Entity/ConstituencyTest.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/</file>
         </group>
     </open-files>
 </project-private>

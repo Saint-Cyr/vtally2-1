@@ -102,3 +102,5 @@ bd0fee,127.0.0.1,GET,http://localhost/VTALLY/web/app_dev.php/admin/dashboard,146
 345af2,127.0.0.1,GET,http://localhost/VTALLY/web/app_dev.php/admin/dashboard,1460125370,,200
 278af3,127.0.0.1,GET,http://localhost/VTALLY/web/app_dev.php/admin/vtally/constituency/list,1460125373,,200
 12ac89,127.0.0.1,GET,http://localhost/VTALLY/web/app_dev.php/admin/vtally/constituency/4/show,1460125379,,200
+f32a6d,127.0.0.1,GET,http://localhost/VTALLY/web/app_dev.php/,1460279637,,200
+20f211,127.0.0.1,GET,http://localhost/VTALLY/web/app_dev.php/,1460364341,,200
