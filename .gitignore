@@ -1,6 +1,7 @@
 /var/
 !var/cache/.gitkeep
 !var/logs/.gitkeep
+/var/logs/
 /app/config/parameters.yml
 /phpunit.xml
 /vendor/
