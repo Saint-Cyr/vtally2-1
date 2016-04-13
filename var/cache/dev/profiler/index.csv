@@ -134,3 +134,4 @@ e74867,127.0.0.1,POST,http://localhost/VTALLY/web/app_dev.php/login_check,146054
 3b3ae0,127.0.0.1,GET,http://localhost/VTALLY/web/app_dev.php/admin/,1460543186,,301
 4b96de,127.0.0.1,GET,http://localhost/VTALLY/web/app_dev.php/admin/dashboard,1460543189,,200
 999407,127.0.0.1,GET,http://localhost/VTALLY/web/app_dev.php/,1460543209,,200
+63224a,127.0.0.1,GET,http://localhost/VTALLY/web/app_dev.php/,1460546165,,200
