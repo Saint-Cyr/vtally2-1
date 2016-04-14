@@ -7,6 +7,9 @@ PaBundle\Entity\PaParty:
         
     pa_party3:
         name: UFP
+        
+    pa_party4:
+        name: CPP
 
 VtallyBundle\Entity\Constituency:
     constituency1:
@@ -60,46 +63,165 @@ PaBundle\Entity\DependentCandidate:
         constituency: "@constituency1"
         
     dependent_candidate2:
-        firstName: Jannette
-        lastName: JANNETTE
-        candidacyNumber: 2
-        paParty: "@pa_party2"
-        constituency: "@constituency1"
-        
-    dependent_candidate3:
         firstName: Olga
         lastName: OLGA
         candidacyNumber: 1
         paParty: "@pa_party1"
         constituency: "@constituency2"
         
-    dependent_candidate4:
-        firstName: Barnabas
-        lastName: BARNABAS
-        candidacyNumber: 2
-        paParty: "@pa_party2"
-        constituency: "@constituency2"
-        
-    dependent_candidate5:
+    dependent_candidate3:
         firstName: Jephte
         lastName: JEPHTE
         candidacyNumber: 2
         paParty: "@pa_party1"
         constituency: "@constituency3"
         
+    dependent_candidate4:
+        firstName: Bambi
+        lastName: BAMBI
+        candidacyNumber: 1
+        paParty: "@pa_party1"
+        constituency: "@constituency4"
+        
+    dependent_candidate5:
+        firstName: Joel
+        lastName: JOEL
+        candidacyNumber: 1
+        paParty: "@pa_party1"
+        constituency: "@constituency5"
+        
     dependent_candidate6:
+        firstName: Jehu
+        lastName: JEHU
+        candidacyNumber: 2
+        paParty: "@pa_party1"
+        constituency: "@constituency6"
+        
+    dependent_candidate7:
+        firstName: Jannette
+        lastName: JANNETTE
+        candidacyNumber: 2
+        paParty: "@pa_party2"
+        constituency: "@constituency1"
+        
+    dependent_candidate8:
+        firstName: Barnabas
+        lastName: BARNABAS
+        candidacyNumber: 2
+        paParty: "@pa_party2"
+        constituency: "@constituency2"
+        
+    dependent_candidate9:
         firstName: Jiram
         lastName: JIRAM
-        candidacyNumber: 7
+        candidacyNumber: 2
         paParty: "@pa_party2"
         constituency: "@constituency3"
         
-    dependent_candidate7:
+    dependent_candidate10:
+        firstName: Mara
+        lastName: MARA
+        candidacyNumber: 2
+        paParty: "@pa_party2"
+        constituency: "@constituency4"
+        
+    dependent_candidate11:
+        firstName: Dadou
+        lastName: DADOU
+        candidacyNumber: 2
+        paParty: "@pa_party2"
+        constituency: "@constituency5"
+        
+    dependent_candidate12:
+        firstName: Chiba
+        lastName: CHIBA
+        candidacyNumber: 2
+        paParty: "@pa_party2"
+        constituency: "@constituency6"
+        
+    dependent_candidate13:
+        firstName: Sondra
+        lastName: SONDRA
+        candidacyNumber: 2
+        paParty: "@pa_party3"
+        constituency: "@constituency1"
+        
+    dependent_candidate14:
+        firstName: Xavier
+        lastName: XAVIER
+        candidacyNumber: 2
+        paParty: "@pa_party3"
+        constituency: "@constituency2"
+        
+    dependent_candidate15:
+        firstName: Jodin
+        lastName: JODIN
+        candidacyNumber: 2
+        paParty: "@pa_party3"
+        constituency: "@constituency3"
+        
+    dependent_candidate16:
         firstName: Victorien
         lastName: VICTORIEN
-        candidacyNumber: 8
+        candidacyNumber: 2
         paParty: "@pa_party3"
         constituency: "@constituency4"
+        
+    dependent_candidate17:
+        firstName: Serengue
+        lastName: SERENGUE
+        candidacyNumber: 2
+        paParty: "@pa_party3"
+        constituency: "@constituency5"
+        
+    dependent_candidate18:
+        firstName: Jano
+        lastName: JANO
+        candidacyNumber: 2
+        paParty: "@pa_party3"
+        constituency: "@constituency6"
+    
+    dependent_candidate19:
+        firstName: Fadde
+        lastName: FADDE
+        candidacyNumber: 2
+        paParty: "@pa_party4"
+        constituency: "@constituency1"
+        
+    dependent_candidate20:
+        firstName: Chillen
+        lastName: CHILLEN
+        candidacyNumber: 2
+        paParty: "@pa_party4"
+        constituency: "@constituency2"
+        
+    dependent_candidate21:
+        firstName: Lallen
+        lastName: LALLEN
+        candidacyNumber: 2
+        paParty: "@pa_party4"
+        constituency: "@constituency3"
+        
+    dependent_candidate22:
+        firstName: Jaloux
+        lastName: JALOUX
+        candidacyNumber: 2
+        paParty: "@pa_party4"
+        constituency: "@constituency4"
+        
+    dependent_candidate23:
+        firstName: Chancella
+        lastName: CHANCELLA
+        candidacyNumber: 2
+        paParty: "@pa_party4"
+        constituency: "@constituency5"
+        
+    dependent_candidate24:
+        firstName: Gabi
+        lastName: GABI
+        candidacyNumber: 2
+        paParty: "@pa_party4"
+        constituency: "@constituency6"
         
 PaBundle\Entity\IndependentCandidate:
     independent_candidate1:
@@ -109,8 +231,8 @@ PaBundle\Entity\IndependentCandidate:
         constituency: "@constituency1"
         
     independent_candidate2:
-        firstName: Joel
-        lastName: JOEL
+        firstName: Joella
+        lastName: JOELLA
         candidacyNumber: 2
         constituency: "@constituency1"
         
