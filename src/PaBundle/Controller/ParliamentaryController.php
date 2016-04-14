@@ -36,10 +36,27 @@ class ParliamentaryController extends Controller
         //Get all the parliamentary parties
         $parties = $em->getRepository('PaBundle:PaParty')->findAll();
         
-        //Get all the contituencies
-        $constituencies = $em->getRepository('VtallyBundle:Constituency')->findAll();
-        //Get the sites 
-        $sites = $statisticHandler->getSiteNumber($constituencies, $parties, null);
+        //Get all the contituencies related to the region of ID $id
+        $region = $em->getRepository('VtallyBundle:Region')->find($id);
+        
+        if(!$region){
+            throw $this->createNotFoundException('Region with ID: '.$id.' not found.');
+        }
+        
+        $constituencies = $region->getConstituencies();
+        
+        if(count($constituencies)){
+            
+            foreach ($constituencies as $const){
+                $constituencies_array[] = $const;
+            }
+            //Get the sites 
+            $sites = $statisticHandler->getSiteNumber($constituencies_array, $parties, null);
+        }else{
+            //To avoid any unexpected behaviour
+            throw $this->createNotFoundException('Constituencies related to the region with ID: '.$id.' not found.');
+        }
+        
         //Get all the parties
         $parties = $sites['parties'];
         
