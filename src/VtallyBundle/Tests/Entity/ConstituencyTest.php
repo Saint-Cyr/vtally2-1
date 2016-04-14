@@ -54,6 +54,8 @@ class DefaultControllerTest extends WebTestCase
         $depCandidate4 = $this->em->getRepository('PaBundle:DependentCandidate')->find(4);
         $depCandidate5 = $this->em->getRepository('PaBundle:DependentCandidate')->find(5);
         $depCandidate6 = $this->em->getRepository('PaBundle:DependentCandidate')->find(6);
+        //...
+        $depCandidate13 = $this->em->getRepository('PaBundle:DependentCandidate')->find(13);
         
         //Independent Candidate
         $indepCandidate1 = $this->em->getRepository('PaBundle:IndependentCandidate')->find(1);
@@ -62,36 +64,38 @@ class DefaultControllerTest extends WebTestCase
         $indepCandidate4 = $this->em->getRepository('PaBundle:IndependentCandidate')->find(4);
         $indepCandidate5 = $this->em->getRepository('PaBundle:IndependentCandidate')->find(5);
         $indepCandidate6 = $this->em->getRepository('PaBundle:IndependentCandidate')->find(6);
-        $indepCandidate7 = $this->em->getRepository('PaBundle:IndependentCandidate')->find(7);
+        
+        //Test whether the test scenario in the documentation is synchronized with the code (dependent candidates)
+        $this->assertEquals('Jhon', $depCandidate1->getFirstName());
+        $this->assertEquals('Olga', $depCandidate2->getFirstName());
+        $this->assertEquals('Jephte', $depCandidate3->getFirstName());
+        $this->assertEquals('Bambi', $depCandidate4->getFirstName());
+        $this->assertEquals('Joel', $depCandidate5->getFirstName());
+        $this->assertEquals('Jehu', $depCandidate6->getFirstName());
         
         //Test whether the test scenario in the documentation is synchronized with the code (independent candidates)
         $this->assertEquals('Vivien', $indepCandidate1->getFirstName());
-        $this->assertEquals('Joel', $indepCandidate2->getFirstName());
+        $this->assertEquals('Joella', $indepCandidate2->getFirstName());
         $this->assertEquals('Adde', $indepCandidate3->getFirstName());
         $this->assertEquals('Sonde', $indepCandidate4->getFirstName());
         $this->assertEquals('Panda', $indepCandidate5->getFirstName());
         $this->assertEquals('Nadege', $indepCandidate6->getFirstName());
-        $this->assertEquals('Mamadou', $indepCandidate7->getFirstName());
-        //Test whether the test scenario in the documentation is synchronized with the code (dependent candidates)
-        $this->assertEquals('Jhon', $depCandidate1->getFirstName());
-        $this->assertEquals('Jannette', $depCandidate2->getFirstName());
-        $this->assertEquals('Olga', $depCandidate3->getFirstName());
-        $this->assertEquals('Barnabas', $depCandidate4->getFirstName());
-        $this->assertEquals('Jephte', $depCandidate5->getFirstName());
-        $this->assertEquals('Jiram', $depCandidate6->getFirstName());
         
+        //Test the total vote cast methode for dependentCandidate (only NPP)
         $this->assertEquals(900, $depCandidate1->getTotalVoteCast());
-        $this->assertEquals(700, $depCandidate2->getTotalVoteCast());
-        $this->assertEquals(721, $depCandidate3->getTotalVoteCast());
-        $this->assertEquals(703, $depCandidate4->getTotalVoteCast());
-        $this->assertEquals(595, $depCandidate5->getTotalVoteCast());
-        $this->assertEquals(634, $depCandidate6->getTotalVoteCast());
-      
+        $this->assertEquals(721, $depCandidate2->getTotalVoteCast());
+        $this->assertEquals(595, $depCandidate3->getTotalVoteCast());
+        $this->assertEquals(380, $depCandidate4->getTotalVoteCast());
+        $this->assertEquals(498, $depCandidate5->getTotalVoteCast());
+        $this->assertEquals(150, $depCandidate6->getTotalVoteCast());
+        $this->assertEquals(798, $depCandidate13->getTotalVoteCast());
+        
+        //Test the total vote cast methode for independentCandidate (only 6 first)
         $this->assertEquals(600, $indepCandidate1->getTotalVoteCast());
-        $this->assertEquals(0, $indepCandidate2->getTotalVoteCast());
-        $this->assertEquals(0, $indepCandidate3->getTotalVoteCast());
-        $this->assertEquals(0, $indepCandidate4->getTotalVoteCast());
-        $this->assertEquals(0, $indepCandidate5->getTotalVoteCast());
+        $this->assertEquals(307, $indepCandidate2->getTotalVoteCast());
+        $this->assertEquals(502, $indepCandidate3->getTotalVoteCast());
+        $this->assertEquals(201, $indepCandidate4->getTotalVoteCast());
+        $this->assertEquals(290, $indepCandidate5->getTotalVoteCast());
         $this->assertEquals(702, $indepCandidate6->getTotalVoteCast());
     }
     
