@@ -7,6 +7,9 @@ PaBundle\Entity\PaParty:
         
     pa_party3:
         name: UFP
+        
+    pa_party4:
+        name: CPP
 
 VtallyBundle\Entity\Constituency:
     constituency1:
@@ -60,46 +63,165 @@ PaBundle\Entity\DependentCandidate:
         constituency: "@constituency1"
         
     dependent_candidate2:
-        firstName: Jannette
-        lastName: JANNETTE
-        candidacyNumber: 2
-        paParty: "@pa_party2"
-        constituency: "@constituency1"
-        
-    dependent_candidate3:
         firstName: Olga
         lastName: OLGA
         candidacyNumber: 1
         paParty: "@pa_party1"
         constituency: "@constituency2"
         
-    dependent_candidate4:
-        firstName: Barnabas
-        lastName: BARNABAS
-        candidacyNumber: 2
-        paParty: "@pa_party2"
-        constituency: "@constituency2"
-        
-    dependent_candidate5:
+    dependent_candidate3:
         firstName: Jephte
         lastName: JEPHTE
         candidacyNumber: 2
         paParty: "@pa_party1"
         constituency: "@constituency3"
         
+    dependent_candidate4:
+        firstName: Bambi
+        lastName: BAMBI
+        candidacyNumber: 1
+        paParty: "@pa_party1"
+        constituency: "@constituency4"
+        
+    dependent_candidate5:
+        firstName: Joel
+        lastName: JOEL
+        candidacyNumber: 1
+        paParty: "@pa_party1"
+        constituency: "@constituency5"
+        
     dependent_candidate6:
+        firstName: Jehu
+        lastName: JEHU
+        candidacyNumber: 2
+        paParty: "@pa_party1"
+        constituency: "@constituency6"
+        
+    dependent_candidate7:
+        firstName: Jannette
+        lastName: JANNETTE
+        candidacyNumber: 2
+        paParty: "@pa_party2"
+        constituency: "@constituency1"
+        
+    dependent_candidate8:
+        firstName: Barnabas
+        lastName: BARNABAS
+        candidacyNumber: 2
+        paParty: "@pa_party2"
+        constituency: "@constituency2"
+        
+    dependent_candidate9:
         firstName: Jiram
         lastName: JIRAM
-        candidacyNumber: 7
+        candidacyNumber: 2
         paParty: "@pa_party2"
         constituency: "@constituency3"
         
-    dependent_candidate7:
+    dependent_candidate10:
+        firstName: Mara
+        lastName: MARA
+        candidacyNumber: 2
+        paParty: "@pa_party2"
+        constituency: "@constituency4"
+        
+    dependent_candidate11:
+        firstName: Dadou
+        lastName: DADOU
+        candidacyNumber: 2
+        paParty: "@pa_party2"
+        constituency: "@constituency5"
+        
+    dependent_candidate12:
+        firstName: Chiba
+        lastName: CHIBA
+        candidacyNumber: 2
+        paParty: "@pa_party2"
+        constituency: "@constituency6"
+        
+    dependent_candidate13:
+        firstName: Sondra
+        lastName: SONDRA
+        candidacyNumber: 2
+        paParty: "@pa_party3"
+        constituency: "@constituency1"
+        
+    dependent_candidate14:
+        firstName: Xavier
+        lastName: XAVIER
+        candidacyNumber: 2
+        paParty: "@pa_party3"
+        constituency: "@constituency2"
+        
+    dependent_candidate15:
+        firstName: Jodin
+        lastName: JODIN
+        candidacyNumber: 2
+        paParty: "@pa_party3"
+        constituency: "@constituency3"
+        
+    dependent_candidate16:
         firstName: Victorien
         lastName: VICTORIEN
-        candidacyNumber: 8
+        candidacyNumber: 2
         paParty: "@pa_party3"
         constituency: "@constituency4"
+        
+    dependent_candidate17:
+        firstName: Serengue
+        lastName: SERENGUE
+        candidacyNumber: 2
+        paParty: "@pa_party3"
+        constituency: "@constituency5"
+        
+    dependent_candidate18:
+        firstName: Jano
+        lastName: JANO
+        candidacyNumber: 2
+        paParty: "@pa_party3"
+        constituency: "@constituency6"
+    
+    dependent_candidate19:
+        firstName: Fadde
+        lastName: FADDE
+        candidacyNumber: 2
+        paParty: "@pa_party4"
+        constituency: "@constituency1"
+        
+    dependent_candidate20:
+        firstName: Chillen
+        lastName: CHILLEN
+        candidacyNumber: 2
+        paParty: "@pa_party4"
+        constituency: "@constituency2"
+        
+    dependent_candidate21:
+        firstName: Lallen
+        lastName: LALLEN
+        candidacyNumber: 2
+        paParty: "@pa_party4"
+        constituency: "@constituency3"
+        
+    dependent_candidate22:
+        firstName: Jaloux
+        lastName: JALOUX
+        candidacyNumber: 2
+        paParty: "@pa_party4"
+        constituency: "@constituency4"
+        
+    dependent_candidate23:
+        firstName: Chancella
+        lastName: CHANCELLA
+        candidacyNumber: 2
+        paParty: "@pa_party4"
+        constituency: "@constituency5"
+        
+    dependent_candidate24:
+        firstName: Gabi
+        lastName: GABI
+        candidacyNumber: 2
+        paParty: "@pa_party4"
+        constituency: "@constituency6"
         
 PaBundle\Entity\IndependentCandidate:
     independent_candidate1:
@@ -109,8 +231,8 @@ PaBundle\Entity\IndependentCandidate:
         constituency: "@constituency1"
         
     independent_candidate2:
-        firstName: Joel
-        lastName: JOEL
+        firstName: Joella
+        lastName: JOELLA
         candidacyNumber: 2
         constituency: "@constituency1"
         
@@ -209,73 +331,150 @@ paBundle\Entity\PaVoteCast:
         edited: false
         
     pa_vote_cast4:
-        figureValue: 350
+        figureValue: 721
         wordValue: One Thousand three hundred twenty two
         dependentCandidate: "@dependent_candidate2"
-        pollingStation: "@polling_station1"
+        pollingStation: "@polling_station4"
         edited: false
         
     pa_vote_cast5:
-        figureValue: 100
+        figureValue: 595
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate2"
-        pollingStation: "@polling_station2"
+        dependentCandidate: "@dependent_candidate3"
+        pollingStation: "@polling_station5"
         edited: false
         
     pa_vote_cast6:
-        figureValue: 250
+        figureValue: 380
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate2"
-        pollingStation: "@polling_station3"
+        dependentCandidate: "@dependent_candidate4"
+        pollingStation: "@polling_station6"
         edited: false
     
     pa_vote_cast7:
-        figureValue: 721
+        figureValue: 498
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate3"
-        pollingStation: "@polling_station4"
+        dependentCandidate: "@dependent_candidate5"
+        pollingStation: "@polling_station7"
         edited: false
         
     pa_vote_cast8:
-        figureValue: 703
+        figureValue: 150
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate4"
-        pollingStation: "@polling_station4"
+        dependentCandidate: "@dependent_candidate6"
+        pollingStation: "@polling_station8"
         edited: false
         
     pa_vote_cast9:
-        figureValue: 595
+        figureValue: 280
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate5"
-        pollingStation: "@polling_station5"
+        dependentCandidate: "@dependent_candidate7"
+        pollingStation: "@polling_station1"
         edited: false
         
     pa_vote_cast10:
-        figureValue: 634
+        figureValue: 29
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate6"
-        pollingStation: "@polling_station5"
+        dependentCandidate: "@dependent_candidate7"
+        pollingStation: "@polling_station2"
         edited: false
         
     pa_vote_cast11:
-        figureValue: 702
+        figureValue: 400
         wordValue: One Thousand three hundred twenty two
-        independentCandidate: "@independent_candidate6"
-        pollingStation: "@polling_station5"
+        independentCandidate: "@independent_candidate7"
+        pollingStation: "@polling_station3"
         edited: false
         
     pa_vote_cast12:
-        figureValue: 800
+        figureValue: 703
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate7"
-        pollingStation: "@polling_station6"
+        dependentCandidate: "@dependent_candidate8"
+        pollingStation: "@polling_station4"
         edited: false
         
     pa_vote_cast13:
-        figureValue: 600
+        figureValue: 634
         wordValue: One Thousand three hundred twenty two
-        independentCandidate: "@independent_candidate1"
+        dependentCandidate: "@dependent_candidate9"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pa_vote_cast14:
+        figureValue: 750
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate10"
+        pollingStation: "@polling_station6"
+        edited: false
+        
+    pa_vote_cast15:
+        figureValue: 503
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate11"
+        pollingStation: "@polling_station7"
+        edited: false
+        
+    pa_vote_cast16:
+        figureValue: 500
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate12"
+        pollingStation: "@polling_station8"
+        edited: false
+        
+    pa_vote_cast17:
+        figureValue: 98
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate13"
         pollingStation: "@polling_station1"
+        edited: false
+        
+    pa_vote_cast18:
+        figureValue: 240
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate13"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pa_vote_cast19:
+        figureValue: 460
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate13"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pa_vote_cast20:
+        figureValue: 700
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate14"
+        pollingStation: "@polling_station4"
+        edited: false
+        
+    pa_vote_cast21:
+        figureValue: 601
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate15"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pa_vote_cast22:
+        figureValue: 800
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate16"
+        pollingStation: "@polling_station6"
+        edited: false
+        
+    pa_vote_cast23:
+        figureValue: 300
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate17"
+        pollingStation: "@polling_station7"
+        edited: false
+    #last for UFP    
+    pa_vote_cast24:
+        figureValue: 900
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate18"
+        pollingStation: "@polling_station8"
         edited: false
         
 prBundle\Entity\prParty:
