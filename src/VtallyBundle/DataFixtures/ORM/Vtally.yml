@@ -331,73 +331,150 @@ paBundle\Entity\PaVoteCast:
         edited: false
         
     pa_vote_cast4:
-        figureValue: 350
+        figureValue: 721
         wordValue: One Thousand three hundred twenty two
         dependentCandidate: "@dependent_candidate2"
-        pollingStation: "@polling_station1"
+        pollingStation: "@polling_station4"
         edited: false
         
     pa_vote_cast5:
-        figureValue: 100
+        figureValue: 595
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate2"
-        pollingStation: "@polling_station2"
+        dependentCandidate: "@dependent_candidate3"
+        pollingStation: "@polling_station5"
         edited: false
         
     pa_vote_cast6:
-        figureValue: 250
+        figureValue: 380
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate2"
-        pollingStation: "@polling_station3"
+        dependentCandidate: "@dependent_candidate4"
+        pollingStation: "@polling_station6"
         edited: false
     
     pa_vote_cast7:
-        figureValue: 721
+        figureValue: 498
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate3"
-        pollingStation: "@polling_station4"
+        dependentCandidate: "@dependent_candidate5"
+        pollingStation: "@polling_station7"
         edited: false
         
     pa_vote_cast8:
-        figureValue: 703
+        figureValue: 150
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate4"
-        pollingStation: "@polling_station4"
+        dependentCandidate: "@dependent_candidate6"
+        pollingStation: "@polling_station8"
         edited: false
         
     pa_vote_cast9:
-        figureValue: 595
+        figureValue: 280
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate5"
-        pollingStation: "@polling_station5"
+        dependentCandidate: "@dependent_candidate7"
+        pollingStation: "@polling_station1"
         edited: false
         
     pa_vote_cast10:
-        figureValue: 634
+        figureValue: 29
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate6"
-        pollingStation: "@polling_station5"
+        dependentCandidate: "@dependent_candidate7"
+        pollingStation: "@polling_station2"
         edited: false
         
     pa_vote_cast11:
-        figureValue: 702
+        figureValue: 400
         wordValue: One Thousand three hundred twenty two
-        independentCandidate: "@independent_candidate6"
-        pollingStation: "@polling_station5"
+        independentCandidate: "@independent_candidate7"
+        pollingStation: "@polling_station3"
         edited: false
         
     pa_vote_cast12:
-        figureValue: 800
+        figureValue: 703
         wordValue: One Thousand three hundred twenty two
-        dependentCandidate: "@dependent_candidate7"
-        pollingStation: "@polling_station6"
+        dependentCandidate: "@dependent_candidate8"
+        pollingStation: "@polling_station4"
         edited: false
         
     pa_vote_cast13:
-        figureValue: 600
+        figureValue: 634
         wordValue: One Thousand three hundred twenty two
-        independentCandidate: "@independent_candidate1"
+        dependentCandidate: "@dependent_candidate9"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pa_vote_cast14:
+        figureValue: 750
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate10"
+        pollingStation: "@polling_station6"
+        edited: false
+        
+    pa_vote_cast15:
+        figureValue: 503
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate11"
+        pollingStation: "@polling_station7"
+        edited: false
+        
+    pa_vote_cast16:
+        figureValue: 500
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate12"
+        pollingStation: "@polling_station8"
+        edited: false
+        
+    pa_vote_cast17:
+        figureValue: 98
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate13"
         pollingStation: "@polling_station1"
+        edited: false
+        
+    pa_vote_cast18:
+        figureValue: 240
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate13"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pa_vote_cast19:
+        figureValue: 460
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate13"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pa_vote_cast20:
+        figureValue: 700
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate14"
+        pollingStation: "@polling_station4"
+        edited: false
+        
+    pa_vote_cast21:
+        figureValue: 601
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate15"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pa_vote_cast22:
+        figureValue: 800
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate16"
+        pollingStation: "@polling_station6"
+        edited: false
+        
+    pa_vote_cast23:
+        figureValue: 300
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate17"
+        pollingStation: "@polling_station7"
+        edited: false
+        
+    pa_vote_cast24:
+        figureValue: 900
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate18"
+        pollingStation: "@polling_station8"
         edited: false
         
 prBundle\Entity\prParty:
