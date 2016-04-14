@@ -48,7 +48,11 @@ class PrFootPrint
      * @ORM\Column(name="place", type="string", length=255, nullable=true)
      */
     private $place;
-
+    
+    public function __construct() 
+    {
+        $this->setMoment(new \DateTime("now"));
+    }
 
     /**
      * Get id
@@ -156,4 +160,3 @@ class PrFootPrint
         return $this->place;
     }
 }
-

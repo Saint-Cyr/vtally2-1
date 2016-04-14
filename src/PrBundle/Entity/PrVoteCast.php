@@ -49,10 +49,16 @@ class PrVoteCast
     private $pollingStation;
     
     /**
-     * @ORM\ManyToOne(targetEntity="PrBundle\Entity\PrParty", inversedBy="prVoteCasts")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="PrBundle\Entity\PrDependentCandidate", inversedBy="prVoteCasts")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $prParty;
+    private $prDependentCandidate;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="PrBundle\Entity\PrIndependentCandidate", inversedBy="prVoteCasts")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $prIndependentCandidate;
     
     public function __toString() {
         return $this->wordValue;
@@ -165,26 +171,50 @@ class PrVoteCast
     }
 
     /**
-     * Set prParty
+     * Set prDependentCandidate
      *
-     * @param \PrBundle\Entity\PrParty $prParty
+     * @param \PrBundle\Entity\PrDependentCandidate $prDependentCandidate
      *
      * @return PrVoteCast
      */
-    public function setPrParty(\PrBundle\Entity\PrParty $prParty)
+    public function setPrDependentCandidate(\PrBundle\Entity\PrDependentCandidate $prDependentCandidate = null)
     {
-        $this->prParty = $prParty;
+        $this->prDependentCandidate = $prDependentCandidate;
 
         return $this;
     }
 
     /**
-     * Get prParty
+     * Get prDependentCandidate
      *
-     * @return \PrBundle\Entity\PrParty
+     * @return \PrBundle\Entity\PrDependentCandidate
      */
-    public function getPrParty()
+    public function getPrDependentCandidate()
     {
-        return $this->prParty;
+        return $this->prDependentCandidate;
+    }
+
+    /**
+     * Set prIndependentCandidate
+     *
+     * @param \PrBundle\Entity\PrIndependentCandidate $prIndependentCandidate
+     *
+     * @return PrVoteCast
+     */
+    public function setPrIndependentCandidate(\PrBundle\Entity\PrIndependentCandidate $prIndependentCandidate = null)
+    {
+        $this->prIndependentCandidate = $prIndependentCandidate;
+
+        return $this;
+    }
+
+    /**
+     * Get prIndependentCandidate
+     *
+     * @return \PrBundle\Entity\PrIndependentCandidate
+     */
+    public function getPrIndependentCandidate()
+    {
+        return $this->prIndependentCandidate;
     }
 }

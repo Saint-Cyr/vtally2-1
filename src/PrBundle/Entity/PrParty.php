@@ -36,14 +36,15 @@ class PrParty
     private $candidate;
     
     /**
-     * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrVoteCast", mappedBy="prParty", cascade={"remove", "persist"})
+     * @ORM\OneToOne(targetEntity="PrBundle\Entity\PrDependentCandidate", mappedBy="prParty", cascade={"remove", "persist"})
      */
-    private $prVoteCasts;
+    private $prDependentCandidate;
     
     public function __toString() 
     {
         return $this->name;
     }
+    
     /**
      * Get id
      *
@@ -101,45 +102,28 @@ class PrParty
     {
         return $this->candidate;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->prVoteCasts = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
-     * Add prVoteCast
+     * Set prDependentCandidate
      *
-     * @param \PrBundle\Entity\PrVoteCast $prVoteCast
+     * @param \PrBundle\Entity\PrDependentCandidate $prDependentCandidate
      *
      * @return PrParty
      */
-    public function addPrVoteCast(\PrBundle\Entity\PrVoteCast $prVoteCast)
+    public function setPrDependentCandidate(\PrBundle\Entity\PrDependentCandidate $prDependentCandidate = null)
     {
-        $this->prVoteCasts[] = $prVoteCast;
+        $this->prDependentCandidate = $prDependentCandidate;
 
         return $this;
     }
 
     /**
-     * Remove prVoteCast
+     * Get prDependentCandidate
      *
-     * @param \PrBundle\Entity\PrVoteCast $prVoteCast
+     * @return \PrBundle\Entity\PrDependentCandidate
      */
-    public function removePrVoteCast(\PrBundle\Entity\PrVoteCast $prVoteCast)
+    public function getPrDependentCandidate()
     {
-        $this->prVoteCasts->removeElement($prVoteCast);
-    }
-
-    /**
-     * Get prVoteCasts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPrVoteCasts()
-    {
-        return $this->prVoteCasts;
+        return $this->prDependentCandidate;
     }
 }

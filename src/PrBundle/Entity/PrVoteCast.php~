@@ -49,10 +49,20 @@ class PrVoteCast
     private $pollingStation;
     
     /**
-     * @ORM\ManyToOne(targetEntity="PrBundle\Entity\PrParty", inversedBy="prVoteCasts")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="PrBundle\Entity\PrDependentCandidate", inversedBy="prVoteCasts")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $prParty;
+    private $prDependentCandidate;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="PrBundle\Entity\PrIndependentCandidate", inversedBy="prVoteCasts")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $prIndependentCandidate;
+    
+    public function __toString() {
+        return $this->wordValue;
+    }
     
     /**
      * Get id
@@ -158,29 +168,5 @@ class PrVoteCast
     public function getPollingStation()
     {
         return $this->pollingStation;
-    }
-
-    /**
-     * Set prParty
-     *
-     * @param \PrBundle\Entity\PrParty $prParty
-     *
-     * @return PrVoteCast
-     */
-    public function setPrParty(\PrBundle\Entity\PrParty $prParty)
-    {
-        $this->prParty = $prParty;
-
-        return $this;
-    }
-
-    /**
-     * Get prParty
-     *
-     * @return \PrBundle\Entity\PrParty
-     */
-    public function getPrParty()
-    {
-        return $this->prParty;
     }
 }
