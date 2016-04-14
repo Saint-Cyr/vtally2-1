@@ -469,7 +469,7 @@ paBundle\Entity\PaVoteCast:
         dependentCandidate: "@dependent_candidate17"
         pollingStation: "@polling_station7"
         edited: false
-        
+    #last for UFP    
     pa_vote_cast24:
         figureValue: 900
         wordValue: One Thousand three hundred twenty two
