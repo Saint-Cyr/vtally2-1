@@ -477,6 +477,62 @@ paBundle\Entity\PaVoteCast:
         pollingStation: "@polling_station8"
         edited: false
         
+    pa_vote_cast25:
+        figureValue: 0
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate19"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pa_vote_cast26:
+        figureValue: 23
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate19"
+        pollingStation: "@polling_station2"
+        edited: false
+        
+    pa_vote_cast27:
+        figureValue: 600
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate19"
+        pollingStation: "@polling_station3"
+        edited: false
+        
+    pa_vote_cast28:
+        figureValue: 720
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate20"
+        pollingStation: "@polling_station4"
+        edited: false
+        
+    pa_vote_cast29:
+        figureValue: 509
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate21"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pa_vote_cast30:
+        figureValue: 423
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate22"
+        pollingStation: "@polling_station6"
+        edited: false
+        
+    pa_vote_cast31:
+        figureValue: 900
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate23"
+        pollingStation: "@polling_station7"
+        edited: false
+        
+    pa_vote_cast32:
+        figureValue: 723
+        wordValue: One Thousand three hundred twenty two
+        dependentCandidate: "@dependent_candidate24"
+        pollingStation: "@polling_station8"
+        edited: false
+        
 prBundle\Entity\prParty:
     pr_party1:
         name: NPP
