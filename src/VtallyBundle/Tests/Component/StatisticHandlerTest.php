@@ -35,6 +35,9 @@ class StatisticHandlerTest extends WebTestCase
         $const1 = $this->em->getRepository('VtallyBundle:Constituency')->find(1);
         $const2 = $this->em->getRepository('VtallyBundle:Constituency')->find(2);
         $const3 = $this->em->getRepository('VtallyBundle:Constituency')->find(3);
+        $const4 = $this->em->getRepository('VtallyBundle:Constituency')->find(4);
+        $const5 = $this->em->getRepository('VtallyBundle:Constituency')->find(5);
+        $const6 = $this->em->getRepository('VtallyBundle:Constituency')->find(6);
         
         //Get the set of parties
         $parties = $this->em->getRepository('PaBundle:PaParty')->findAll();
@@ -42,17 +45,39 @@ class StatisticHandlerTest extends WebTestCase
         //Get the set of independent
         $indepentCandidates = $this->em->getRepository('PaBundle:independentCandidate')->findAll();
         
-        //Get the 
-        $constituencies = array($const1, $const2, $const3);
+        //Gather the constituencies in on array 
+        $constituencies = array($const1, $const2, $const3, $const4, $const5, $const6);
         
-        //Test that there are 2 sites for NPP (Dependent Candidate)
+        //Call the statisticHandler service's methode
         $sites = $statisticHandler->getSiteNumber($constituencies, $parties, $indepentCandidates);
         $parties1 = $sites['parties'];
         
-        $this->assertEquals(count($parties1), 3);
+        //Test that there are 2 sites for NPP (Dependent Candidate)
         $NPP = $parties[0];
         $this->assertEquals($NPP->getSiteNumber(), 2);
         $this->assertEquals($NPP->getName(), 'NPP');
+        
+        //Test that there are 0 sites for NDC (Dependent Candidate)
+        $NDC = $parties[1];
+        $this->assertEquals($NDC->getSiteNumber(), 0);
+        $this->assertEquals($NDC->getName(), 'NDC');
+        
+        //Test that there are 0 sites for UFP (Dependent Candidate)
+        $UFP = $parties[2];
+        $this->assertEquals($UFP->getSiteNumber(), 1);
+        $this->assertEquals($UFP->getName(), 'UFP');
+        
+        //Test that there are 0 sites for UFP (Dependent Candidate)
+        $CPP = $parties[3];
+        $this->assertEquals($CPP->getSiteNumber(), 1);
+        $this->assertEquals($CPP->getName(), 'CPP');
+        
+        //Test that there is 1 site for the IC (Independent Candidate)
+        $this->assertEquals($sites['IC'], 2);
+        
+        //Technical verification
+        //Check the total number of the parties (defined in the fixtures) involved
+        $this->assertEquals(count($parties1), 4);
         
         //Make sure that if non arguments has be given, the output is null
         $site1 = $statisticHandler->getSiteNumber($constituencies, null, null);
@@ -68,9 +93,5 @@ class StatisticHandlerTest extends WebTestCase
         $site1 = $statisticHandler->getSiteNumber($constituencies, null, $indepentCandidates);
         $site2 = array('parties' => array(), 'IC' => array());
         $this->assertNotEquals($site1, $site2);
-        
-        //Test that there is 1 site for the IC (Independent Candidate)
-        $site1 = $statisticHandler->getSiteNumber($constituencies, null, $indepentCandidates);
-        $this->assertEquals($site1['IC'], 1);
     }
 }

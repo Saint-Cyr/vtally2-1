@@ -43,7 +43,9 @@ class StatisticHandler
             
             $sites['parties'] = $parties;
             
-        }elseif ($indCandidates) {
+        }
+        
+        if ($indCandidates) {
             
             $ICsite = 0;
             

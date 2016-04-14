@@ -1,4 +1,11 @@
 <?php
+/*
+ * This file is part of Components of VTALLY2 project
+ * contributor(s): Saint-Cyr MAPOUKA
+ * (c) YAME Group <info@yamegroup.com>
+ * For the full copyrght and license information, please view the LICENSE
+ * file that was distributed with this source code
+ */
 
 namespace Tests\AppBundle\Controller;
 
@@ -138,9 +145,19 @@ class DefaultControllerTest extends WebTestCase
         
         //Winner of the consituency 4
         $this->assertEquals(800, $winner4->getTotalVoteCast());
-        //$this->assertEquals('UFP', $winner4->getPaParty());
+        $this->assertEquals('UFP', $winner4->getPaParty());
         $this->assertEquals('Victorien', $winner4->getFirstName());
         $this->assertNotTrue($winner4->isIndependentCandidate());
+        
+        //Winner of the consituency 5
+        $this->assertEquals(900, $winner5->getTotalVoteCast());
+        $this->assertEquals('Chancella', $winner5->getFirstName());
+        $this->assertNotTrue($winner5->isIndependentCandidate());
+        
+        //Winner of the consituency 6
+        $this->assertEquals(1023, $winner6->getTotalVoteCast());
+        $this->assertEquals('Baden', $winner6->getFirstName());
+        $this->assertTrue($winner6->isIndependentCandidate());
     }
     
     public function initialization()

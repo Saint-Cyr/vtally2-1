@@ -533,6 +533,147 @@ paBundle\Entity\PaVoteCast:
         pollingStation: "@polling_station8"
         edited: false
         
+    #Independent candidate
+    pa_vote_cast33:
+        figureValue: 100
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate1"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pa_vote_cast34:
+        figureValue: 400
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate1"
+        pollingStation: "@polling_station2"
+        edited: false
+        
+    pa_vote_cast35:
+        figureValue: 100
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate1"
+        pollingStation: "@polling_station3"
+        edited: false
+        
+    pa_vote_cast36:
+        figureValue: 7
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate2"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pa_vote_cast37:
+        figureValue: 150
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate2"
+        pollingStation: "@polling_station2"
+        edited: false
+        
+    pa_vote_cast38:
+        figureValue: 150
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate2"
+        pollingStation: "@polling_station3"
+        edited: false
+        
+    pa_vote_cast39:
+        figureValue: 2
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate3"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pa_vote_cast40:
+        figureValue: 140
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate3"
+        pollingStation: "@polling_station2"
+        edited: false
+        
+    pa_vote_cast41:
+        figureValue: 360
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate3"
+        pollingStation: "@polling_station3"
+        edited: false
+        
+    pa_vote_cast42:
+        figureValue: 201
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate4"
+        pollingStation: "@polling_station4"
+        edited: false
+        
+    pa_vote_cast43:
+        figureValue: 290
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate5"
+        pollingStation: "@polling_station4"
+        edited: false
+        
+    pa_vote_cast44:
+        figureValue: 702
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate6"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pa_vote_cast45:
+        figureValue: 300
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate7"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pa_vote_cast46:
+        figureValue: 280
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate8"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pa_vote_cast47:
+        figureValue: 401
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate9"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pa_vote_cast48:
+        figureValue: 600
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate10"
+        pollingStation: "@polling_station6"
+        edited: false
+        
+    pa_vote_cast49:
+        figureValue: 450
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate11"
+        pollingStation: "@polling_station6"
+        edited: false
+        
+    pa_vote_cast50:
+        figureValue: 700
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate12"
+        pollingStation: "@polling_station7"
+        edited: false
+        
+    pa_vote_cast51:
+        figureValue: 329
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate13"
+        pollingStation: "@polling_station7"
+        edited: false
+        
+    pa_vote_cast52:
+        figureValue: 1023
+        wordValue: One Thousand three hundred twenty two
+        independentCandidate: "@independent_candidate14"
+        pollingStation: "@polling_station8"
+        edited: false
+        
 prBundle\Entity\prParty:
     pr_party1:
         name: NPP
