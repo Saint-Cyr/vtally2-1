@@ -50,11 +50,6 @@ class PrDependentCandidate
     private $candidacyNumber;
     
     /**
-     * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrVoteCast", mappedBy="prDependentCandidate", cascade={"remove"})
-     */
-    private $prVoteCasts;
-    
-    /**
      * @ORM\OneToOne(targetEntity="PrBundle\Entity\PrParty", inversedBy="prDependentCandidate")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -164,47 +159,6 @@ class PrDependentCandidate
     public function getCandidacyNumber()
     {
         return $this->candidacyNumber;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->prVoteCasts = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add prVoteCast
-     *
-     * @param \PrBundle\Entity\PrVoteCast $prVoteCast
-     *
-     * @return PrDependentCandidate
-     */
-    public function addPrVoteCast(\PrBundle\Entity\PrVoteCast $prVoteCast)
-    {
-        $this->prVoteCasts[] = $prVoteCast;
-
-        return $this;
-    }
-
-    /**
-     * Remove prVoteCast
-     *
-     * @param \PrBundle\Entity\PrVoteCast $prVoteCast
-     */
-    public function removePrVoteCast(\PrBundle\Entity\PrVoteCast $prVoteCast)
-    {
-        $this->prVoteCasts->removeElement($prVoteCast);
-    }
-
-    /**
-     * Get prVoteCasts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPrVoteCasts()
-    {
-        return $this->prVoteCasts;
     }
 
     /**

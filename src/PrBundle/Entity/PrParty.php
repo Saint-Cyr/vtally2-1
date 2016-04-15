@@ -40,6 +40,11 @@ class PrParty
      */
     private $prDependentCandidate;
     
+    /**
+     * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrVoteCast", mappedBy="prParty", cascade={"remove"})
+     */
+    private $prVoteCasts;
+    
     public function __toString() 
     {
         return $this->name;
@@ -125,5 +130,46 @@ class PrParty
     public function getPrDependentCandidate()
     {
         return $this->prDependentCandidate;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->prVoteCasts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add prVoteCast
+     *
+     * @param \PrBundle\Entity\PrVoteCast $prVoteCast
+     *
+     * @return PrParty
+     */
+    public function addPrVoteCast(\PrBundle\Entity\PrVoteCast $prVoteCast)
+    {
+        $this->prVoteCasts[] = $prVoteCast;
+
+        return $this;
+    }
+
+    /**
+     * Remove prVoteCast
+     *
+     * @param \PrBundle\Entity\PrVoteCast $prVoteCast
+     */
+    public function removePrVoteCast(\PrBundle\Entity\PrVoteCast $prVoteCast)
+    {
+        $this->prVoteCasts->removeElement($prVoteCast);
+    }
+
+    /**
+     * Get prVoteCasts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrVoteCasts()
+    {
+        return $this->prVoteCasts;
     }
 }
