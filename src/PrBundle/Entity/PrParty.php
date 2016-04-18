@@ -20,6 +20,8 @@ class PrParty
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    private $voteCast;
 
     /**
      * @var string
@@ -41,6 +43,21 @@ class PrParty
     public function __toString() 
     {
         return $this->name;
+    }
+    
+    public function initializeVoteCast($voteCast)
+    {
+        $this->voteCast = $voteCast;
+    }
+    
+    public function increaseVoteCast($voteCast)
+    {
+        $this->voteCast = $this->voteCast + $voteCast;
+    }
+    
+    public function getVoteCast()
+    {
+        return $this->voteCast;
     }
     
     /**
