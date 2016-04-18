@@ -18,7 +18,7 @@ class PrVoteCastAdmin extends Admin
         $datagridMapper
             ->add('figureValue')
             ->add('wordValue')
-            ->add('prDependentCandidate')
+            ->add('prParty')
             ->add('edited')
             ->add('pollingStation')
         ;
@@ -34,7 +34,7 @@ class PrVoteCastAdmin extends Admin
             ->add('figureValue')
             ->add('wordValue')
             ->add('pollingStation')
-            ->add('prDependentCandidate')
+            ->add('prParty')
             ->add('edited')
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -57,7 +57,7 @@ class PrVoteCastAdmin extends Admin
             ->add('pollingStation', 'entity', array('class' => 'VtallyBundle\Entity\PollingStation',
                                                     
                                                     'query_builder' => function(\VtallyBundle\Repository\PollingStationRepository $r){return $r->getLimitedList(100);}))
-            ->add('prDependentCandidate')
+            ->add('prParty')
         ;
     }
 
@@ -71,7 +71,7 @@ class PrVoteCastAdmin extends Admin
             ->add('figureValue')
             ->add('wordValue')
             ->add('pollingStation')
-            ->add('prDependentCandidate')
+            ->add('prParty')
             ->add('edited')
         ;
     }

@@ -27,13 +27,6 @@ class PrParty
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="candidate", type="string", length=255)
-     */
-    private $candidate;
     
     /**
      * @ORM\OneToOne(targetEntity="PrBundle\Entity\PrDependentCandidate", mappedBy="prParty", cascade={"remove", "persist"})
@@ -82,30 +75,6 @@ class PrParty
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set candidate
-     *
-     * @param string $candidate
-     *
-     * @return PrParty
-     */
-    public function setCandidate($candidate)
-    {
-        $this->candidate = $candidate;
-
-        return $this;
-    }
-
-    /**
-     * Get candidate
-     *
-     * @return string
-     */
-    public function getCandidate()
-    {
-        return $this->candidate;
     }
 
     /**

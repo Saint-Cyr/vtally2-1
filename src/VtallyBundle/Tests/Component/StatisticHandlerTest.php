@@ -94,4 +94,9 @@ class StatisticHandlerTest extends WebTestCase
         $site2 = array('parties' => array(), 'IC' => array());
         $this->assertNotEquals($site1, $site2);
     }
+    
+    public function testPresidentialMerge()
+    {
+        
+    }
 }

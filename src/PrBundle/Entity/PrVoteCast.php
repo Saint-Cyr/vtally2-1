@@ -55,7 +55,7 @@ class PrVoteCast
     private $prParty;
     
     public function __toString() {
-        return $this->wordValue;
+        return $this->getWordValue();
     }
     
     /**

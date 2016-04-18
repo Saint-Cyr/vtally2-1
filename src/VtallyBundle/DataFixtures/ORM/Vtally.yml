@@ -21,19 +21,19 @@ VtallyBundle\Entity\Constituency:
     constituency2:
         name: Constituency 2
         code: CT<numberBetween(1, 300)>
-        region: "@region2"
+        region: "@region1"
         collationCenter (unique): "@collation_center*"
         
     constituency3:
         name: Constituency 3
         code: CT<numberBetween(1, 300)>
-        region: "@region3"
+        region: "@region1"
         collationCenter (unique): "@collation_center*"
         
     constituency4:
         name: Constituency 4
         code: CT<numberBetween(1, 300)>
-        region: "@region1"
+        region: "@region2"
         collationCenter (unique): "@collation_center*"
         
     constituency5:
@@ -45,11 +45,23 @@ VtallyBundle\Entity\Constituency:
     constituency6:
         name: Constituency 6
         code: CT<numberBetween(1, 300)>
-        region: "@region3"
+        region: "@region2"
         collationCenter (unique): "@collation_center*"
         
     constituency7:
         name: Constituency 7
+        code: CT<numberBetween(1, 300)>
+        region: "@region3"
+        collationCenter (unique): "@collation_center*"
+    
+    constituency8:
+        name: Constituency 8
+        code: CT<numberBetween(1, 300)>
+        region: "@region3"
+        collationCenter (unique): "@collation_center*"
+        
+    constituency9:
+        name: Constituency 9
         code: CT<numberBetween(1, 300)>
         region: "@region3"
         collationCenter (unique): "@collation_center*"
@@ -308,7 +320,8 @@ PaBundle\Entity\IndependentCandidate:
         candidacyNumber: 17
         constituency: "@constituency6"
         
-paBundle\Entity\PaVoteCast:
+PaBundle\Entity\PaVoteCast:
+    #parliamentary vote cast
     pa_vote_cast1:
         figureValue: 100
         wordValue: One Thousand three hundred twenty two
@@ -674,38 +687,343 @@ paBundle\Entity\PaVoteCast:
         pollingStation: "@polling_station8"
         edited: false
         
-prBundle\Entity\prParty:
+PrBundle\Entity\prParty:
     pr_party1:
         name: NPP
-        candidate: <name()>
     pr_party2:
         name: NDC
-        candidate: <name()>
     pr_party3:
         name: UFP
-        candidate: <name()>
     pr_party4:
         name: CPP
-        candidate: <name()>
     pr_party5:
         name: PPP
-        candidate: <name()>
     pr_party6:
         name: NCP
-        candidate: <name()>
     pr_party7:
         name: PCP
-        candidate: <name()>
     pr_party8:
         name: GFP
-        candidate: <name()>
         
-prBundle\Entity\PrVoteCast:
-    pr_vote_cast_{1..10}:
-        figureValue: 2322
-        wordValue: Two Thousand three hundred twenty two
+PrBundle\Entity\PrVoteCast:
+    #NPP (total: 1000)
+    pr_vote_cast1:
+        figureValue: 0
+        wordValue: One Thousand three hundred twenty two
         prParty: "@pr_party1"
-        pollingStation: "@polling_station*"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pr_vote_cast2:
+        figureValue: 300
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party1"
+        pollingStation: "@polling_station2"
+        edited: false
+        
+    pr_vote_cast3:
+        figureValue: 700
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party1"
+        pollingStation: "@polling_station3"
+        edited: false
+        
+    #NDC (total: 800)
+    pr_vote_cast4:
+        figureValue: 1
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party2"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pr_vote_cast5:
+        figureValue: 700
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party2"
+        pollingStation: "@polling_station2"
+        edited: false
+        
+    pr_vote_cast6:
+        figureValue: 99
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party2"
+        pollingStation: "@polling_station3"
+        edited: false
+    
+    #UFP (total: 500)
+    pr_vote_cast7:
+        figureValue: 150
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party3"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pr_vote_cast8:
+        figureValue: 50
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party3"
+        pollingStation: "@polling_station2"
+        edited: false
+        
+    pr_vote_cast9:
+        figureValue: 300
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party3"
+        pollingStation: "@polling_station3"
+        edited: false
+        
+    #CPP (total: 450)
+    pr_vote_cast10:
+        figureValue: 25
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party4"
+        pollingStation: "@polling_station1"
+        edited: false
+        
+    pr_vote_cast11:
+        figureValue: 25
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party4"
+        pollingStation: "@polling_station2"
+        edited: false
+        
+    pr_vote_cast12:
+        figureValue: 400
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party4"
+        pollingStation: "@polling_station3"
+        edited: false
+    
+    #Const2
+    pr_vote_cast13:
+        figureValue: 900
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party1"
+        pollingStation: "@polling_station4"
+        edited: false
+        
+    pr_vote_cast14:
+        figureValue: 950
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party2"
+        pollingStation: "@polling_station4"
+        edited: false
+        
+    pr_vote_cast15:
+        figureValue: 100
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party3"
+        pollingStation: "@polling_station4"
+        edited: false
+        
+    pr_vote_cast16:
+        figureValue: 70
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party4"
+        pollingStation: "@polling_station4"
+        edited: false
+        
+    #Const3
+    pr_vote_cast17:
+        figureValue: 600
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party1"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pr_vote_cast18:
+        figureValue: 1000
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party2"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pr_vote_cast19:
+        figureValue: 1500
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party3"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    pr_vote_cast20:
+        figureValue: 700
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party4"
+        pollingStation: "@polling_station5"
+        edited: false
+        
+    #Const4
+    pr_vote_cast21:
+        figureValue: 3000
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party1"
+        pollingStation: "@polling_station6"
+        edited: false
+        
+    pr_vote_cast22:
+        figureValue: 975
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party2"
+        pollingStation: "@polling_station6"
+        edited: false
+        
+    pr_vote_cast123:
+        figureValue: 1500
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party3"
+        pollingStation: "@polling_station6"
+        edited: false
+        
+    pr_vote_cast24:
+        figureValue: 350
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party4"
+        pollingStation: "@polling_station6"
+        edited: false
+        
+    #Const5
+    pr_vote_cast25:
+        figureValue: 1600
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party1"
+        pollingStation: "@polling_station7"
+        edited: false
+        
+    pr_vote_cast26:
+        figureValue: 1400
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party2"
+        pollingStation: "@polling_station7"
+        edited: false
+        
+    pr_vote_cast127:
+        figureValue: 1020
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party3"
+        pollingStation: "@polling_station7"
+        edited: false
+        
+    pr_vote_cast28:
+        figureValue: 1000
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party4"
+        pollingStation: "@polling_station7"
+        edited: false
+        
+    #Const6
+    pr_vote_cast29:
+        figureValue: 20
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party1"
+        pollingStation: "@polling_station8"
+        edited: false
+        
+    pr_vote_cast30:
+        figureValue: 3000
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party2"
+        pollingStation: "@polling_station8"
+        edited: false
+        
+    pr_vote_cast31:
+        figureValue: 4500
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party3"
+        pollingStation: "@polling_station8"
+        edited: false
+        
+    pr_vote_cast32:
+        figureValue: 2800
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party4"
+        pollingStation: "@polling_station8"
+        edited: false
+        
+    #Const7
+    pr_vote_cast33:
+        figureValue: 2001
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party1"
+        pollingStation: "@polling_station9"
+        edited: false
+        
+    pr_vote_cast34:
+        figureValue: 2500
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party2"
+        pollingStation: "@polling_station9"
+        edited: false
+        
+    pr_vote_cast35:
+        figureValue: 1023
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party3"
+        pollingStation: "@polling_station9"
+        edited: false
+        
+    pr_vote_cast36:
+        figureValue: 700
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party4"
+        pollingStation: "@polling_station9"
+        edited: false
+        
+    #Const8
+    pr_vote_cast37:
+        figureValue: 3027
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party1"
+        pollingStation: "@polling_station10"
+        edited: false
+        
+    pr_vote_cast38:
+        figureValue: 3029
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party2"
+        pollingStation: "@polling_station10"
+        edited: false
+        
+    pr_vote_cast39:
+        figureValue: 1750
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party3"
+        pollingStation: "@polling_station10"
+        edited: false
+        
+    pr_vote_cast40:
+        figureValue: 1802
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party4"
+        pollingStation: "@polling_station10"
+        edited: false
+        
+    #Const9
+    pr_vote_cast41:
+        figureValue: 7020
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party1"
+        pollingStation: "@polling_station11"
+        edited: false
+        
+    pr_vote_cast42:
+        figureValue: 6003
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party2"
+        pollingStation: "@polling_station11"
+        edited: false
+        
+    pr_vote_cast43:
+        figureValue: 4070
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party3"
+        pollingStation: "@polling_station11"
+        edited: false
+        
+    pr_vote_cast44:
+        figureValue: 3099
+        wordValue: One Thousand three hundred twenty two
+        prParty: "@pr_party4"
+        pollingStation: "@polling_station11"
         edited: false
         
 VtallyBundle\Entity\Region:
@@ -774,6 +1092,24 @@ VtallyBundle\Entity\PollingStation:
         name: Pol. Station 8
         code: PS 8
         constituency: "@constituency6"
+        district: <city()>
+        
+    polling_station9:
+        name: Pol. Station 9
+        code: PS 9
+        constituency: "@constituency7"
+        district: <city()>
+        
+    polling_station10:
+        name: Pol. Station 10
+        code: PS 10
+        constituency: "@constituency8"
+        district: <city()>
+    
+    polling_station11:
+        name: Pol. Station 11
+        code: PS 11
+        constituency: "@constituency9"
         district: <city()>
 
 VtallyBundle\Entity\Setting:
