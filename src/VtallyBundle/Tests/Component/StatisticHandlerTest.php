@@ -12,6 +12,7 @@ namespace VtallyBundle\Tests\Component;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use PrBundle\Entity\PrParty;
 
 class StatisticHandlerTest extends WebTestCase
 {
@@ -106,19 +107,60 @@ class StatisticHandlerTest extends WebTestCase
      */
     public function testPresidentialMerge()
     {
-        //Collect some parties from the DB
-        $NPP = $this->em->getRepository('PrBundle:PrParty')->find(1);
-        $NDC = $this->em->getRepository('PrBundle:PrParty')->find(2);
-        $UFP = $this->em->getRepository('PrBundle:PrParty')->find(3);
-        $CPP = $this->em->getRepository('PrBundle:PrParty')->find(4);
-        //Make sure the fixture is well organized
-        $this->assertEquals('NPP', $NPP->getName());
-        $this->assertEquals('NDC', $NDC->getName());
-        $this->assertEquals('UFP', $UFP->getName());
-        $this->assertEquals('CPP', $CPP->getName());
+        //Collection of a given pollingStation (P1)
+        $NPP1 = new PrParty;
+        $NDC1 = new PrParty;
+        $UFP1 = new PrParty;
+        $CPP1 = new PrParty;
+        //Collection of a given pollingStation (P2)
+        $NPP2 = new PrParty;
+        $NDC2 = new PrParty;
+        $UFP2 = new PrParty;
+        $CPP2 = new PrParty;
+        //Merged collection
+        $NPP3 = new PrParty;
+        $NDC3 = new PrParty;
+        $UFP3 = new PrParty;
+        $CPP3 = new PrParty;
+        $CPP4 = new PrParty;
         
-        $parties1 = array($NPP, $NDC);
-        $parties2 = array($UFP, $CPP);
+        //Collection of a given pollingStation (P1)
+        $NPP1->initializeVoteCast(20);
+        $NDC1->initializeVoteCast(15);
+        $UFP1->initializeVoteCast(12);
+        $CPP1->initializeVoteCast(10);
+        $NPP1->setName('NPP');
+        $NDC1->setName('NDC');
+        $UFP1->setName('UFP');
+        $CPP1->setName('CPP');
+        $CPP4->setName('CPP');
+        //Collection of a given pollingStation (P2)
+        $NPP2->initializeVoteCast(1);
+        $NDC2->initializeVoteCast(1);
+        $UFP2->initializeVoteCast(1);
+        $CPP2->initializeVoteCast(0);
+        $NPP2->setName('NPP');
+        $NDC2->setName('NDC');
+        $UFP2->setName('UFP');
+        $CPP2->setName('CPP');
+        //Merged collection
+        $NPP3->initializeVoteCast(21);
+        $NDC3->initializeVoteCast(16);
+        $UFP3->initializeVoteCast(13);
+        $CPP3->initializeVoteCast(10);
+        $NPP3->setName('NPP');
+        $NDC3->setName('NDC');
+        $UFP3->setName('UFP');
+        $CPP3->setName('CPP');
         
+        $parties1 = array($NPP1, $NDC1, $UFP1, $CPP1);
+        $parties2 = array($NPP2, $NDC2, $UFP2, $CPP2, $CPP4);
+        $parties3 = array($NPP3, $NDC3, $UFP3, $CPP3);
+        
+        $mergedOne = $this->statisticHandler->presidentialMerge($parties1, $parties2);
+        
+        $this->assertEquals($mergedOne, $parties3);
     }
+    
+    
 }
