@@ -33,10 +33,11 @@ class StatisticHandler
                     }
                 }
             }
+            
             $sites['parties'] = $parties;
         }
         
-        if ($indCandidates) {
+        if($indCandidates) {
             $ICsite = 0;
             foreach ($indCandidates as $candidate){
                 foreach ($constituencies as $const){
@@ -45,13 +46,36 @@ class StatisticHandler
                     }
                 }
             }
+            
             $sites['IC'] = $ICsite;
-        }   
+        }
+        
         return $sites;
     }
     
-    public function getPresidentialMerge()
+    public function presidentialMerge(array $parties1, array $parties2)
     {
-        return true;
+        foreach ($parties1 as $party1){
+            
+            if(!($this->findPartyByName($party1->getName(), $parties2))){
+                return;
+            }
+            
+            $party2 = $this->findPartyByName($party1->getName(), $parties2);
+            $party1->increaseVoteCast($party2->getVoteCast());
+        }
+        
+        return $parties1;
+    }
+    
+    public function findPartyByName($name, $parties)
+    {
+        foreach ( $parties as $element ) {
+            if ( $name == $element->getName() ) {
+                return $element;
+            }
+        }
+
+        return false;
     }
 }
