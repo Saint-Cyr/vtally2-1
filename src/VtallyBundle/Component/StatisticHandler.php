@@ -23,47 +23,35 @@ class StatisticHandler
         $sites = array('parties' => array(), 'IC' => array());
         
         if($parties){
-            
-            foreach ($parties as $party){
-                
+            foreach ($parties as $party){  
                 $depCandidates = $party->getDependentCandidates();
-                
-                foreach ($depCandidates as $candidate){
-                    
+                foreach ($depCandidates as $candidate){ 
                     foreach ($constituencies as $const){
-                        
-                        if($const->getWinner() === $candidate){
-                            
-                            $party->increaseSiteNumber();
-                            
+                        if($const->getWinner() === $candidate){ 
+                            $party->increaseSiteNumber();  
                         }
                     }
                 }
             }
-            
             $sites['parties'] = $parties;
-            
         }
         
         if ($indCandidates) {
-            
             $ICsite = 0;
-            
             foreach ($indCandidates as $candidate){
-                
                 foreach ($constituencies as $const){
-                    
                     if($const->getWinner() === $candidate){
-                        
                         $ICsite++;
-                        
                     }
                 }
             }
-            
             $sites['IC'] = $ICsite;
         }   
-        
         return $sites;
+    }
+    
+    public function getPresidentialMerge()
+    {
+        return true;
     }
 }

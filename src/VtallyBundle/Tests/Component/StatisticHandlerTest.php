@@ -17,7 +17,9 @@ class StatisticHandlerTest extends WebTestCase
 {
     private $em;
     private $application;
-    
+    private $statisticHandler;
+
+
     public function setUp()
     {
         static::$kernel = static::createKernel();
@@ -25,12 +27,15 @@ class StatisticHandlerTest extends WebTestCase
         
         $this->application = new Application(static::$kernel);
         $this->em = $this->application->getKernel()->getContainer()->get('doctrine.orm.entity_manager');
+        $this->statisticHandler = $this->application->getKernel()->getContainer()->get('vtally.statistic_handler');
     }
     
+    /**
+     * Test scenario for Parliamentary
+     * Contributor: Saint-Cyr MAPOUKA
+     */
     public function testGetSiteNumber()
-    {
-        $statisticHandler = $this->application->getKernel()->getContainer()->get('vtally.statistic_handler');
-        
+    {   
         //Get a set of constituencies
         $const1 = $this->em->getRepository('VtallyBundle:Constituency')->find(1);
         $const2 = $this->em->getRepository('VtallyBundle:Constituency')->find(2);
@@ -49,7 +54,7 @@ class StatisticHandlerTest extends WebTestCase
         $constituencies = array($const1, $const2, $const3, $const4, $const5, $const6);
         
         //Call the statisticHandler service's methode
-        $sites = $statisticHandler->getSiteNumber($constituencies, $parties, $indepentCandidates);
+        $sites = $this->statisticHandler->getSiteNumber($constituencies, $parties, $indepentCandidates);
         $parties1 = $sites['parties'];
         
         //Test that there are 2 sites for NPP (Dependent Candidate)
@@ -80,23 +85,40 @@ class StatisticHandlerTest extends WebTestCase
         $this->assertEquals(count($parties1), 4);
         
         //Make sure that if non arguments has be given, the output is null
-        $site1 = $statisticHandler->getSiteNumber($constituencies, null, null);
+        $site1 = $this->statisticHandler->getSiteNumber($constituencies, null, null);
         $site2 = array('parties' => array(), 'IC' => array());
         $this->assertEquals($site1, $site2);
         
         //Test when only parties are available
-        $site1 = $statisticHandler->getSiteNumber($constituencies, $parties, null);
+        $site1 = $this->statisticHandler->getSiteNumber($constituencies, $parties, null);
         $site2 = array('parties' => array(), 'IC' => array());
         $this->assertNotEquals($site1, $site2);
         
         //Test when only indenpendent candidates are available
-        $site1 = $statisticHandler->getSiteNumber($constituencies, null, $indepentCandidates);
+        $site1 = $this->statisticHandler->getSiteNumber($constituencies, null, $indepentCandidates);
         $site2 = array('parties' => array(), 'IC' => array());
         $this->assertNotEquals($site1, $site2);
     }
     
+    /**
+     * Test scenario for Presidential
+     * Contributor: Saint-Cyr MAPOUKA
+     */
     public function testPresidentialMerge()
     {
+        //Collect some parties from the DB
+        $NPP = $this->em->getRepository('PrBundle:PrParty')->find(1);
+        $NDC = $this->em->getRepository('PrBundle:PrParty')->find(2);
+        $UFP = $this->em->getRepository('PrBundle:PrParty')->find(3);
+        $CPP = $this->em->getRepository('PrBundle:PrParty')->find(4);
+        //Make sure the fixture is well organized
+        $this->assertEquals('NPP', $NPP->getName());
+        $this->assertEquals('NDC', $NDC->getName());
+        $this->assertEquals('UFP', $UFP->getName());
+        $this->assertEquals('CPP', $CPP->getName());
+        
+        $parties1 = array($NPP, $NDC);
+        $parties2 = array($UFP, $CPP);
         
     }
 }
