@@ -162,5 +162,91 @@ class StatisticHandlerTest extends WebTestCase
         $this->assertEquals($mergedOne, $parties3);
     }
     
+    public function testGetPresidentialPollingStation()
+    {
+        
+        //Collection of a given pollingStation (P1)
+        $NPP1 = new PrParty;
+        $NDC1 = new PrParty;
+        $UFP1 = new PrParty;
+        $CPP1 = new PrParty;
+        //Make sure to have the same data like in the fixture
+        $NPP1->initializeVoteCast(0);
+        $NDC1->initializeVoteCast(1);
+        $UFP1->initializeVoteCast(150);
+        $CPP1->initializeVoteCast(25);
+        
+        $NPP1->setName('NPP');
+        $NDC1->setName('NDC');
+        
+        $parties1 = array($NPP1, $NDC1, $UFP1, $CPP1);
+        //Get the polling Station 1
+        $pollingStation1 = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+        //Get the result from the service
+        $parties2 = $this->statisticHandler->getPresidentialPollingStation($pollingStation1);
+        //The result ($parties1) should be the same than $parties2
+        $this->assertEquals($parties1[0]->getVoteCast(), $parties2[0]->getVoteCast());
+        $this->assertEquals($parties1[1]->getVoteCast(), $parties2[1]->getVoteCast());
+        $this->assertEquals($parties1[2]->getVoteCast(), $parties2[2]->getVoteCast());
+        $this->assertEquals($parties1[3]->getVoteCast(), $parties2[3]->getVoteCast());
+        
+        $this->assertEquals($parties1[0]->getName(), $parties2[0]->getName());
+        $this->assertEquals($parties1[1]->getName(), $parties2[1]->getName());
+    }
+    
+    public function testGetPresidentialConstituency()
+    {
+        //Collect all the Presidential Parties
+        $_parties = $this->em->getRepository('PrBundle:PrParty')->findAll();
+        
+        foreach ($_parties as $p){
+            $parties[] = $p;
+        }
+        //Test for constituency 1
+        $const1 = $this->em->getRepository('VtallyBundle:Constituency')->find(1);
+        
+        $parties2 = $this->statisticHandler->getPresidentialConstituency($const1);
+        $this->assertEquals($parties2[4]->getName(), 'NPP');
+        $this->assertEquals($parties2[3]->getName(), 'NDC');
+        $this->assertEquals($parties2[7]->getName(), 'UFP');
+        $this->assertEquals($parties2[0]->getName(), 'CPP');
+        
+        $this->assertEquals($parties2[4]->getVoteCast(), 1000);
+        $this->assertEquals($parties2[3]->getVoteCast(), 800);
+        $this->assertEquals($parties2[7]->getVoteCast(), 500);
+        $this->assertEquals($parties2[0]->getVoteCast(), 450);
+        
+        //test for constituency 2
+        $const1 = $this->em->getRepository('VtallyBundle:Constituency')->find(2);
+        
+        $parties2 = $this->statisticHandler->getPresidentialConstituency($const1);
+        $this->assertEquals($parties2[4]->getName(), 'NPP');
+        $this->assertEquals($parties2[3]->getName(), 'NDC');
+        $this->assertEquals($parties2[7]->getName(), 'UFP');
+        $this->assertEquals($parties2[0]->getName(), 'CPP');
+        
+        $this->assertEquals($parties2[4]->getVoteCast(), 900);
+        $this->assertEquals($parties2[3]->getVoteCast(), 950);
+        $this->assertEquals($parties2[7]->getVoteCast(), 100);
+        $this->assertEquals($parties2[0]->getVoteCast(), 70);
+    }
+    
+    public function testSetPresidentialVoteCast()
+    {
+        $NPP = new PrParty;
+        $NPP->initializeVoteCast(0);
+        $NPP->setName('NPP');
+        
+        $pol1 = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+        $pol2 = $this->em->getRepository('VtallyBundle:PollingStation')->find(2);
+        $pol3 = $this->em->getRepository('VtallyBundle:PollingStation')->find(3);
+        
+        $pollingStations = array($pol1, $pol2, $pol3);
+        
+        $this->statisticHandler->setPresidentialVoteCast($NPP, $pollingStations);
+        
+        $this->assertEquals($NPP->getVoteCast(), 1000);
+    }
+    
     
 }

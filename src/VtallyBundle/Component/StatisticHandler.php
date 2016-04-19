@@ -6,7 +6,6 @@
  * For the full copyrght and license information, please view the LICENSE
  * file that was distributed with this source code
  */
-
 namespace VtallyBundle\Component;
 
 class StatisticHandler
@@ -77,5 +76,52 @@ class StatisticHandler
         }
 
         return false;
+    }
+    
+    public function setPresidentialVoteCast($party, $pollingStations)
+    {
+        //Make sure the voteCast field is 0 before start
+        $party->initializeVoteCast(0);
+        //For each polling Station, increase the vote cast value
+        foreach ($pollingStations as $pol){
+            
+            $votes = $pol->getPrVoteCasts();
+            
+            foreach ($votes as $v){
+                
+                if($v->getPrParty()->getName() == $party->getName()){
+                    $party->increaseVoteCast($v->getFigureValue());
+                    
+                }
+            }
+        }
+    }
+    
+    public function getPresidentialPollingStation($pollingStation)
+    {
+        $prVoteCasts = $pollingStation->getPrVoteCasts();
+        
+        foreach ($prVoteCasts as $vote){
+            
+            $party = $vote->getPrParty();
+            $party->initializeVoteCast($vote->getFigureValue());
+            $parties[] = $party;
+            
+        }
+        
+        return $parties;
+    }
+    
+    public function getPresidentialConstituency($constituency)
+    {
+        $parties = $this->em->getRepository('PrBundle:PrParty')->findAll();
+        
+        $pollingStations = $constituency->getPollingStations();
+        
+        foreach ($parties as $p){
+            $this->setPresidentialVoteCast($p, $pollingStations);
+        }
+        
+        return $parties;
     }
 }
