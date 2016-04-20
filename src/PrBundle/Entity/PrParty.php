@@ -40,6 +40,17 @@ class PrParty
      */
     private $prVoteCasts;
     
+    public function getTotalVoteCast()
+    {
+        $vote = 0;
+        
+        foreach ($this->getPrVoteCasts() as $v){
+            $vote = $vote + $v->getFigureValue();
+        }
+        
+        return $vote;
+    }
+    
     public function __toString() 
     {
         return $this->name;

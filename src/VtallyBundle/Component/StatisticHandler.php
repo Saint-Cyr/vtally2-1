@@ -2,11 +2,16 @@
 
 /*
  * This file is part of Components of VTALLY2 project
+ * By contributor S@int-Cyr MAPOUKA
  * (c) YAME Group <info@yamegroup.com>
  * For the full copyrght and license information, please view the LICENSE
  * file that was distributed with this source code
  */
-namespace VtallyBundle\Component;
+namespace VtallyBundle\Component; 
+use PrBundle\Entity\PrParty;
+use VtallyBundle\Entity\PollingStation;
+use VtallyBundle\Entity\Region;
+use VtallyBundle\Entity\Constituency;
 
 class StatisticHandler
 {
@@ -17,6 +22,13 @@ class StatisticHandler
         $this->em = $em;
     }
     
+    /**
+     * 
+     * @param array $constituencies
+     * @param array $parties
+     * @param array $indCandidates
+     * @return array('parties' => array(), 'IC' => array())
+     */
     public function getSiteNumber(array $constituencies, array $parties = null, array $indCandidates = null)
     {
         $sites = array('parties' => array(), 'IC' => array());
@@ -52,6 +64,12 @@ class StatisticHandler
         return $sites;
     }
     
+    /**
+     * @param array $parties1
+     * @param array $parties2
+     * @return array
+     * @deprecated since version 0.3
+     */
     public function presidentialMerge(array $parties1, array $parties2)
     {
         foreach ($parties1 as $party1){
@@ -67,7 +85,13 @@ class StatisticHandler
         return $parties1;
     }
     
-    public function findPartyByName($name, $parties)
+    /**
+     * 
+     * @param type $name
+     * @param array $parties
+     * @return boolean | PrPartyType
+     */
+    public function findPartyByName($name, array $parties)
     {
         foreach ( $parties as $element ) {
             if ( $name == $element->getName() ) {
@@ -78,7 +102,11 @@ class StatisticHandler
         return false;
     }
     
-    public function setPresidentialVoteCast($party, $pollingStations)
+    /**
+     * @param PrParty $party
+     * @param Doctrine array $pollingStations
+     */
+    public function setPresidentialVoteCast(PrParty $party, $pollingStations)
     {
         //Make sure the voteCast field is 0 before start
         $party->initializeVoteCast(0);
@@ -97,7 +125,11 @@ class StatisticHandler
         }
     }
     
-    public function getPresidentialPollingStation($pollingStation)
+    /**
+     * @param PollingStation $pollingStation
+     * @return type
+     */
+    public function getPresidentialPollingStation(PollingStation$pollingStation)
     {
         $prVoteCasts = $pollingStation->getPrVoteCasts();
         
@@ -112,7 +144,12 @@ class StatisticHandler
         return $parties;
     }
     
-    public function getPresidentialConstituency($constituency)
+    /**
+     * 
+     * @param Constituency $constituency
+     * @return array
+     */
+    public function getPresidentialConstituency(Constituency $constituency)
     {
         $parties = $this->em->getRepository('PrBundle:PrParty')->findAll();
         
@@ -124,4 +161,43 @@ class StatisticHandler
         
         return $parties;
     }
+    
+    /**
+     * @param Region $region
+     * @return array
+     */
+    public function getPresidentialRegion(Region $region)
+    {
+        //variable to store all the pollingStations for the Region $region
+        $pollingStations = array();
+        //Get all the parties from the DataBase
+        $parties = $this->em->getRepository('PrBundle:PrParty')->findAll();
+        //Get all the constituencies belong to $region
+        $constituencies = $region->getConstituencies();
+        //Colloct all the pollingStations belong to $region
+        foreach ($constituencies as $const){
+            
+            foreach ($const->getPollingStations() as $pol){
+                $pollingStations[] = $pol;
+            } 
+        }
+        //Update each one of the parties in order to have theire write votecast value
+        //base on the pollingStation list
+        foreach ($parties as $p){
+            $this->setPresidentialVoteCast($p, $pollingStations);
+        }
+        
+        return $parties;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getPresidentialNation()
+    {
+        $parties = $this->em->getRepository('PrBundle:PrParty')->findAll();
+        return $parties;
+    }
+    
+    
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Components of VTALLY2 project
  * contributor(s): Saint-Cyr MAPOUKA

@@ -49,4 +49,23 @@ class PrPartyTest extends WebTestCase
         $output1 = $prParty->getVoteCast();
         $this->assertEquals(101, $output1);
     }
+    
+    public function testGetTotalVoteCast()
+    {
+        $NPP = $this->em->getRepository('PrBundle:PrParty')->find(1);
+        $NDC = $this->em->getRepository('PrBundle:PrParty')->find(2);
+        $UFP = $this->em->getRepository('PrBundle:PrParty')->find(3);
+        $CPP = $this->em->getRepository('PrBundle:PrParty')->find(4);
+        
+        $total_NPP = $NPP->getTotalVoteCast();
+        $total_NDC = $NDC->getTotalVoteCast();
+        $total_UFP = $UFP->getTotalVoteCast();
+        $total_CPP = $CPP->getTotalVoteCast();
+        
+        $this->assertEquals($total_NPP, 19168);
+        $this->assertEquals($total_NDC, 19657);
+        $this->assertEquals($total_UFP, 15963);
+        $this->assertEquals($total_CPP, 10971);
+        
+    }
 }

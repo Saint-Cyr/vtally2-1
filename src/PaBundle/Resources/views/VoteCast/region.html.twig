@@ -1,15 +1,7 @@
-<h2>Parliamentary Regional level </h2>
+{% extends "::base.html.twig" %}
 
-<table id="t01">
-  <tr>
-    <th>Party</th>
-    <th>Site</th> 
-  </tr>
-  {% for party in parties %}
-    <tr>
-      <td>{{ party.name }}</td>
-      <td>{{ party.siteNumber }}</td> 
-    </tr>
-  {% endfor %}
-  
-</table>
+{% block title %}PaBundle:Parliamentary:region{% endblock %}
+
+{% block body %}
+<h1>Welcome to the Parliamentary:region page</h1>
+{% endblock %}

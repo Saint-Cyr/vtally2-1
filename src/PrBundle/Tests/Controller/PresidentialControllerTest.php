@@ -1,23 +1,16 @@
 <?php
-/*
- * This file is part of Components of VTALLY2 project
- * contributor(s): Saint-Cyr MAPOUKA
- * (c) YAME Group <info@yamegroup.com>
- * For the full copyrght and license information, please view the LICENSE
- * file that was distributed with this source code
- */
 
-namespace PaBundle\Tests\Controller;
+namespace PrBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class ParliamentaryControllerTest extends WebTestCase
+class PresidentialControllerTest extends WebTestCase
 {
     public function testNational()
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', 'pa/national');
+        $crawler = $client->request('GET', 'pr/national');
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
     }
 
@@ -25,7 +18,7 @@ class ParliamentaryControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', 'pa/region/1');
+        $crawler = $client->request('GET', 'pr/region/1');
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
     }
 
@@ -33,7 +26,7 @@ class ParliamentaryControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', 'pa/constituency/1');
+        $crawler = $client->request('GET', 'pr/constituency/1');
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
     }
 
@@ -41,8 +34,9 @@ class ParliamentaryControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', 'pa/polling-station/1');
+        $crawler = $client->request('GET', 'pr/polling-station/1');
         $this->assertEquals($client->getResponse()->getStatusCode(), 200);
+        
     }
 
 }

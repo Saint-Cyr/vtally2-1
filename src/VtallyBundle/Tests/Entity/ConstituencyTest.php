@@ -1,12 +1,11 @@
 <?php
 /*
- * This file is part of Components of VTALLY2 project
- * contributor(s): Saint-Cyr MAPOUKA
+ * This file is part of test Components VTALLY2 project
+ * By contributor S@int-Cyr MAPOUKA
  * (c) YAME Group <info@yamegroup.com>
  * For the full copyrght and license information, please view the LICENSE
  * file that was distributed with this source code
  */
-
 namespace Tests\AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
