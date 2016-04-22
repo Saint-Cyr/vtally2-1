@@ -1,0 +1,3 @@
+vtally_dashboard:
+    path:     /
+    defaults: { _controller: VtallyBundle:Default:dashboard }
