@@ -38,3 +38,7 @@ services:
     vtally.statistic_handler:
         class: VtallyBundle\Component\StatisticHandler
         arguments: ["@doctrine.orm.entity_manager"]
+        
+    vtally.api_handler:
+        class: VtallyBundle\Component\ApiHandler
+        arguments: ["@doctrine.orm.entity_manager"]

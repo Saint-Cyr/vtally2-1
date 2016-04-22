@@ -2177,7 +2177,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/4f36f433ec863a9c879f5420ccbf8d18c2373901",
+            "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/b2c1a206ad3384ffcbc1b03491ae5756e6ad6e61",
             "reference": "4f36f433ec863a9c879f5420ccbf8d18c2373901",
             "shasum": ""
         },
@@ -2383,7 +2383,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/e8eb83f7dc5b64113892cbf7367705864c651691",
+            "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/d6744c66ff18e038a125fad3562d4c9578f30723",
             "reference": "e8eb83f7dc5b64113892cbf7367705864c651691",
             "shasum": ""
         },
@@ -3494,6 +3494,73 @@
         "keywords": [
             "annotations",
             "controllers"
+        ]
+    },
+    {
+        "name": "knplabs/knp-time-bundle",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "target-dir": "Knp/Bundle/TimeBundle",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/KnpLabs/KnpTimeBundle.git",
+            "reference": "d04f7da090fbbacf9da601bed724c4d58f24fa2d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/KnpLabs/KnpTimeBundle/zipball/d04f7da090fbbacf9da601bed724c4d58f24fa2d",
+            "reference": "d04f7da090fbbacf9da601bed724c4d58f24fa2d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3",
+            "symfony/config": "~2.3|~3.0",
+            "symfony/dependency-injection": "~2.3|~3.0",
+            "symfony/templating": "~2.3|~3.0",
+            "symfony/translation": "~2.3|~3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.8"
+        },
+        "suggest": {
+            "symfony/twig-bundle": "to use the Twig time_diff function"
+        },
+        "time": "2016-04-22 00:16:38",
+        "type": "symfony-bundle",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.1.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Knp\\Bundle\\TimeBundle": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "KnpLabs Team",
+                "homepage": "http://knplabs.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://github.com/KnpLabs/KnpTimeBundle/contributors"
+            }
+        ],
+        "description": "Knplabs time bundle makes your dates look sensible and descriptive",
+        "homepage": "http://github.com/KnpLabs/KnpTimeBundle",
+        "keywords": [
+            "bundle",
+            "date",
+            "descriptive time",
+            "knp",
+            "knplabs",
+            "time"
         ]
     }
 ]
