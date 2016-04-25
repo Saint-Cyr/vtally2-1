@@ -33,6 +33,11 @@ class Region
      */
     private $constituencies;
     
+    public function __toString() 
+    {
+        return $this->name;
+    }
+    
     /**
      * Get id
      *

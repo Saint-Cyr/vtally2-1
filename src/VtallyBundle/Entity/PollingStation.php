@@ -71,9 +71,19 @@ class PollingStation
     private $prVoteCasts;
     
     /**
+     * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrEditedVoteCast", mappedBy="pollingStation", cascade={"remove"})
+     */
+    private $prEditedVoteCasts;
+    
+    /**
      * @ORM\OneToMany(targetEntity="PaBundle\Entity\PaVoteCast", mappedBy="pollingStation", cascade={"remove"})
      */
     private $paVoteCasts;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="PaBundle\Entity\PaEditedVoteCast", mappedBy="pollingStation", cascade={"remove"})
+     */
+    private $paEditedVoteCasts;
     
     /**
      * @ORM\OneToOne(targetEntity="PrBundle\Entity\PrPinkSheet", inversedBy="pollingStation")
@@ -446,5 +456,73 @@ class PollingStation
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Add prEditedVoteCast
+     *
+     * @param \PrBundle\Entity\PrEditedVoteCast $prEditedVoteCast
+     *
+     * @return PollingStation
+     */
+    public function addPrEditedVoteCast(\PrBundle\Entity\PrEditedVoteCast $prEditedVoteCast)
+    {
+        $this->prEditedVoteCasts[] = $prEditedVoteCast;
+
+        return $this;
+    }
+
+    /**
+     * Remove prEditedVoteCast
+     *
+     * @param \PrBundle\Entity\PrEditedVoteCast $prEditedVoteCast
+     */
+    public function removePrEditedVoteCast(\PrBundle\Entity\PrEditedVoteCast $prEditedVoteCast)
+    {
+        $this->prEditedVoteCasts->removeElement($prEditedVoteCast);
+    }
+
+    /**
+     * Get prEditedVoteCasts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrEditedVoteCasts()
+    {
+        return $this->prEditedVoteCasts;
+    }
+
+    /**
+     * Add paEditedVoteCast
+     *
+     * @param \PaBundle\Entity\PaEditedVoteCast $paEditedVoteCast
+     *
+     * @return PollingStation
+     */
+    public function addPaEditedVoteCast(\PaBundle\Entity\PaEditedVoteCast $paEditedVoteCast)
+    {
+        $this->paEditedVoteCasts[] = $paEditedVoteCast;
+
+        return $this;
+    }
+
+    /**
+     * Remove paEditedVoteCast
+     *
+     * @param \PaBundle\Entity\PaEditedVoteCast $paEditedVoteCast
+     */
+    public function removePaEditedVoteCast(\PaBundle\Entity\PaEditedVoteCast $paEditedVoteCast)
+    {
+        $this->paEditedVoteCasts->removeElement($paEditedVoteCast);
+    }
+
+    /**
+     * Get paEditedVoteCasts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPaEditedVoteCasts()
+    {
+        return $this->paEditedVoteCasts;
     }
 }

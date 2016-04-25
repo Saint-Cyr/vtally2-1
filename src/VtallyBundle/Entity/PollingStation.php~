@@ -71,9 +71,19 @@ class PollingStation
     private $prVoteCasts;
     
     /**
+     * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrEditedVoteCast", mappedBy="pollingStation", cascade={"remove"})
+     */
+    private $prEditedVoteCasts;
+    
+    /**
      * @ORM\OneToMany(targetEntity="PaBundle\Entity\PaVoteCast", mappedBy="pollingStation", cascade={"remove"})
      */
     private $paVoteCasts;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="PaBundle\Entity\PaEditedVoteCast", mappedBy="pollingStation", cascade={"remove"})
+     */
+    private $paEditedVoteCasts;
     
     /**
      * @ORM\OneToOne(targetEntity="PrBundle\Entity\PrPinkSheet", inversedBy="pollingStation")
@@ -281,6 +291,7 @@ class PollingStation
         $this->prNotifications = new \Doctrine\Common\Collections\ArrayCollection();
         $this->prVoteCasts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->paVoteCasts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setActive(false);
     }
 
     /**
@@ -421,5 +432,29 @@ class PollingStation
     public function getPaPinkSheet()
     {
         return $this->paPinkSheet;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return PollingStation
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }
