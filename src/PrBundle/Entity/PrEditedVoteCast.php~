@@ -98,5 +98,28 @@ class PrEditedVoteCast
     {
         return $this->wordValue;
     }
-}
 
+    /**
+     * Set pollingStation
+     *
+     * @param \VtallyBundle\Entity\PollingStation $pollingStation
+     *
+     * @return PrEditedVoteCast
+     */
+    public function setPollingStation(\VtallyBundle\Entity\PollingStation $pollingStation)
+    {
+        $this->pollingStation = $pollingStation;
+
+        return $this;
+    }
+
+    /**
+     * Get pollingStation
+     *
+     * @return \VtallyBundle\Entity\PollingStation
+     */
+    public function getPollingStation()
+    {
+        return $this->pollingStation;
+    }
+}

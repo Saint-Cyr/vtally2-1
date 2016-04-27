@@ -75,36 +75,22 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="tokenTime", type="datetime", length=255, nullable=true)
+     * @ORM\Column(name="tokenTime", type="integer", length=255, nullable=true)
      */
     private $tokenTime;
     
-    public function isUserTokenValid($configuredTime)
+    public function isUserTokenValid($age)
     {
-        //Get the last minute
-        $lastMin = $this->getTokenTime()->format('i');
+        //time lapsed in min
+        $lastTime = $age / 60 % 60;
+        //current time in min
+        $current = $this->getTokenTime() / 60 % 60;
         
-        //Get the current minute
-        $currentDate = new \DateTime("now");
-        $currentMin = $currentDate->format('i');
-        
-        //Calculate the lapsed minute base on the parameter
-        $lapsedMinute = $currentMin - $lastMin;
-        
-        if(($configuredTime >= $lapsedMinute)&&($currentDate->format('y') == $this->getTokenTime()->format('y'))
-                &&($currentDate->format('m') == $this->getTokenTime()->format('m')
-                &&($currentDate->format('H') == $this->getTokenTime()->format('H')))){
-            
+        if($age <= $current){
             return true;
         }
         
         return false;
-    }
-    
-    public function refreshUserToken()
-    {
-        $this->setUserToken(rand(0, 999999));
-        $this->setTokenTime(new \DateTime("now"));
     }
     
     public function setType($type)
@@ -300,29 +286,5 @@ class User extends BaseUser
     public function getUserToken()
     {
         return $this->userToken;
-    }
-
-    /**
-     * Set tokenTime
-     *
-     * @param integer $tokenTime
-     *
-     * @return User
-     */
-    public function setTokenTime($tokenTime)
-    {
-        $this->tokenTime = $tokenTime;
-
-        return $this;
-    }
-
-    /**
-     * Get tokenTime
-     *
-     * @return integer
-     */
-    public function getTokenTime()
-    {
-        return $this->tokenTime;
     }
 }

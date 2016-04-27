@@ -37,7 +37,7 @@ class PollingStationAdminController extends CRUDController
 
         try {
             foreach ($selectedModels as $selectedModel) {
-                if($selectedModel->getActive()){
+                if($selectedModel->isActive()){
                     $selectedModel->setActive(FALSE);
                 }else{
                     $selectedModel->setActive(TRUE);

@@ -25,6 +25,7 @@ class UserAdmin extends Admin
             ->add('locked')
             ->add('firstName')
             ->add('address')
+            ->add('pollingStation')
         ;
     }
 
@@ -44,7 +45,7 @@ class UserAdmin extends Admin
             ->add('email')
             ->add('firstName')
             ->add('lastName')
-            ->add('address')
+            ->add('userToken')
         ;
         
         if ($this->isGranted('EDIT')) {
@@ -90,7 +91,11 @@ class UserAdmin extends Admin
             ->add('firstName')
             ->add('lastName')
             ->add('image')
+            ->add('userToken')
             ->add('address');
+        if($this->isGranted('ROLE_ADMIN')){
+            $formMapper->add('pollingStation');
+        }
         
         if ($this->isGranted('EDIT')) {
             $formMapper
@@ -116,7 +121,7 @@ class UserAdmin extends Admin
     {
         $showMapper
             ->add('username')
-            ->add('usernameCanonical')
+            ->add('pollingStation')
             ->add('email')
             ->add('emailCanonical')
             ->add('enabled')

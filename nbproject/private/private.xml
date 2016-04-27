@@ -3,11 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/PaBundle/Tests/Controller/ParliamentaryControllerTest.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Component/ApiHandler.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/UserBundle/Entity/User.php</file>
             <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Tests/Controller/ApiControllerTest.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Resources/config/services.yml</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Resources/config/routing.yml</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Controller/ApiController.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Tests/Component/ApiHandlerTest.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/UserBundle/Admin/UserAdmin.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/PrBundle/Admin/PrVoteCastAdmin.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Entity/PollingStation.php</file>
         </group>
     </open-files>
 </project-private>

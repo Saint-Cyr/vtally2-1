@@ -1115,6 +1115,7 @@ VtallyBundle\Entity\PollingStation:
 VtallyBundle\Entity\Setting:
     setting1:
         type: default
+        tokenTime: 2
     setting2:
         type: presidential
     setting3:
@@ -1153,10 +1154,22 @@ UserBundle\Entity\User:
         enabled: true
         roles: [ROLE_THIRD_PARTY]
         
-    Verifier{1..5}:
-        username (unique): <username()>
-        email (unique): <email()>
+    Verifier1:
+        username (unique): verifier1
+        email (unique): verifier1@domain.com
         plainPassword: test
-        firstName: <firstName()>
+        firstName: VERIFIER 1
         enabled: true
         roles: [ROLE_VERIFIER]
+        userToken: ABCD1
+        pollingStation: "@polling_station1"
+        
+    Verifier2:
+        username (unique): verifier2
+        email (unique): verifier2@domain.com
+        plainPassword: test
+        firstName: VERIFIER 2
+        enabled: true
+        roles: [ROLE_VERIFIER]
+        userToken: ABCD2
+        pollingStation: "@polling_station1"

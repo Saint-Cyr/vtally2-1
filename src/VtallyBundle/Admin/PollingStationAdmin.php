@@ -57,6 +57,7 @@ class PollingStationAdmin extends Admin
             ->add('district')
             ->add('constituency')
             ->add('active')
+            ->add('users')
             
         ;
     }
@@ -70,6 +71,7 @@ class PollingStationAdmin extends Admin
             ->add('id')
             ->add('name')
             ->add('code')
+            ->add('users')
             ->add('district')
             ->add('constituency')
         ;

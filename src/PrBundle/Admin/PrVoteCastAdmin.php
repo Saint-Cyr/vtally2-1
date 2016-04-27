@@ -55,8 +55,9 @@ class PrVoteCastAdmin extends Admin
             ->add('figureValue')
             ->add('wordValue')
             ->add('pollingStation', 'entity', array('class' => 'VtallyBundle\Entity\PollingStation',
-                                                    
-                                                    'query_builder' => function(\VtallyBundle\Repository\PollingStationRepository $r){return $r->getLimitedList(100);}))
+                                                    'query_builder' => function(\VtallyBundle\Repository\PollingStationRepository $r){
+                                                                                return $r->getLimitedList(2);
+                                                                        }))
             ->add('prParty')
         ;
     }

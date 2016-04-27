@@ -55,7 +55,7 @@ class PrVoteCast
     private $prParty;
     
     public function __toString() {
-        return $this->wordValue;
+        return $this->getWordValue();
     }
     
     /**
@@ -162,5 +162,29 @@ class PrVoteCast
     public function getPollingStation()
     {
         return $this->pollingStation;
+    }
+
+    /**
+     * Set prParty
+     *
+     * @param \PrBundle\Entity\PrParty $prParty
+     *
+     * @return PrVoteCast
+     */
+    public function setPrParty(\PrBundle\Entity\PrParty $prParty)
+    {
+        $this->prParty = $prParty;
+
+        return $this;
+    }
+
+    /**
+     * Get prParty
+     *
+     * @return \PrBundle\Entity\PrParty
+     */
+    public function getPrParty()
+    {
+        return $this->prParty;
     }
 }

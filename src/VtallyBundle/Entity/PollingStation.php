@@ -71,6 +71,11 @@ class PollingStation
     private $prVoteCasts;
     
     /**
+     * @ORM\OneToMany(targetEntity="UserBundle\Entity\User", mappedBy="pollingStation", cascade={"remove", "persist"})
+     */
+    private $users;
+    
+    /**
      * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrEditedVoteCast", mappedBy="pollingStation", cascade={"remove"})
      */
     private $prEditedVoteCasts;
@@ -453,7 +458,7 @@ class PollingStation
      *
      * @return boolean
      */
-    public function getActive()
+    public function isActive()
     {
         return $this->active;
     }
@@ -524,5 +529,39 @@ class PollingStation
     public function getPaEditedVoteCasts()
     {
         return $this->paEditedVoteCasts;
+    }
+
+    /**
+     * Add user
+     *
+     * @param \UserBundle\Entity\User $user
+     *
+     * @return PollingStation
+     */
+    public function addUser(\UserBundle\Entity\User $user)
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove user
+     *
+     * @param \UserBundle\Entity\User $user
+     */
+    public function removeUser(\UserBundle\Entity\User $user)
+    {
+        $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }
