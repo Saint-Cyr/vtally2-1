@@ -101,9 +101,9 @@ class User extends BaseUser
         return false;
     }
     
-    public function refreshUserToken()
+    public function refreshTokenTime()
     {
-        $this->setUserToken(rand(0, 999999));
+        //$this->setUserToken(rand(0, 999999));
         $this->setTokenTime(new \DateTime("now"));
     }
     

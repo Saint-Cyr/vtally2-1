@@ -35,19 +35,24 @@ class ApiHandler
     
     public function login($inputData)
     {
-        $output = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
-        return $output;
+        //if user is authentic then get $user object otherwise, get false;
+        $user = $this->isAuthentic($inputData['username'], $inputData['password']);
         
+        if($user){
+            return array('first_name' => $user->getFirstName(), 'pol_id' => $user->getPollingStation()->getName());
+        }
+        
+        return array('Bad credentials.');
     }
     
     public function isDataStructureValid($inputData)
     {
-        if(array_key_exists('action', $inputData)){
+        if(array_key_exists('action', $inputData)&&($this->validatorFactory1($inputData))){
             
             switch ($inputData['action']){
                 case 1:
                     if((array_key_exists('username', $inputData))&&(array_key_exists('password', $inputData))&&
-                            ((isset($inputData['username'])&&(isset($inputData['password']))))){
+                            ((isset($inputData['username'])&&(isset($inputData['password']))))&&($this->validatorFactory1($inputData))){
                         return true;
                     }else{
                         return false;
@@ -140,7 +145,7 @@ class ApiHandler
         return false;
     }
     
-    public function validatorFactory3($inputData)
+    public function validatorFactory3(array $inputData)
     {
         if(array_key_exists('user_token', $inputData)){
             //Get the user from the DB in order to compare it token to the sent one
@@ -149,6 +154,7 @@ class ApiHandler
             if(!$user){
                 return false;
             }
+            //Refresh the tokenTime
             
             //Get the setting
             $setting = $this->em->getRepository('VtallyBundle:Setting')->findOneBy(array('type' => 'default'));
@@ -163,7 +169,8 @@ class ApiHandler
             $tokenTime = $setting->getTokenTime();
             
             if(($inputData['user_token'] == $user->getUserToken())&&($user->isUserTokenValid($tokenTime))){
-
+                //Refresh the tokenTime
+                $user->refreshTokenTime();
                 return true;
             }
 

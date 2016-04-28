@@ -30,13 +30,35 @@ class ApiHandlerTest extends WebTestCase
         $this->statisticHandler = $this->application->getKernel()->getContainer()->get('vtally.statistic_handler');
     }
     
+   public function testLogin()
+   {
+       //Get the statistic service
+       $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
+       
+       //Case where login successfully
+       $inputData = array('username' => 'verifier1', 'password' => 'test');
+       $outPut = $apiHandler->login($inputData);
+       $this->assertEquals($outPut, array('first_name' => 'VERIFIER 1', 'pol_id' => 'Pol. Station 1'));
+       
+       //Case login faild: wrong username
+       $inputData = array('username' => 'verifier11', 'password' => 'test');
+       $outPut = $apiHandler->login($inputData);
+       $this->assertEquals($outPut, array('Bad credentials.'));
+       
+       //Case login faild: wrong password
+       $inputData = array('username' => 'verifier1', 'password' => 'testt');
+       $outPut = $apiHandler->login($inputData);
+       $this->assertEquals($outPut, array('Bad credentials.'));
+   }
+    
    public function testIsDataStructureValid()
    {
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
        //The only valid data structure for action => 1
-       $inputData1 = array('action' => 1, 'username' => 'super-admin', 'password' => 'test');
-       $this->assertTrue($apiHandler->isDataStructureValid($inputData1));
+       $inputData1 = array('action' => 1, 'username' => 'verifier1', 'password' => 'test');
+       //assertNotTrue because the fixture date of polling Station set all not active by default
+       $this->assertNotTrue($apiHandler->isDataStructureValid($inputData1));
        
        //All the false Data structure
        $inputData2 = array('action' => 1, 'username' => null, 'password' => 'test');
@@ -100,7 +122,9 @@ class ApiHandlerTest extends WebTestCase
        
        //When send the right data
        $inputData = array('transaction_type' => 'Presidential', 'pol_id' => 1, 'figure_value' => 100, 'user_token' => 'ABCD1');
-       //Got
+       //$outPut = $apiHandler->validatorFactory3($inputData);
+       
+       //$this->assertTrue($outPut);
    }
 }
  
