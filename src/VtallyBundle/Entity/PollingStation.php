@@ -34,6 +34,13 @@ class PollingStation
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="presidential", type="boolean")
+     */
+    private $presidential;
 
     /**
      * @var string
@@ -296,7 +303,9 @@ class PollingStation
         $this->prNotifications = new \Doctrine\Common\Collections\ArrayCollection();
         $this->prVoteCasts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->paVoteCasts = new \Doctrine\Common\Collections\ArrayCollection();
+        //Initialization
         $this->setActive(false);
+        $this->setPresidential(false);
     }
 
     /**
@@ -563,5 +572,39 @@ class PollingStation
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set presidential
+     *
+     * @param boolean $presidential
+     *
+     * @return PollingStation
+     */
+    public function setPresidential($presidential)
+    {
+        $this->presidential = $presidential;
+
+        return $this;
+    }
+
+    /**
+     * Get presidential
+     *
+     * @return boolean
+     */
+    public function isPresidential()
+    {
+        return $this->presidential;
     }
 }

@@ -9,6 +9,7 @@
  */
 namespace VtallyBundle\Component; 
 use PrBundle\Entity\PrParty;
+use PrBundle\Entity\PrVoteCast;
 use VtallyBundle\Entity\PollingStation;
 use VtallyBundle\Entity\Region;
 use VtallyBundle\Entity\Constituency;
@@ -49,17 +50,50 @@ class ApiHandler
         return array('Bad credentials.');
     }
     
+    
+    
     public function sendPresidentialVoteCast(array $inputData)
     {
-        if(!array_key_exists('pr_votes', $inputData)){
+        //make sure vote cast is for Presidential  
+        if(!array_key_exists('pr_votes', $inputData)||($inputData['transaction_type'] != 'presidential')){
             
             return array('Invalid data structure.');
         }
         
+        //See the API doc for more information 
         if(($this->validatorFactory2($inputData))&&($this->validatorFactory3($inputData))
                 &&($this->isPresidentialVoteCastValid($inputData['pr_votes']))){
             
-            return array('send presidential vote test...ok');
+            //Get the polling Station
+            $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find($inputData['pol_id']);
+            //Make sure $pollingStation exist in the DB and it doesn't yet recieve presidential vote
+            if((!$pollingStation) || ($pollingStation->isPresidential())){
+                return array('Error: cannot send presidential vote cast.');
+            }
+            //Save the vote cast one by one in the DB. with theire respective relationship
+            $prVotes = $inputData['pr_votes'];
+            
+            foreach ($prVotes as $partyName => $value){
+                //Get the current PrParty from the DB.
+                $prParty = $this->em->getRepository('PrBundle:PrParty')->findOneBy(array('name' => $partyName));
+                //Instentiate a PrVoteCast
+                $prVoteCast = new PrVoteCast();
+                //Hydrate it with the right data
+                $prVoteCast->setFigureValue($value);
+                $prVoteCast->setPrParty($prParty);
+                $prVoteCast->setPollingStation($pollingStation);
+                //In the case wordValue functionality is used
+                //$wordValue = some API or third party service...($value)
+                //$prVoteCast->setWordValue($wordValue);
+                //Persist all 
+                $this->em->persist($prVoteCast);
+            }
+            
+            //Set the PollingStation property presidential to true
+            $pollingStation->setPresidential(true);
+            //$this->em->flush();
+            
+            return array('presidential vote cast sent!');
             
         }
         
@@ -73,6 +107,7 @@ class ApiHandler
     
     public function process(array $inputData)
     {
+        //Make sure every request have the key action
         if(array_key_exists('action', $inputData)){
             
             switch ($inputData['action']){
@@ -80,7 +115,13 @@ class ApiHandler
                     return $this->login($inputData);
                     break;
                 case 2:
-                    return $this->sendPresidentialVoteCast($inputData);
+                    
+                    if($this->validatorFactory1($inputData)){
+                        
+                        return $this->sendPresidentialVoteCast($inputData);
+                    }
+                    //validatorFactory1 faild.
+                    return array('Error: the concerned polling station is not activated.');
                     break;
             }
         }
@@ -151,9 +192,19 @@ class ApiHandler
     
     public function validatorFactory1($inputData)
     {
-        //Get the user object based on the username
-        $user = $this->em->getRepository('UserBundle:User')
+        //In the case $inputData does have verifier_token key
+        if(array_key_exists('verifier_token', $inputData)){
+            //Get the user object based on the userToken
+            $user = $this->em->getRepository('UserBundle:User')
+                    ->findOneBy(array('userToken' => $inputData['verifier_token']));
+        }
+
+        //In the case $inputData does have username key when action = 1 (login)
+        elseif(array_key_exists('username', $inputData)){
+            //Get the user object based on the username
+            $user = $this->em->getRepository('UserBundle:User')
                     ->findOneBy(array('username' => $inputData['username']));
+        }
         
         //Continous only if the user exist in DB
         if(!$user){

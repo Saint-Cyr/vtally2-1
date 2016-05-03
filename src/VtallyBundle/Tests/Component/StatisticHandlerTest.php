@@ -165,7 +165,6 @@ class StatisticHandlerTest extends WebTestCase
     
     public function testGetPresidentialPollingStation()
     {
-        
         //Collection of a given pollingStation (P1)
         $NPP1 = new PrParty;
         $NDC1 = new PrParty;

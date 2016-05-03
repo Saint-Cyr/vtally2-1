@@ -59,13 +59,15 @@ class ApiHandlerTest extends WebTestCase
        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('username' => 'verifier1'));
        $user->refreshTokenTime();
        //Case where sending presidential data does succed
-       $inputData = array('transaction_type' => 'Presidential', 'verifier_token' => 'ABCD1');
+       $inputData = array('transaction_type' => 'presidential', 'verifier_token' => 'ABCD1', 'pol_id' => 1,
+                          'pr_votes' => array('NPP' => 0, 'NDC' => 0, 'UFP' => 0));
        
        $outPut = $apiHandler->sendPresidentialVoteCast($inputData);
-       $this->assertEquals($outPut, array('Invalid data structure.'));
+       $this->assertEquals($outPut, array('presidential vote cast sent!'));
        
-       //Case where sending presidential data doesn't succed
-       $inputData = array('transaction_type' => 'Presidential', 'user_token' => 'ABCD');
+       //Case where sending presidential data doesn't succed (transation_type => Parliamentary)
+       $inputData = array('transaction_type' => 'Parliamentary', 'verifier_token' => 'ABCD1', 'pol_id' => 1,
+                          'pr_votes' => array('NPP' => 0, 'NDC' => 0, 'UFP' => 0));
        
        $outPut = $apiHandler->sendPresidentialVoteCast($inputData);
        $this->assertEquals($outPut, array('Invalid data structure.'));

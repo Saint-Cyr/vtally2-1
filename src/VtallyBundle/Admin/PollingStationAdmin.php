@@ -18,6 +18,8 @@ class PollingStationAdmin extends Admin
         $datagridMapper
             ->add('name')
             ->add('code')
+            ->add('presidential')
+            ->add('active')
             ->add('district')
             ->add('constituency')
         ;
@@ -36,6 +38,7 @@ class PollingStationAdmin extends Admin
             ->add('prVoteCast')
             ->add('constituency')
             ->add('active')
+            ->add('presidential')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -57,6 +60,7 @@ class PollingStationAdmin extends Admin
             ->add('district')
             ->add('constituency')
             ->add('active')
+            ->add('presidential')
             ->add('users')
             
         ;
