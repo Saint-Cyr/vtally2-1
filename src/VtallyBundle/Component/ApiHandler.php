@@ -59,7 +59,6 @@ class ApiHandler
         if(($this->validatorFactory2($inputData))&&($this->validatorFactory3($inputData))
                 &&($this->isPresidentialVoteCastValid($inputData['pr_votes']))){
             
-            http_response_code(221);
             return array('send presidential vote test...ok');
             
         }

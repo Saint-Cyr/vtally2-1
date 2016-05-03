@@ -58,11 +58,17 @@ class ApiHandlerTest extends WebTestCase
        //Refresh the user
        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('username' => 'verifier1'));
        $user->refreshTokenTime();
-       //Case where sending presidential data doesn't succed
-       $inputData = array('transaction_type' => 'Presidential', 'pol_id' => 1, 'user_token' => 'ABCD');
+       //Case where sending presidential data does succed
+       $inputData = array('transaction_type' => 'Presidential', 'verifier_token' => 'ABCD1');
        
-       //$outPut = $apiHandler->sendPresidentialVoteCast($inputData);
-       //$this->assertEquals($outPut, array('Invalid data structure.'));
+       $outPut = $apiHandler->sendPresidentialVoteCast($inputData);
+       $this->assertEquals($outPut, array('Invalid data structure.'));
+       
+       //Case where sending presidential data doesn't succed
+       $inputData = array('transaction_type' => 'Presidential', 'user_token' => 'ABCD');
+       
+       $outPut = $apiHandler->sendPresidentialVoteCast($inputData);
+       $this->assertEquals($outPut, array('Invalid data structure.'));
        
        //Case where sending presidential data succed
    }
@@ -137,10 +143,16 @@ class ApiHandlerTest extends WebTestCase
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
        //When send the right data
-       $inputData = array('transaction_type' => 'Presidential', 'pol_id' => 1, 'figure_value' => 100, 'user_token' => 'ABCD1');
-       //$outPut = $apiHandler->validatorFactory3($inputData);
+       $inputData = array('verifier_token' => 'ABCD1');
+       $outPut = $apiHandler->validatorFactory3($inputData);
        
-       //$this->assertTrue($outPut);
+       $this->assertTrue($outPut);
+       
+       //When send the right data
+       $inputData = array('transaction_type' => 'Presidential', 'pol_id' => 1, 'figure_value' => 100, 'verifier_token' => 'ABCD');
+       $outPut = $apiHandler->validatorFactory3($inputData);
+       
+       $this->assertNotTrue($outPut);
    }
 }
  
