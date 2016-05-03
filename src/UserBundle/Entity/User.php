@@ -121,6 +121,7 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->setCreatedAt(new \DateTime("now"));
+        $this->setTokenTime(new \DateTime("now"));
     }
 
 
@@ -301,11 +302,13 @@ class User extends BaseUser
     {
         return $this->userToken;
     }
+    
+    
 
     /**
      * Set tokenTime
      *
-     * @param integer $tokenTime
+     * @param \DateTime $tokenTime
      *
      * @return User
      */
@@ -319,7 +322,7 @@ class User extends BaseUser
     /**
      * Get tokenTime
      *
-     * @return integer
+     * @return \DateTime
      */
     public function getTokenTime()
     {

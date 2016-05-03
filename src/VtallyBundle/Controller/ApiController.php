@@ -9,15 +9,17 @@ class ApiController extends Controller
 {
     public function postFrontAction(Request $request)
     {
-        $_json = array('firstName' => 'Saint-Cyr', 'pollingStation' => 'Pol1');
-        
-        return $_json;
+        //Get the data sent by the client
+        $inputData = json_decode($request->getContent(), true);
         
         // get the API handler service from the container
         $apiHandler = $this->get('vtally.api_handler');
-        // Process the data 
-        //$out = $apiHandler->process($inputData);
-        $this->assertEquals(true, false);
+        
+        // Processing...
+        $result = $apiHandler->process($inputData);
+        
+        //Send the result back to the client
+        return $result;
     }
     
     

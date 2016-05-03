@@ -39,10 +39,54 @@ class ApiHandler
         $user = $this->isAuthentic($inputData['username'], $inputData['password']);
         
         if($user){
+            //Refresh the token time in order to initialize the session time
+            $user->refreshTokenTime();
+            $this->em->flush();
+            
             return array('first_name' => $user->getFirstName(), 'pol_id' => $user->getPollingStation()->getName());
         }
         
         return array('Bad credentials.');
+    }
+    
+    public function sendPresidentialVoteCast(array $inputData)
+    {
+        if(!array_key_exists('pr_votes', $inputData)){
+            
+            return array('Invalid data structure.');
+        }
+        
+        if(($this->validatorFactory2($inputData))&&($this->validatorFactory3($inputData))
+                &&($this->isPresidentialVoteCastValid($inputData['pr_votes']))){
+            
+            http_response_code(221);
+            return array('send presidential vote test...ok');
+            
+        }
+        
+        return array('Error: cannot send presidential vote cast');
+    }
+    
+    public function isPresidentialVoteCastValid(array $votes)
+    {
+        return true;
+    }
+    
+    public function process(array $inputData)
+    {
+        if(array_key_exists('action', $inputData)){
+            
+            switch ($inputData['action']){
+                case 1:
+                    return $this->login($inputData);
+                    break;
+                case 2:
+                    return $this->sendPresidentialVoteCast($inputData);
+                    break;
+            }
+        }
+        
+        return false;
     }
     
     public function isDataStructureValid($inputData)
@@ -59,7 +103,7 @@ class ApiHandler
                     }
                     break;
                 case 2:
-                    return false;
+                    return true;
                     break;
             }
         }
@@ -134,10 +178,10 @@ class ApiHandler
     
     public function validatorFactory2($inputData)
     {
-        if(((array_key_exists('transaction_type', $inputData))&&(array_key_exists('pol_id', $inputData))&&
-                (array_key_exists('figure_value', $inputData))&&(array_key_exists('verifier_token', $inputData)))
+        if(((array_key_exists('transaction_type', $inputData))&&(array_key_exists('pol_id', $inputData))
+                &&(array_key_exists('verifier_token', $inputData)))
                 &&((isset($inputData['transaction_type'])&&(isset($inputData['pol_id'])
-                &&(isset($inputData['figure_value'])&&(isset($inputData['verifier_token']))))))){
+                &&(isset($inputData['verifier_token'])))))){
             
             return true;
         }
@@ -147,14 +191,14 @@ class ApiHandler
     
     public function validatorFactory3(array $inputData)
     {
-        if(array_key_exists('user_token', $inputData)){
+        if(array_key_exists('verifier_token', $inputData)){
             //Get the user from the DB in order to compare it token to the sent one
-            $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['user_token']));
+            $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
             
             if(!$user){
+                
                 return false;
             }
-            //Refresh the tokenTime
             
             //Get the setting
             $setting = $this->em->getRepository('VtallyBundle:Setting')->findOneBy(array('type' => 'default'));
@@ -163,17 +207,19 @@ class ApiHandler
                 //to be improved with a throw exception 
                 var_dump('Setting not found in DB.');exit;
             }
-            //The token must be valid and the it age too
+            //The token must be valid and it age too
             //NB the parameter $tokenTime must be provided by the parameter system
             //$tokenTime (in minute) is the value of the max lapsed time of inactivity
             $tokenTime = $setting->getTokenTime();
-            
-            if(($inputData['user_token'] == $user->getUserToken())&&($user->isUserTokenValid($tokenTime))){
+            //For test purpose set $tokenTime  to any value
+            //$tokenTime = 20;
+            if(($inputData['verifier_token'] == $user->getUserToken())&&($user->isUserTokenValid($tokenTime))){
                 //Refresh the tokenTime
                 $user->refreshTokenTime();
+                $this->em->flush();
                 return true;
             }
-
+            
             return false;
         }
         

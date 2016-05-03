@@ -214,4 +214,9 @@ class DefaultControllerTest extends WebTestCase
                                                   function ($message) { }, //Can be used for logging, if needed
                                                   false); //If true, truncates instead of deleting    
     }
+    
+    public function testOk()
+    {
+        $this->assertEquals(true, true);
+    }
 }

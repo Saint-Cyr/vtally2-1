@@ -75,22 +75,36 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="tokenTime", type="integer", length=255, nullable=true)
+     * @ORM\Column(name="tokenTime", type="datetime", length=255, nullable=true)
      */
     private $tokenTime;
     
-    public function isUserTokenValid($age)
+    /*public function isUserTokenValid($configuredTime)
     {
-        //time lapsed in min
-        $lastTime = $age / 60 % 60;
-        //current time in min
-        $current = $this->getTokenTime() / 60 % 60;
+        //Get the last minute
+        $lastMin = $this->getTokenTime()->format('i');
         
-        if($age <= $current){
+        //Get the current minute
+        $currentDate = new \DateTime("now");
+        $currentMin = $currentDate->format('i');
+        
+        //Calculate the lapsed minute base on the parameter
+        $lapsedMinute = $currentMin - $lastMin;
+        
+        if(($configuredTime >= $lapsedMinute)&&($currentDate->format('y') == $this->getTokenTime()->format('y'))
+                &&($currentDate->format('m') == $this->getTokenTime()->format('m')
+                &&($currentDate->format('H') == $this->getTokenTime()->format('H')))){
+            
             return true;
         }
         
         return false;
+    }*/
+    
+    public function refreshTokenTime()
+    {
+        //$this->setUserToken(rand(0, 999999));
+        $this->setTokenTime(new \DateTime("now"));
     }
     
     public function setType($type)
@@ -287,4 +301,6 @@ class User extends BaseUser
     {
         return $this->userToken;
     }
+    
+    
 }

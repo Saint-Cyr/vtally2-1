@@ -50,6 +50,22 @@ class ApiHandlerTest extends WebTestCase
        $outPut = $apiHandler->login($inputData);
        $this->assertEquals($outPut, array('Bad credentials.'));
    }
+   
+   public function testSendPresidentialVoteCast()
+   {
+       //Get the statistic service
+       $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
+       //Refresh the user
+       $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('username' => 'verifier1'));
+       $user->refreshTokenTime();
+       //Case where sending presidential data doesn't succed
+       $inputData = array('transaction_type' => 'Presidential', 'pol_id' => 1, 'user_token' => 'ABCD');
+       
+       //$outPut = $apiHandler->sendPresidentialVoteCast($inputData);
+       //$this->assertEquals($outPut, array('Invalid data structure.'));
+       
+       //Case where sending presidential data succed
+   }
     
    public function testIsDataStructureValid()
    {
@@ -106,7 +122,7 @@ class ApiHandlerTest extends WebTestCase
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
        //When send the right data
-       $inputData = array('transaction_type' => 'Presidential', 'pol_id' => 1, 'figure_value' => 100, 'verifier_token' => 'AJNN#@NODIFNLSD23oid09++-D');
+       $inputData = array('transaction_type' => 'Presidential', 'pol_id' => 1, 'verifier_token' => 'AJNN#@NODIFNLSD23oid09++-D');
        $output = $apiHandler->validatorFactory2($inputData);
        $this->assertTrue($output);
        
