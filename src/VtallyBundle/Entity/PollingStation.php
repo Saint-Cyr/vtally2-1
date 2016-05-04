@@ -73,7 +73,7 @@ class PollingStation
     private $paNotifications;
     
     /**
-     * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrVoteCast", mappedBy="pollingStation", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrVoteCast", mappedBy="pollingStation", cascade={"persist", "remove"})
      */
     private $prVoteCasts;
     
@@ -259,6 +259,67 @@ class PollingStation
     public function getPrVoteCasts()
     {
         return $this->prVoteCasts;
+    }
+    
+    /**
+     * @return array('partyName' => 'voteCastValue') For API purpose
+     * in order to check whether a the votes data structure sent by
+     * the second verifier match this one or not
+     */
+    public function getPresidentialVoteCastForAPI()
+    {
+        //Prepare the Data Structure
+        $dataStructure = array();
+        //Build the Data structure
+        foreach ($this->getPrVoteCasts() as $vote){
+            $dataStructure[$vote->getPrParty()->getName()] = $vote->getFigureValue();
+        }
+        
+        return $dataStructure;
+    }
+    
+    /**
+     * @return boolean return true if votes matched
+     * and false else
+     */
+    public function isPresidentialVoteCastsMatch(array $prVotes)
+    {
+        if($prVotes == $this->getPresidentialVoteCastForAPI()){
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * @return array($partyName => $voteValue) if in it the given parameter does not match 
+     * it related item in getPresidentialVoteCastForAPI
+     * @param array in the format array($partyName => $voteValue)
+     */
+    public function isOnePresidentialVoteCastChanged(array $prVoteCast)
+    {
+        
+        //find $prVoteCast in the array
+        foreach ($this->getPresidentialVoteCastForAPI() as $party => $voteValue){
+            foreach ($prVoteCast as $party2 => $value2){
+                if(($party == $party2)&&($voteValue != $value2)){
+                    return array($party => $voteValue);
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    public function setOnePresidentialVoteCast(array $onePrVoteCast)
+    {
+        foreach ($this->getPrVoteCasts() as $prVoteCast){
+            foreach ($onePrVoteCast as $partyName => $voteValue){
+                if($prVoteCast->getPrParty()->getName() == $partyName)
+                    $prVoteCast->setFigureValue ($voteValue);
+            }
+        }
     }
 
     /**
