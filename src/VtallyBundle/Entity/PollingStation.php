@@ -41,6 +41,13 @@ class PollingStation
      * @ORM\Column(name="presidential", type="boolean")
      */
     private $presidential;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="presidentialEdited", type="boolean", nullable=true)
+     */
+    private $presidentialEdited;
 
     /**
      * @var string
@@ -667,5 +674,39 @@ class PollingStation
     public function isPresidential()
     {
         return $this->presidential;
+    }
+
+    /**
+     * Get presidential
+     *
+     * @return boolean
+     */
+    public function getPresidential()
+    {
+        return $this->presidential;
+    }
+
+    /**
+     * Set presidentialEdited
+     *
+     * @param boolean $presidentialEdited
+     *
+     * @return PollingStation
+     */
+    public function setPresidentialEdited($presidentialEdited)
+    {
+        $this->presidentialEdited = $presidentialEdited;
+
+        return $this;
+    }
+
+    /**
+     * Get presidentialEdited
+     *
+     * @return boolean
+     */
+    public function getPresidentialEdited()
+    {
+        return $this->presidentialEdited;
     }
 }

@@ -39,6 +39,7 @@ class PollingStationAdmin extends Admin
             ->add('constituency')
             ->add('active')
             ->add('presidential')
+            ->add('presidentialEdited')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -77,6 +78,7 @@ class PollingStationAdmin extends Admin
             ->add('code')
             ->add('users')
             ->add('district')
+            ->add('prVoteCastsView')
             ->add('constituency')
         ;
     }

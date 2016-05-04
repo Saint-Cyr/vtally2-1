@@ -36,8 +36,11 @@ class ApiHandlerTest extends WebTestCase
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
        //Case where login successfully
-       $inputData = array('username' => 'verifier1', 'password' => 'test');
+       $inputData = array('action' => 1, 'username' => 'verifier1', 'password' => 'test');
        $outPut = $apiHandler->login($inputData);
+       $this->assertEquals($outPut, array('first_name' => 'VERIFIER 1', 'pol_id' => 'Pol. Station 1'));
+       
+       $outPut = $apiHandler->process($inputData);
        $this->assertEquals($outPut, array('first_name' => 'VERIFIER 1', 'pol_id' => 'Pol. Station 1'));
        
        //Case login faild: wrong username
@@ -74,6 +77,21 @@ class ApiHandlerTest extends WebTestCase
        
        //Case where sending presidential data succed
    }
+   
+   public function testEditPresidentialVoteCast()
+   {
+       //Get the statistic service
+       $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
+       
+       /*Case where sending presidential data does succed
+       $inputData = array('action' => 3, 'transaction_type' => 'presidential',
+                          'verifier_token' => 'ABCD2', 'votes' => array('NPP' => 0, 'NDC' => 1));
+       
+       $outPut = $apiHandler->editPresidentialVoteCast($inputData);
+       $this->assertEquals($outPut, array('presidential vote cast sent!'));*/
+   }
+   
+  
     
    public function testIsDataStructureValid()
    {
@@ -81,8 +99,8 @@ class ApiHandlerTest extends WebTestCase
        
        //The only valid data structure for action => 1
        $inputData1 = array('action' => 1, 'username' => 'verifier1', 'password' => 'test');
-       //assertNotTrue because the fixture date of polling Station set all not active by default
-       $this->assertNotTrue($apiHandler->isDataStructureValid($inputData1));
+       //Make sure to set the pollingStation active manually after loading the fixtures
+       $this->assertTrue($apiHandler->isDataStructureValid($inputData1));
        
        //All the false Data structure
        $inputData2 = array('action' => 1, 'username' => null, 'password' => 'test');
@@ -113,11 +131,17 @@ class ApiHandlerTest extends WebTestCase
    {
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
-       //When send the right data
-       $inputData = array('action' => 1, 'username' => 'Quinton92', 'password' => 'test');
+       //When send the right data with username
+       $inputData = array('action' => 1, 'username' => 'verifier1', 'password' => 'test');
        $output = $apiHandler->validatorFactory1($inputData);
-       //Bacause Pol. Station 1 is not yet activated
-       $this->assertNotTrue($output);
+       //Bacause Pol. Station 1 is activated by the fixtures
+       $this->assertTrue($output);
+       
+       //When send the right data with verifier_token
+       $inputData = array('action' => 1, 'verifier_token' => 'ABCD1', 'password' => 'test');
+       $output = $apiHandler->validatorFactory1($inputData);
+       //Bacause Pol. Station 1 is activated by the fixtures
+       $this->assertTrue($output);
        
        //When send the wrong data 
        $inputData = array('action' => 1, 'username' => 'Quinton9', 'password' => 'test');

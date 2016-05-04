@@ -42,6 +42,12 @@ class PrEditedVoteCast
     private $pollingStation;
     
     /**
+     * @ORM\ManyToOne(targetEntity="PrBundle\Entity\PrParty")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $prParty;
+    
+    /**
      * Get id
      *
      * @return int

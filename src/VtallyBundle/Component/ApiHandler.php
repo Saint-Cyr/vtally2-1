@@ -13,6 +13,7 @@ use PrBundle\Entity\PrVoteCast;
 use VtallyBundle\Entity\PollingStation;
 use VtallyBundle\Entity\Region;
 use VtallyBundle\Entity\Constituency;
+use PrBundle\Entity\PrEditedVoteCast;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
@@ -50,7 +51,69 @@ class ApiHandler
         return array('Bad credentials.');
     }
     
-    
+    public function editPresidentialVoteCast(array $inputData)
+    {
+        //Collect the user in order to get his pollingStation
+        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
+        
+        //For maintenance perpuse, make sure the system responde well when error occure
+        if(!$user){
+            return array('user not found in the DB.');
+        }
+        
+        //Get the polling Station
+        $pollingStation = $user->getPollingStation();
+       
+        //See the API documentation to learn more about the constraints
+        if(($pollingStation->isPresidential())&&($this->validatorFactory2($inputData))
+                &&($this->validatorFactory3($inputData))&&($this->isPresidentialVoteCastValid($inputData))
+                &&(array_key_exists('pr_votes', $inputData))){
+            //Initialize the statment
+            $edited = false;
+            
+            $votes = $inputData['pr_votes'];
+            //Process each one of the votes item
+            if(!$pollingStation->isPresidentialVoteCastsMatch($votes)){
+                foreach ($votes as $p => $v){
+                    //Check whether there is change
+                    if($onePrVoteCast = $pollingStation->isOnePresidentialVoteCastChanged(array($p => $v))){
+                        //Instanciate the editedPrVoteCast
+                        $prEditedVoteCast = new PrEditedVoteCast();
+                        //Link it to the pollingStation
+                        $prEditedVoteCast->setPollingStation($pollingStation);
+                        //update the vote cast related to the pollingStation
+                        $pollingStation->setOnePresidentialVoteCast($onePrVoteCast);
+                        //As $onePrVoteCast is return as an array, we need to loop on it
+                        foreach ($onePrVoteCast as $partyName => $v){
+                            //Set the figure value
+                            $prEditedVoteCast->setFigureValue($v);
+                            //Get the PrParty from the DB in order to link it to the editedPrVoteCast
+                            $prParty = $this->em->getRepository('PrBundle:PrParty')->findOneBy(array('name' => $partyName));
+                            //Set the prParty
+                            $prEditedVoteCast->setPrParty($prParty);
+                            $edited = true;
+                            $pollingStation->setPresidentialEdited(true);
+                        }
+                        
+                        $this->em->persist($prEditedVoteCast);
+                    }
+                }
+                
+                //In the case where there is a change, then set the apropriate pollingStation property true
+                if($edited){
+                    //make change in DB.
+                    $this->em->flush();
+                    $pollingStation->setPresidentialEdited(true);
+                    return 'presidential vote cast edited.';
+                }
+            }
+            
+            return array('presidential vote cast comfirmed.');
+        }
+        
+        return array('cannot edit presidential vote cast: check data structure or validation rules');
+        
+    }
     
     public function sendPresidentialVoteCast(array $inputData)
     {
@@ -108,20 +171,18 @@ class ApiHandler
     public function process(array $inputData)
     {
         //Make sure every request have the key action
-        if(array_key_exists('action', $inputData)){
+        if((array_key_exists('action', $inputData)&&($this->validatorFactory1($inputData)))){
             
             switch ($inputData['action']){
-                case 1:
+                case 1: 
                     return $this->login($inputData);
                     break;
                 case 2:
-                    
-                    if($this->validatorFactory1($inputData)){
-                        
-                        return $this->sendPresidentialVoteCast($inputData);
-                    }
-                    //validatorFactory1 faild.
+                    return $this->sendPresidentialVoteCast($inputData);
                     return array('Error: the concerned polling station is not activated.');
+                    break;
+                case 3:
+                    return $this->editPresidentialVoteCast($inputData);
                     break;
             }
         }
@@ -194,6 +255,7 @@ class ApiHandler
     {
         //In the case $inputData does have verifier_token key
         if(array_key_exists('verifier_token', $inputData)){
+            
             //Get the user object based on the userToken
             $user = $this->em->getRepository('UserBundle:User')
                     ->findOneBy(array('userToken' => $inputData['verifier_token']));
@@ -201,6 +263,7 @@ class ApiHandler
 
         //In the case $inputData does have username key when action = 1 (login)
         elseif(array_key_exists('username', $inputData)){
+            
             //Get the user object based on the username
             $user = $this->em->getRepository('UserBundle:User')
                     ->findOneBy(array('username' => $inputData['username']));

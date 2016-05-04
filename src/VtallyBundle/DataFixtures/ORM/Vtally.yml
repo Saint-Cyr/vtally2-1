@@ -1050,6 +1050,8 @@ VtallyBundle\Entity\PollingStation:
         name: Pol. Station 1
         code: PS 1
         constituency: "@constituency1"
+        #presidential: true
+        active: true
         district: <city()>
         
     polling_station2:
