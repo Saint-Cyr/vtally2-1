@@ -31,7 +31,7 @@ class PrPinkSheet
     /**
      * @var bool
      *
-     * @ORM\Column(name="edited", type="boolean")
+     * @ORM\Column(name="edited", type="boolean", nullable=true)
      */
     private $edited;
     
@@ -39,6 +39,11 @@ class PrPinkSheet
      * @ORM\OneToOne(targetEntity="VtallyBundle\Entity\PollingStation", mappedBy="prPinkSheet", cascade={"remove"})
      */
     private $pollingStation;
+    
+    public function __toString() 
+    {
+        return $this->name;
+    }
 
     /**
      * Get id

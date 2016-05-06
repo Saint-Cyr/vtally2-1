@@ -31,6 +31,8 @@ class PrEditedVoteCastAdmin extends Admin
             ->add('id')
             ->add('figureValue')
             ->add('wordValue')
+            ->add('pollingStation')
+            ->add('prParty')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),

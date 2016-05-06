@@ -45,6 +45,13 @@ class PollingStation
     /**
      * @var string
      *
+     * @ORM\Column(name="presidentialPinkSheet", type="boolean")
+     */
+    private $presidentialPinkSheet;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="presidentialEdited", type="boolean", nullable=true)
      */
     private $presidentialEdited;
@@ -300,20 +307,20 @@ class PollingStation
     }
     
     /**
-     * @return array($partyName => $voteValue) if in it the given parameter does not match 
-     * it related item in getPresidentialVoteCastForAPI
+     * @return an instance of VtallyBundle\Entity\PrVoteCast if in it the given parameter does not match 
+     * it related item in the DB. If there is not change, return false
      * @param array in the format array($partyName => $voteValue)
      */
-    public function isOnePresidentialVoteCastChanged(array $prVoteCast)
+    public function isOnePresidentialVoteCastChanged(array $inputData)
     {
-        
-        //find $prVoteCast in the array
-        foreach ($this->getPresidentialVoteCastForAPI() as $party => $voteValue){
-            foreach ($prVoteCast as $party2 => $value2){
-                if(($party == $party2)&&($voteValue != $value2)){
-                    return array($party => $voteValue);
+        foreach ($this->getPrVoteCasts() as $prVoteCast){
+            foreach ($inputData as $item => $v){
+                //When the given party name and it related vote cast is different from the one in the DB
+                if(($prVoteCast->getPrParty()->getName() == $item)&&($prVoteCast->getFigureValue() != $v)){
+                    return $prVoteCast;
                 }
             }
+            
         }
         
         return false;
@@ -708,5 +715,29 @@ class PollingStation
     public function getPresidentialEdited()
     {
         return $this->presidentialEdited;
+    }
+
+    /**
+     * Set presidentialPinkSheet
+     *
+     * @param boolean $presidentialPinkSheet
+     *
+     * @return PollingStation
+     */
+    public function setPresidentialPinkSheet($presidentialPinkSheet)
+    {
+        $this->presidentialPinkSheet = $presidentialPinkSheet;
+
+        return $this;
+    }
+
+    /**
+     * Get presidentialPinkSheet
+     *
+     * @return boolean
+     */
+    public function isPresidentialPinkSheet()
+    {
+        return $this->presidentialPinkSheet;
     }
 }

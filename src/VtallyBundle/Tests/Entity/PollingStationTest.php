@@ -64,20 +64,54 @@ class PollingStationTest extends WebTestCase
         //Get the pollingStation 
         $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
         
-        //Case where there is a chanaged (NPP changed to be = 3 instead of 0)
+        //Cases where there is a chanaged (NPP changed to be = 3 instead of 0)
+      
+        //Case 1: set give to NDC 3 instead of 0
+        $onePrVoteCast = array('NDC' => 3);
+        $prVoteCast = $pollingStation->isOnePresidentialVoteCastChanged($onePrVoteCast);
+        //Make sure the result return a voteCast before call on it to evoid error
+        $this->assertEquals($prVoteCast->getPrParty()->getName(), 'NDC');
+        $this->assertEquals($prVoteCast->getFigureValue(), 1);
+        //Make sure the this vote cast is linked to the right polling Station
+        $this->assertEquals($prVoteCast->getPollingStation()->getName(), 'Pol. Station 1');
+        
+        //Case 1: set give to NPP 3 instead of 0
         $onePrVoteCast = array('NPP' => 3);
-        $out = $pollingStation->isOnePresidentialVoteCastChanged($onePrVoteCast);
-        $this->assertEquals(array('NPP' => 0), $out);
+        $prVoteCast = $pollingStation->isOnePresidentialVoteCastChanged($onePrVoteCast);
+        //Make sure the result return a voteCast before call on it to evoid error
+        $this->assertEquals($prVoteCast->getPrParty()->getName(), 'NPP');
+        $this->assertEquals($prVoteCast->getFigureValue(), 0);
+        //Make sure the this vote cast is linked to the right polling Station
+        $this->assertEquals($prVoteCast->getPollingStation()->getName(), 'Pol. Station 1');
         
-        //Case where there is not chanage
-        $onePrVoteCast = array('NPP' => 0);
-        $out = $pollingStation->isOnePresidentialVoteCastChanged($onePrVoteCast);
-        $this->assertNotTrue($out);
+        //Case 1: set give to NPP 3 instead of 0
+        $onePrVoteCast = array('UFP' => 145);
+        $prVoteCast = $pollingStation->isOnePresidentialVoteCastChanged($onePrVoteCast);
+        //Make sure the result return a voteCast before call on it to evoid error
+        $this->assertEquals($prVoteCast->getPrParty()->getName(), 'UFP');
+        $this->assertEquals($prVoteCast->getFigureValue(), 150);
+        //Make sure the this vote cast is linked to the right polling Station
+        $this->assertEquals($prVoteCast->getPollingStation()->getName(), 'Pol. Station 1');
         
-        //Case where there is not chanage
+        //Cases where there is no change (same value like in the fixtures)
+      
+        //Case 1: set give to NDC 3 instead of 0
         $onePrVoteCast = array('NDC' => 1);
-        $out = $pollingStation->isOnePresidentialVoteCastChanged($onePrVoteCast);
-        $this->assertNotTrue($out);
+        $prVoteCast = $pollingStation->isOnePresidentialVoteCastChanged($onePrVoteCast);
+        //When there is not change the output must by false
+        $this->assertFalse($prVoteCast);
+        
+        //Case 1: set give to NPP 3 instead of 0
+        $onePrVoteCast = array('NPP' => 0);
+        $prVoteCast = $pollingStation->isOnePresidentialVoteCastChanged($onePrVoteCast);
+        //When there is not change the output must by false
+        $this->assertFalse($prVoteCast);
+        
+        //Case 1: set give to NPP 3 instead of 0
+        $onePrVoteCast = array('UFP' => 150);
+        $prVoteCast = $pollingStation->isOnePresidentialVoteCastChanged($onePrVoteCast);
+        //When there is not change the output must by false
+        $this->assertFalse($prVoteCast);
     }
     
     public function testIsPresidentialVoteCastsMatch()

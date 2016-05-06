@@ -46,6 +46,7 @@ class UserAdmin extends Admin
             ->add('firstName')
             ->add('lastName')
             ->add('userToken')
+            ->add('isActive')
         ;
         
         if ($this->isGranted('EDIT')) {

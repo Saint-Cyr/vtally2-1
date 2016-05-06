@@ -15,12 +15,15 @@ class ApiController extends Controller
         // get the API handler service from the container
         $apiHandler = $this->get('vtally.api_handler');
         
+        //If it's a pinkSheet then send $request instead of $inputData
+        if($request->get('action') == 4){
+            return $result = $apiHandler->processPinkSheet($request);
+        }
+        
         // Processing...
         $result = $apiHandler->process($inputData);
         
         //Send the result back to the client
         return $result;
     }
-    
-    
 }

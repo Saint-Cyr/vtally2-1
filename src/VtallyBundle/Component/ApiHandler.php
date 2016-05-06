@@ -9,10 +9,12 @@
  */
 namespace VtallyBundle\Component; 
 use PrBundle\Entity\PrParty;
+use PrBundle\Entity\PrPinkSheet;
 use PrBundle\Entity\PrVoteCast;
 use VtallyBundle\Entity\PollingStation;
 use VtallyBundle\Entity\Region;
 use VtallyBundle\Entity\Constituency;
+use Symfony\Component\HttpFoundation\Request;
 use PrBundle\Entity\PrEditedVoteCast;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
@@ -51,6 +53,9 @@ class ApiHandler
         return array('Bad credentials.');
     }
     
+    /**
+     *  data structure {"action":3, "transaction_type":"presidential", "pol_id":4, "verifier_token":"ABCD1", "pr_votes":{"NPP":4, "NDC":34, "UFP":77, "CPP":8}}
+     */
     public function editPresidentialVoteCast(array $inputData)
     {
         //Collect the user in order to get his pollingStation
@@ -74,27 +79,30 @@ class ApiHandler
             $votes = $inputData['pr_votes'];
             //Process each one of the votes item
             if(!$pollingStation->isPresidentialVoteCastsMatch($votes)){
+                
                 foreach ($votes as $p => $v){
                     //Check whether there is change
                     if($onePrVoteCast = $pollingStation->isOnePresidentialVoteCastChanged(array($p => $v))){
+                        
                         //Instanciate the editedPrVoteCast
                         $prEditedVoteCast = new PrEditedVoteCast();
                         //Link it to the pollingStation
                         $prEditedVoteCast->setPollingStation($pollingStation);
-                        //update the vote cast related to the pollingStation
-                        $pollingStation->setOnePresidentialVoteCast($onePrVoteCast);
-                        //As $onePrVoteCast is return as an array, we need to loop on it
-                        foreach ($onePrVoteCast as $partyName => $v){
-                            //Set the figure value
-                            $prEditedVoteCast->setFigureValue($v);
-                            //Get the PrParty from the DB in order to link it to the editedPrVoteCast
-                            $prParty = $this->em->getRepository('PrBundle:PrParty')->findOneBy(array('name' => $partyName));
-                            //Set the prParty
-                            $prEditedVoteCast->setPrParty($prParty);
-                            $edited = true;
-                            $pollingStation->setPresidentialEdited(true);
-                        }
                         
+                        //As $onePrVoteCast is return instance of VtallyBundle:PrVoteCast, we can do:
+                        $prEditedVoteCast->setFigureValue($onePrVoteCast->getFigureValue());
+                        //Fetch from the DB and update the vote cast related to the pollingStation
+                        $prVoteCast = $this->em->getRepository('PrBundle:PrVoteCast')->find($onePrVoteCast->getId());
+                        $prVoteCast->setFigureValue($v);
+                        //Get the PrParty from the DB in order to link it to the editedPrVoteCast
+                        $prParty = $this->em->getRepository('PrBundle:PrParty')
+                                    ->findOneBy(array('name' => $onePrVoteCast->getPrParty()->getName()));
+                        //Set the prParty
+                        $prEditedVoteCast->setPrParty($prParty);
+                        
+                        $edited = true;
+                        $pollingStation->setPresidentialEdited(true);
+                        //We have to persist $prEditedVoteCast because it's a new instance
                         $this->em->persist($prEditedVoteCast);
                     }
                 }
@@ -174,20 +182,117 @@ class ApiHandler
         if((array_key_exists('action', $inputData)&&($this->validatorFactory1($inputData)))){
             
             switch ($inputData['action']){
+                //login
                 case 1: 
                     return $this->login($inputData);
                     break;
                 case 2:
+                    //Sending presidential vote cast
                     return $this->sendPresidentialVoteCast($inputData);
                     return array('Error: the concerned polling station is not activated.');
                     break;
                 case 3:
+                    //Edit presidential vote cast
                     return $this->editPresidentialVoteCast($inputData);
                     break;
             }
         }
         
         return false;
+    }
+    
+    public function processPinkSheet(Request $request)
+    {
+        //Prepare the common inputData structure $inputData
+        // (like in login, sendvote...)
+        $inputData['action'] = $request->get('action');
+        $inputData['verifier_token'] = $request->get('verifier_token');
+        $inputData['transaction_type'] = $request->get('transaction_type');
+        
+        //Warnning !!! Make sure the file extension is only the recommanded one
+        $file = $request->files->get('file');
+        if(($file->guessExtension() != 'jpg')&&($file->guessExtension() != 'jpeg')
+                &&($this->validatorFactory3($inputData))){
+            return array('Error: file Extension non suported.');
+        }
+        
+        //Make sure every request have the key action
+        if(((($inputData['action'] == 4)/*||(condition for parliamentary)*/)
+                &&($this->validatorFactory1($inputData))&&($this->validatorFactory3($inputData)))){
+            
+            switch ($inputData['action']){
+                //Send presidential pinkSheet
+                case 4:
+                    //Get the user
+                    $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
+                    //Get the pollingStation 
+                    $pollingStation = $user->getPollingStation();
+                    
+                    if(!$user||!$pollingStation){
+                        return array('user or pollingStation not found in the DB.');
+                    }
+                    //return $pollingStation->getPrPinkSheet()->getName();
+                    //Make sure presidential pink sheet has not yet been sent
+                    if($pollingStation->isPresidentialPinkSheet()){
+                        return array('Error: presidential pinkSheet allready sent.');
+                    }
+                    return $this->sendPresidentialPinkSheet($request, $inputData);
+                    break;
+                //Edit presidential pinkSheet
+                case 5: 
+                    return $this->editPresidentialPinkSheet($request);
+                    break;
+            }
+        }
+        
+        return array('wrong data structure or validation fall');
+    }
+    
+    
+    /**
+     * @param Request $request
+     * @return string
+     * @dataStructure array('file' => v1, 'verifier_token' => v2,
+     *                      'action' => v3, 'transaction_type' => v4);
+     */
+    public function sendPresidentialPinkSheet(Request $request, array $inputData)
+    {
+        //Get the user in order to get the pollingStation
+        $user = $this->em->getRepository('UserBundle:User')
+                     ->findOneBy(array('userToken' => $inputData['verifier_token']));
+        
+        //Now get the pollingStation
+        $pollingStation = $user->getPollingStation();
+        
+        //Get the uploaded file
+        $uploadedFile = $request->files->get('file');
+        
+        //Instentiate the prPinkSheet
+        $prPinkSheet = new PrPinkSheet();
+        //set the pink Sheet name
+        $prPinkSheet->setName($uploadedFile->getClientOriginalName());
+        //Link the pinkSheet to the pollingStation
+        $pollingStation->setPrPinkSheet($prPinkSheet);
+        //Set presidentialPinkSheet to true
+        $pollingStation->setPresidentialPinkSheet(true);
+        //persist $prPinkSheet in the DB.
+        $this->em->persist($prPinkSheet);
+        $this->em->flush();
+        //Get the directory path
+        $directory = __DIR__.'/../../../web/pinkSheet';
+        //Move the file in the directory
+        $file = $uploadedFile->move($directory, $uploadedFile->getClientOriginalName());
+        
+        return array('file uploaded.');
+    }
+    
+    public function editPresidentialPinkSheet(Request $request, $inputData)
+    {
+        //Collect the pinkSheet based on $pinkSheet = $user->getPollingStation()->getPrPinkSheet();
+        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
+        $prPinkSheet = $user->getPollinStation()->getPrPinkSheet();
+        
+        return $prPinkSheet->getName();
     }
     
     public function isDataStructureValid($inputData)

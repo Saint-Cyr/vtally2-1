@@ -34,11 +34,13 @@ class PollingStationAdmin extends Admin
             ->add('id')
             ->add('name')
             ->add('code')
+            ->add('prPinkSheet')
             ->add('district')
             ->add('prVoteCast')
             ->add('constituency')
             ->add('active')
             ->add('presidential')
+            ->add('presidentialPinkSheet')
             ->add('presidentialEdited')
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -62,6 +64,7 @@ class PollingStationAdmin extends Admin
             ->add('constituency')
             ->add('active')
             ->add('presidential')
+            ->add('presidentialPinkSheet')
             ->add('users')
             
         ;
