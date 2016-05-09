@@ -16,7 +16,7 @@ class ApiController extends Controller
         $apiHandler = $this->get('vtally.api_handler');
         
         //If it's a pinkSheet then send $request instead of $inputData
-        if($request->get('action') == 4){
+        if($request->get('action') == 4 || $request->get('action') == 5){
             return $result = $apiHandler->processPinkSheet($request);
         }
         

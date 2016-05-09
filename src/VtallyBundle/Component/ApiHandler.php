@@ -217,8 +217,8 @@ class ApiHandler
         }
         
         //Make sure every request have the key action
-        if(((($inputData['action'] == 4)/*||(condition for parliamentary)*/)
-                &&($this->validatorFactory1($inputData))&&($this->validatorFactory3($inputData)))){
+        if(((($inputData['action'] == 4 || $inputData['action'] == 5)/*||(condition for parliamentary)*/)
+                &&($this->validatorFactory1($inputData))&&($this->validatorFactory3($inputData)))){ 
             
             switch ($inputData['action']){
                 //Send presidential pinkSheet
@@ -239,13 +239,27 @@ class ApiHandler
                     return $this->sendPresidentialPinkSheet($request, $inputData);
                     break;
                 //Edit presidential pinkSheet
-                case 5: 
-                    return $this->editPresidentialPinkSheet($request);
+                case 5:
+                    //Get the user
+                    $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
+                    //Get the pollingStation 
+                    $pollingStation = $user->getPollingStation();
+                    
+                    if(!$user||!$pollingStation){
+                        return array('user or pollingStation not found in the DB.');
+                    }
+                    
+                    //Make sure presidential pink sheet has been sent allready
+                    if(!$pollingStation->isPresidentialPinkSheet()){
+                        return array('Error: presidential pinkSheet not yet sent.');
+                    }
+                    
+                    return $this->editPresidentialPinkSheet($request, $inputData);
                     break;
             }
         }
         
-        return array('wrong data structure or validation fall');
+        return array('wrong data structure or validation fall----');
     }
     
     
@@ -289,10 +303,29 @@ class ApiHandler
     public function editPresidentialPinkSheet(Request $request, $inputData)
     {
         //Collect the pinkSheet based on $pinkSheet = $user->getPollingStation()->getPrPinkSheet();
-        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
-        $prPinkSheet = $user->getPollinStation()->getPrPinkSheet();
+        $user = $this->em->getRepository('UserBundle:User')
+                     ->findOneBy(array('userToken' => $inputData['verifier_token']));
+        $prPinkSheet = $user->getPollingStation()->getPrPinkSheet();
+        //Send the move the edited pink sheet to it location
         
-        return $prPinkSheet->getName();
+        //Get the uploaded file
+        $uploadedFile = $request->files->get('file');
+        //Get the directory path
+        $directory = __DIR__.'/../../../web/pinkSheet';
+        //Move the file in the directory
+        $file = $uploadedFile->move($directory, $uploadedFile->getClientOriginalName());
+        //make sure the edited file have different name than the original one
+        if($uploadedFile->getClientOriginalName() == $prPinkSheet->getName()){
+            return array('Error: the name of the edited presidential pink sheet must be different of the original:'
+                . ' see documentation for naming convention');
+        }
+        //Set the pinkSheet property edited to true
+        $prPinkSheet->setEdited(true);
+        //Persist the change
+        $this->em->persist($prPinkSheet);
+        $this->em->flush();
+        //FeedBack
+        return array('presidential pink Sheet edited.');
     }
     
     public function isDataStructureValid($inputData)
