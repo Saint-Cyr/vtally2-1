@@ -186,14 +186,18 @@ class ApiHandler
                 case 1: 
                     return $this->login($inputData);
                     break;
+                //Sending presidential vote cast
                 case 2:
-                    //Sending presidential vote cast
                     return $this->sendPresidentialVoteCast($inputData);
                     return array('Error: the concerned polling station is not activated.');
                     break;
+                //Edit presidential vote cast
                 case 3:
-                    //Edit presidential vote cast
                     return $this->editPresidentialVoteCast($inputData);
+                    break;
+                //Edit presidential vote cast
+                case 5:
+                    return $this->getParliamentaryCandidates($inputData);
                     break;
             }
         }
@@ -475,5 +479,61 @@ class ApiHandler
         }
         
         return false;
+    }
+
+
+    //Parliamentary
+    
+    /**
+     * 
+     */
+    public function getParliamentaryCandidates(array $inputData)
+    {
+        //Get the user
+        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
+        //Get the pollingStation 
+        $pollingStation = $user->getPollingStation();
+        //Get the Constituency
+        $constituency = $pollingStation->getConstituency();
+        
+        if(!$user||!$pollingStation||!$constituency){
+            return array('user or pollingStation or consituency not found in the DB.');
+        }
+        
+        //Get all the independents candidates linked to the contexted pollingStation
+        $indCandidates = $constituency->getIndependentCandidates();
+        
+        //Get all the dependents candidates linked to the contexted pollingStation
+        $depCandidates = $constituency->getDependentCandidates();
+        
+        $data1 = array();
+        $data2 = array();
+        //load independent candidates
+        foreach ($indCandidates as $indC){
+            $data1[] = $indC->getFirstName();
+            $data1[] = $indC->getCandidacyNumber();
+            array_push($data2, $data1);
+            $data1 = array();
+        }
+        
+        //load dependent candidates
+        $data = array();
+        $data4 = array();
+        foreach ($depCandidates as $dep){
+            $data[] = $dep->getFirstName();
+            $data[] = $dep->getCandidacyNumber();
+            array_push($data4, $data);
+            $data = array();
+        }
+        
+        $candidates[] = $data2;
+        $candidates[] = $data4;
+        
+        return $candidates;
+    }
+    
+    public function sendParliamentaryVoteCast(array $inputData)
+    {
+        
     }
 }

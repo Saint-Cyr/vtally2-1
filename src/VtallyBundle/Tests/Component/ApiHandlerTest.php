@@ -180,5 +180,18 @@ class ApiHandlerTest extends WebTestCase
        
        $this->assertNotTrue($outPut);
    }
+   
+   public function testGetParliamentaryCandidates()
+   {
+       $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
+       //When send the right data
+       $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'parliamentary');
+       $output = $apiHandler->getParliamentaryCandidates($inputData);
+       //list of independent candidate of the context pollingStation
+       $indCandidates = array(array('Vivien', 1), array('Joella', 2), array('Adde', 5));
+       $depCandidates = array(array('Jhon', 1), array('Jannette', 2),  array('Sondra', 2), array('Fadde', 2));
+       
+       $this->assertEquals($output, array($indCandidates, $depCandidates));
+   }
 }
- 
+  
