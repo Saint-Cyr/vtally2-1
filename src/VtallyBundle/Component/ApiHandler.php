@@ -197,7 +197,7 @@ class ApiHandler
                 case 3:
                     return $this->editPresidentialVoteCast($inputData);
                     break;
-                //Edit presidential vote cast
+                //Get the parliamentary candidates for the first Verifier
                 case 5:
                     return $this->getParliamentaryCandidates($inputData);
                     break;
@@ -208,12 +208,28 @@ class ApiHandler
                         return $this->sendParliamentaryVoteCast($inputData);
                         break;
                     }
+                    
+                //Get the parliamentary candidates for the second Verifier
+                case 7:
+                    //Make sure the Data structure content the key pa_votes
+                    if($inputData['transaction_type'] == 'parliamentary'){
+                        return $this->getParliamentaryCandidates($inputData);
+                        break;
+                    }
+                    
+                //Get the parliamentary vote cast for the first Verifier
+                case 8:
+                    return $this->getParliamentaryCandidates($inputData);
+                    break;
+                
                     return array('Error: wrong data structure or validation faild.');
-                    break; 
+                    break;
             }
+            
+            return array('Error: wrong data structure or validation faild.');
         }
         
-        return false;
+        return array('Error: wrong data structure or validation faild.');
     }
     
     public function processPinkSheet(Request $request)
@@ -519,10 +535,19 @@ class ApiHandler
         
         $data1 = array();
         $data2 = array();
+        
         //load independent candidates
         foreach ($indCandidates as $indC){
-            $data1[] = $indC->getFirstName();
-            $data1[] = $indC->getCandidacyNumber();
+            //Check if it's first verifier then add $inputData['vote_cast'] => null
+            //else (second verifier) load the $inputData['vote_cast'] value from the DB.
+            if($inputData['action'] == 5){
+                $data1['vote_cast'] = null;
+            }elseif($inputData['action'] == 7){
+                $data1['vote_cast'] = 'value from DB';
+            }
+            
+            $data1['name'] = $indC->getFirstName();
+            $data1['candidacy_number'] = $indC->getCandidacyNumber();
             array_push($data2, $data1);
             $data1 = array();
         }
@@ -531,8 +556,17 @@ class ApiHandler
         $data = array();
         $data4 = array();
         foreach ($depCandidates as $dep){
-            $data[] = $dep->getFirstName();
-            $data[] = $dep->getCandidacyNumber();
+            
+            //Check if it's first verifier then add $inputData['vote_cast'] => null
+            //else (second verifier) load the $inputData['vote_cast'] value from the DB.
+            if($inputData['action'] == 5){
+                $data['vote_cast'] = null;
+            }elseif($inputData['action'] == 7){
+                $data['vote_cast'] = 'value from DB';
+            }
+            
+            $data['name'] = $dep->getFirstName();
+            $data['candidacy_number'] = $dep->getCandidacyNumber();
             array_push($data4, $data);
             $data = array();
         }

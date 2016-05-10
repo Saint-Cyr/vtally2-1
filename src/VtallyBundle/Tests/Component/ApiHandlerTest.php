@@ -182,12 +182,25 @@ class ApiHandlerTest extends WebTestCase
    public function testGetParliamentaryCandidates()
    {
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
-       //When send the right data
+       
+       //When login by the FirstVerifier
        //list of independent and dependent candidate of the context pollingStation (For Constituency 1)
-       $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'parliamentary');
-       $output = $apiHandler->getParliamentaryCandidates($inputData);
-       $indCandidates = array(array('Vivien', 1), array('Joella', 2), array('Adde', 5));
-       $depCandidates = array(array('Jhon', 1), array('Jannette', 2),  array('Sondra', 2), array('Fadde', 2));
+       $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'parliamentary', 'action' => 5);
+       $output = $apiHandler->process($inputData);
+       
+       $indCandidates = [
+                            ['name' => 'Vivien', 'candidacy_number' => 1, 'vote_cast' => null],
+                            ['name' => 'Joella', 'candidacy_number' => 2, 'vote_cast' => null],
+                            ['name' => 'Adde', 'candidacy_number' => 5, 'vote_cast' => null]
+                        ];
+       
+       $depCandidates = [
+                            ['name' => 'Jhon', 'candidacy_number' => 1, 'vote_cast' => null],
+                            ['name' => 'Jannette', 'candidacy_number' => 2, 'vote_cast' => null],
+                            ['name' => 'Sondra', 'candidacy_number' => 2, 'vote_cast' => null],
+                            ['name' => 'Fadde', 'candidacy_number' => 2, 'vote_cast' => null]
+                        ];
+       
        $this->assertEquals($output, array($indCandidates, $depCandidates));
    }
    
