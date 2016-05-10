@@ -45,6 +45,13 @@ class PollingStation
     /**
      * @var string
      *
+     * @ORM\Column(name="parliamentary", type="boolean")
+     */
+    private $parliamentary;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="presidentialPinkSheet", type="boolean")
      */
     private $presidentialPinkSheet;
@@ -715,5 +722,29 @@ class PollingStation
     public function getPresidentialEdited()
     {
         return $this->presidentialEdited;
+    }
+
+    /**
+     * Set presidentialPinkSheet
+     *
+     * @param boolean $presidentialPinkSheet
+     *
+     * @return PollingStation
+     */
+    public function setPresidentialPinkSheet($presidentialPinkSheet)
+    {
+        $this->presidentialPinkSheet = $presidentialPinkSheet;
+
+        return $this;
+    }
+
+    /**
+     * Get presidentialPinkSheet
+     *
+     * @return boolean
+     */
+    public function isPresidentialPinkSheet()
+    {
+        return $this->presidentialPinkSheet;
     }
 }
