@@ -201,7 +201,7 @@ class ApiHandlerTest extends WebTestCase
        $user->refreshTokenTime();
        //Set the pollingStation->isParliamentary to true in order for the test to passe because by default the fixture does not so
        $pollingStation = $user->getPollingStation();
-       $pollingStation->setParliamentary(true);
+       $pollingStation->setParliamentary(false);
        //Gathering all types of candidates (independent and dependent)
        //NB the Data strucutre use key => value like id => voteCast
        //$indCandidates = array(1 => 'Vivien', 'Joella' => 2, 'Adde' => 5);

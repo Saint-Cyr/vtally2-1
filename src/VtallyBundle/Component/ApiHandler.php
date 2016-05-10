@@ -557,7 +557,7 @@ class ApiHandler
         //Check the validations rules and the data structure
         if($this->validatorFactory2($inputData) && ($this->validatorFactory3($inputData)) &&
           ($this->isParliamentaryVoteCastValid($inputData['pa_votes']) && 
-          (($pollingStation->isParliamentary())))){
+          (!($pollingStation->isParliamentary())))){
             
             
             $dependentParliamentaryVotes = $inputData['pa_votes']['dependent'];
