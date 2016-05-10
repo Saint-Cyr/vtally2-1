@@ -17,7 +17,6 @@ class ApiHandlerTest extends WebTestCase
 {
     private $em;
     private $application;
-    private $statisticHandler;
 
 
     public function setUp()
@@ -27,12 +26,11 @@ class ApiHandlerTest extends WebTestCase
         
         $this->application = new Application(static::$kernel);
         $this->em = $this->application->getKernel()->getContainer()->get('doctrine.orm.entity_manager');
-        $this->statisticHandler = $this->application->getKernel()->getContainer()->get('vtally.statistic_handler');
     }
     
    public function testLogin()
    {
-       //Get the statistic service
+       //Get the apiHandler service
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
        //Case where login successfully
@@ -56,7 +54,7 @@ class ApiHandlerTest extends WebTestCase
    
    public function testSendPresidentialVoteCast()
    {
-       //Get the statistic service
+       //Get the ApiHandler service
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        //Refresh the user
        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('username' => 'verifier1'));
@@ -80,7 +78,7 @@ class ApiHandlerTest extends WebTestCase
    
    public function testEditPresidentialVoteCast()
    {
-       //Get the statistic service
+       //Get the apiHandler service
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
        /*Case where sending presidential data does succed
@@ -185,13 +183,40 @@ class ApiHandlerTest extends WebTestCase
    {
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        //When send the right data
+       //list of independent and dependent candidate of the context pollingStation (For Constituency 1)
        $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'parliamentary');
        $output = $apiHandler->getParliamentaryCandidates($inputData);
-       //list of independent candidate of the context pollingStation
        $indCandidates = array(array('Vivien', 1), array('Joella', 2), array('Adde', 5));
        $depCandidates = array(array('Jhon', 1), array('Jannette', 2),  array('Sondra', 2), array('Fadde', 2));
-       
        $this->assertEquals($output, array($indCandidates, $depCandidates));
+   }
+   
+   public function testSendParliamentaryVoteCast()
+   {
+       //Case where sending parliamentary votes succed
+       //Get the api service
+       $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
+       //Refresh the user
+       $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('username' => 'verifier1'));
+       $user->refreshTokenTime();
+       //Set the pollingStation->isParliamentary to true in order for the test to passe because by default the fixture does not so
+       $pollingStation = $user->getPollingStation();
+       $pollingStation->setParliamentary(true);
+       //Gathering all types of candidates (independent and dependent)
+       //NB the Data strucutre use key => value like id => voteCast
+       //$indCandidates = array(1 => 'Vivien', 'Joella' => 2, 'Adde' => 5);
+       $indCandidates = array(1 => 7777, 2 => 8888, 3 => 9999);
+       //$depCandidates = array('Jhon' => 1, 'Jannette' => 2,  'Sondra' => 2, 'Fadde' => 2);
+       $depCandidates = array(1 => 2222, 7 => 3333,  13 => 4444, 19 => 5555);
+       
+       $candidates = array('independent' => $indCandidates, 'dependent' => $depCandidates);
+       
+       $inputData = array('action' => 6, 'transaction_type' => 'parliamentary', 'verifier_token' => 'ABCD1', 'pol_id' => 1,
+                          'pa_votes' => $candidates);
+       
+       $outPut = $apiHandler->process($inputData);
+       $this->assertEquals($outPut, array('parliamentary vote cast sent.'));
+       
    }
 }
   
