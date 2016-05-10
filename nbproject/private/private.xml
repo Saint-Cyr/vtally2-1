@@ -4,13 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Component/ApiHandler.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/PrBundle/Admin/PrEditedVoteCastAdmin.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Tests/Entity/PollingStationTest.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/PrBundle/Entity/PrEditedVoteCast.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/PrBundle/Entity/PrVoteCast.php</file>
             <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Tests/Component/ApiHandlerTest.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Tests/Entity/ConstituencyTest.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Entity/PollingStation.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Controller/ApiController.php</file>
         </group>
     </open-files>
 </project-private>
