@@ -681,7 +681,7 @@ class ApiHandler
         //Check the validations rules and the data structure
         if($this->validatorFactory2($inputData) && ($this->validatorFactory3($inputData)) &&
           ($this->isParliamentaryVoteCastValid($inputData['pa_votes']) && 
-          (($pollingStation->isParliamentary())/* && (!$pollingStation->isParliamentaryEdited())*/))){
+          (($pollingStation->isParliamentary()) && (!$pollingStation->isParliamentaryEdited())))){
             //Get the dependentCandidates and the independentCandidate
             $depCandidates = $inputData['pa_votes']['dependent'];
             $indepCandidates = $inputData['pa_votes']['independent'];
@@ -752,6 +752,8 @@ class ApiHandler
                 }
             }
             
+            //lock the pollingStation in order to do not allow an edition of parliamentary votes again
+            $pollingStation->setParliamentaryEdited(true);
             //Confirm the persistence of all persisted and loaded objects
             $this->em->flush();
             if($edited){
@@ -761,7 +763,7 @@ class ApiHandler
             }
         }
         
-        return array('Error: wrong data structure or validation faild.---');
+        return array('Error: wrong data structure or validation faild.');
        
     }
     

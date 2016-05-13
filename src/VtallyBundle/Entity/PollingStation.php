@@ -54,6 +54,13 @@ class PollingStation
     /**
      * @var string
      *
+     * @ORM\Column(name="parliamentaryEdited", type="boolean")
+     */
+    private $parliamentaryEdited;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="presidentialPinkSheet", type="boolean")
      */
     private $presidentialPinkSheet;
@@ -421,6 +428,8 @@ class PollingStation
         $this->setActive(false);
         $this->setPresidential(false);
         $this->setParliamentary(false);
+        $this->setPresidentialEdited(false);
+        $this->setParliamentaryEdited(false);
         $this->setPresidentialPinkSheet(false);
     }
 
@@ -814,5 +823,39 @@ class PollingStation
     public function getPresidentialPinkSheet()
     {
         return $this->presidentialPinkSheet;
+    }
+
+    /**
+     * Get parliamentary
+     *
+     * @return boolean
+     */
+    public function getParliamentary()
+    {
+        return $this->parliamentary;
+    }
+
+    /**
+     * Set parliamentaryEdited
+     *
+     * @param boolean $parliamentaryEdited
+     *
+     * @return PollingStation
+     */
+    public function setParliamentaryEdited($parliamentaryEdited)
+    {
+        $this->parliamentaryEdited = $parliamentaryEdited;
+
+        return $this;
+    }
+
+    /**
+     * Get parliamentaryEdited
+     *
+     * @return boolean
+     */
+    public function isParliamentaryEdited()
+    {
+        return $this->parliamentaryEdited;
     }
 }
