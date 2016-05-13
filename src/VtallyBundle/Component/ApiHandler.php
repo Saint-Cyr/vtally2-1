@@ -10,6 +10,7 @@
 namespace VtallyBundle\Component; 
 use PrBundle\Entity\PrParty;
 use PrBundle\Entity\PrPinkSheet;
+use PaBundle\Entity\PaPinkSheet;
 use PrBundle\Entity\PrVoteCast;
 use PaBundle\Entity\PaVoteCast;
 use PaBundle\Entity\PaEditedVoteCast;
@@ -56,7 +57,8 @@ class ApiHandler
     }
     
     /**
-     *  data structure {"action":3, "transaction_type":"presidential", "pol_id":4, "verifier_token":"ABCD1", "pr_votes":{"NPP":4, "NDC":34, "UFP":77, "CPP":8}}
+     *  data structure {"action":3, "transaction_type":"presidential", "pol_id":4, "verifier_token":"ABCD1",
+     *  "pr_votes":{"NPP":4, "NDC":34, "UFP":77, "CPP":8}}
      */
     public function editPresidentialVoteCast(array $inputData)
     {
@@ -237,7 +239,7 @@ class ApiHandler
     }
     
     public function processPinkSheet(Request $request)
-    {
+    { 
         //Prepare the common inputData structure $inputData
         // (like in login, sendvote...)
         $inputData['action'] = $request->get('action');
@@ -246,13 +248,13 @@ class ApiHandler
         
         //Warnning !!! Make sure the file extension is only the recommanded one
         $file = $request->files->get('file');
-        if(($file->guessExtension() != 'jpg')&&($file->guessExtension() != 'jpeg')
-                &&($this->validatorFactory3($inputData))){
+        if(($file->guessExtension() != 'jpg') && ($file->guessExtension() != 'jpeg') && ($file->guessExtension() != 'pdf')){
             return array('Error: file Extension non suported.');
         }
         
         //Make sure every request have the key action
-        if(((($inputData['action'] == 4 || $inputData['action'] == 5)/*||(condition for parliamentary)*/)
+        if(((($inputData['action'] == 4 || $inputData['action'] == 5) || ($inputData['action'] == 603) ||
+                ($inputData['action'] == 605))
                 &&($this->validatorFactory1($inputData))&&($this->validatorFactory3($inputData)))){ 
             
             switch ($inputData['action']){
@@ -291,10 +293,50 @@ class ApiHandler
                     
                     return $this->editPresidentialPinkSheet($request, $inputData);
                     break;
+                    
+                //Send parliamentary pinkSheet
+                case 603:
+                    //Get the user
+                    $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
+                    //Get the pollingStation 
+                    $pollingStation = $user->getPollingStation();
+                    
+                    if(!$user||!$pollingStation){
+                        return array('user or pollingStation not found in the DB.');
+                    }
+                    
+                    //Make sure presidential pink sheet has not yet been sent
+                    if($pollingStation->isParliamentaryPinkSheet()){
+                        return array('Error: parliamentary pinkSheet allready sent.');
+                    }
+                    return $this->sendParliamentaryPinkSheet($request, $inputData);
+                    break;
+                    
+                //Edit parliamentary pinkSheet
+                case 605:
+                    //Get the user
+                    $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
+                    //Get the pollingStation 
+                    $pollingStation = $user->getPollingStation();
+                    
+                    if(!$user||!$pollingStation){
+                        return array('user or pollingStation not found in the DB.');
+                    }
+                    
+                    //Make sure parliamentary pink sheet has been allready sent and has not
+                    //yet been edited
+                    if((!$pollingStation->isParliamentaryPinkSheet()) ||
+                       ($pollingStation->isParliamentaryPinkSheetEdited())){
+                        
+                        return array('Error: parliamentary pinkSheet not yet sent or allready edited');
+                    }
+                    
+                    return $this->editParliamentaryPinkSheet($request, $inputData);
+                    break;
             }
         }
         
-        return array('wrong data structure or validation fall----');
+        return array('wrong data structure or validation faild.');
     }
     
     
@@ -328,7 +370,7 @@ class ApiHandler
         $this->em->persist($prPinkSheet);
         $this->em->flush();
         //Get the directory path
-        $directory = __DIR__.'/../../../web/pinkSheet';
+        $directory = __DIR__.'/../../../web/pinkSheet/presidential';
         //Move the file in the directory
         $file = $uploadedFile->move($directory, $uploadedFile->getClientOriginalName());
         
@@ -346,7 +388,7 @@ class ApiHandler
         //Get the uploaded file
         $uploadedFile = $request->files->get('file');
         //Get the directory path
-        $directory = __DIR__.'/../../../web/pinkSheet';
+        $directory = __DIR__.'/../../../web/pinkSheet/presidentialEdited';
         //Move the file in the directory
         $file = $uploadedFile->move($directory, $uploadedFile->getClientOriginalName());
         //make sure the edited file have different name than the original one
@@ -361,6 +403,80 @@ class ApiHandler
         $this->em->flush();
         //FeedBack
         return array('presidential pink Sheet edited.');
+    }
+    
+    /**
+     * @param Request $request
+     * @return string
+     * @dataStructure array('file' => v1, 'verifier_token' => v2,
+     *                      'action' => v3, 'transaction_type' => v4);
+     */
+    public function sendParliamentaryPinkSheet(Request $request, array $inputData)
+    {
+        //Get the user in order to get the pollingStation
+        $user = $this->em->getRepository('UserBundle:User')
+                     ->findOneBy(array('userToken' => $inputData['verifier_token']));
+        
+        //Now get the pollingStation
+        $pollingStation = $user->getPollingStation();
+        
+        //Get the uploaded file
+        $uploadedFile = $request->files->get('file');
+        
+        //Instentiate the paPinkSheet
+        $paPinkSheet = new PaPinkSheet();
+        //set the pink Sheet name
+        $paPinkSheet->setName($uploadedFile->getClientOriginalName());
+        //Link the pinkSheet to the pollingStation
+        $pollingStation->setPaPinkSheet($paPinkSheet);
+        //Set the property presidentialPinkSheet to true to prevent 
+        //additional sending parliamentary pink sheet
+        $pollingStation->setParliamentaryPinkSheet(true);
+        //persist $paPinkSheet in the DB.
+        $this->em->persist($paPinkSheet);
+        $this->em->flush();
+        //Get the directory path
+        $directory = __DIR__.'/../../../web/pinkSheet/parliamentary';
+        //Move the file in the directory
+        $file = $uploadedFile->move($directory, $uploadedFile->getClientOriginalName());
+        
+        return array('parliamentary pink sheet file uploaded.');
+    }
+    
+    /**
+     * 
+     * @param Request $request
+     * @param array $inputData
+     * @return type
+     */
+    public function editParliamentaryPinkSheet(Request $request, $inputData)
+    {
+        //Collect the pinkSheet based on $pinkSheet = $user->getPollingStation()->getPaPinkSheet();
+        $user = $this->em->getRepository('UserBundle:User')
+                     ->findOneBy(array('userToken' => $inputData['verifier_token']));
+        $paPinkSheet = $user->getPollingStation()->getPaPinkSheet();
+        //Send the move the edited pink sheet to it location
+        
+        //Get the uploaded file
+        $uploadedFile = $request->files->get('file');
+        //Get the directory path
+        $directory = __DIR__.'/../../../web/pinkSheet/parliamentaryEdited';
+        //Move the file in the directory
+        $file = $uploadedFile->move($directory, $uploadedFile->getClientOriginalName());
+        //make sure the edited file have different name than the original one
+        if($uploadedFile->getClientOriginalName() == $paPinkSheet->getName()){
+            return array('Error: the name of the edited parliamentary pink sheet must be different of the original:'
+                . ' see documentation for naming convention');
+        }
+        //Set the pinkSheet property edited to true
+        $paPinkSheet->setEdited(true);
+        //Set the property parliamentaryPinkSheetEdited to true
+        $user->getPollingStation()->setParliamentaryPinkSheetEdited(true);
+        //Persist the change
+        $this->em->persist($paPinkSheet);
+        $this->em->flush();
+        //FeedBack
+        return array('parliamentary pink Sheet edited.');
     }
     
     public function isDataStructureValid($inputData)

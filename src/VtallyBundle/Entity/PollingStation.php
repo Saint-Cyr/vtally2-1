@@ -68,6 +68,27 @@ class PollingStation
     /**
      * @var string
      *
+     * @ORM\Column(name="parliamentaryPinkSheet", type="boolean")
+     */
+    private $parliamentaryPinkSheet;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="parliamentaryPinkSheetEdited", type="boolean")
+     */
+    private $parliamentaryPinkSheetEdited;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="presidentialPinkSheetEdited", type="boolean")
+     */
+    private $presidentialPinkSheetEdited;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="presidentialEdited", type="boolean", nullable=true)
      */
     private $presidentialEdited;
@@ -431,6 +452,8 @@ class PollingStation
         $this->setPresidentialEdited(false);
         $this->setParliamentaryEdited(false);
         $this->setPresidentialPinkSheet(false);
+        $this->setPresidentialPinkSheetEdited(false);
+        $this->setParliamentaryPinkSheetEdited(false);
     }
 
     /**
@@ -857,5 +880,107 @@ class PollingStation
     public function isParliamentaryEdited()
     {
         return $this->parliamentaryEdited;
+    }
+
+    /**
+     * Get parliamentaryEdited
+     *
+     * @return boolean
+     */
+    public function getParliamentaryEdited()
+    {
+        return $this->parliamentaryEdited;
+    }
+
+    /**
+     * Set parliamentaryPinkSheet
+     *
+     * @param boolean $parliamentaryPinkSheet
+     *
+     * @return PollingStation
+     */
+    public function setParliamentaryPinkSheet($parliamentaryPinkSheet)
+    {
+        $this->parliamentaryPinkSheet = $parliamentaryPinkSheet;
+
+        return $this;
+    }
+
+    /**
+     * Get parliamentaryPinkSheet
+     *
+     * @return boolean
+     */
+    public function isParliamentaryPinkSheet()
+    {
+        return $this->parliamentaryPinkSheet;
+    }
+
+    /**
+     * Get parliamentaryPinkSheet
+     *
+     * @return boolean
+     */
+    public function getParliamentaryPinkSheet()
+    {
+        return $this->parliamentaryPinkSheet;
+    }
+
+    /**
+     * Set parliamentaryPinkSheetEdited
+     *
+     * @param boolean $parliamentaryPinkSheetEdited
+     *
+     * @return PollingStation
+     */
+    public function setParliamentaryPinkSheetEdited($parliamentaryPinkSheetEdited)
+    {
+        $this->parliamentaryPinkSheetEdited = $parliamentaryPinkSheetEdited;
+
+        return $this;
+    }
+
+    /**
+     * Get parliamentaryPinkSheetEdited
+     *
+     * @return boolean
+     */
+    public function isParliamentaryPinkSheetEdited()
+    {
+        return $this->parliamentaryPinkSheetEdited;
+    }
+
+    /**
+     * Get parliamentaryPinkSheetEdited
+     *
+     * @return boolean
+     */
+    public function getParliamentaryPinkSheetEdited()
+    {
+        return $this->parliamentaryPinkSheetEdited;
+    }
+
+    /**
+     * Set presidentialPinkSheetEdited
+     *
+     * @param boolean $presidentialPinkSheetEdited
+     *
+     * @return PollingStation
+     */
+    public function setPresidentialPinkSheetEdited($presidentialPinkSheetEdited)
+    {
+        $this->presidentialPinkSheetEdited = $presidentialPinkSheetEdited;
+
+        return $this;
+    }
+
+    /**
+     * Get presidentialPinkSheetEdited
+     *
+     * @return boolean
+     */
+    public function isPresidentialPinkSheetEdited()
+    {
+        return $this->presidentialPinkSheetEdited;
     }
 }

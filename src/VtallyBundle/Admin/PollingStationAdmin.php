@@ -34,19 +34,20 @@ class PollingStationAdmin extends Admin
             ->add('id')
             ->add('name')
             ->add('code')
-            ->add('prPinkSheet')
-            ->add('district')
             ->add('constituency')
             ->add('active')
-            ->add('presidential')
-            ->add('parliamentary')
-            ->add('presidentialPinkSheet')
-            ->add('presidentialEdited')
+            ->add('presidential', null, array('label' => 'Pr. Sent'))
+            ->add('parliamentary', null, array('label' => 'Pa. Sent'))
+            ->add('presidentialPinkSheet', null, array('label' => 'Pr. Pink'))
+            ->add('parliamentaryPinkSheet', null, array('label' => 'Pa. Pink'))
+            ->add('presidentialEdited', null, array('label' => 'Pr. Edited'))
+            ->add('parliamentaryEdited', null, array('label' => 'Pa. Edited'))
+            ->add('presidentialPinkSheetEdited', null, array('label' => 'Pr. Edited pink'))
+            ->add('parliamentaryPinkSheetEdited', null, array('label' => 'Pa. Edited pink'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
                     'edit' => array(),
-                    'delete' => array(),
                 )
             ))
         ;
@@ -66,6 +67,8 @@ class PollingStationAdmin extends Admin
             ->add('presidential')
             ->add('parliamentary')
             ->add('presidentialPinkSheet')
+            ->add('parliamentaryEdited')
+            ->add('parliamentaryPinkSheetEdited')
             ->add('users')
             
         ;

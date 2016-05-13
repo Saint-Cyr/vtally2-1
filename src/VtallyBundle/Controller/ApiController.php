@@ -12,11 +12,12 @@ class ApiController extends Controller
         //Get the data sent by the client
         $inputData = json_decode($request->getContent(), true);
         
-        // get the API handler service from the container
+        // get the API handler service from the Dependency Injection Container
         $apiHandler = $this->get('vtally.api_handler');
         
         //If it's a pinkSheet then send $request instead of $inputData
-        if($request->get('action') == 4 || $request->get('action') == 5){
+        if($request->get('action') == 4 || $request->get('action') == 5 || $request->get('action') == 603 || $request->get('action') == 605){
+            //Notice the API:processPinkSheet() is different of API:process()
             return $result = $apiHandler->processPinkSheet($request);
         }
         

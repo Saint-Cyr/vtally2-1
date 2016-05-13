@@ -218,9 +218,60 @@ class ApiHandlerTest extends WebTestCase
        //Gathering all types of candidates (independent and dependent)
        //NB the Data strucutre use key => value like id => voteCast
        //$indCandidates = array(1 => 'Vivien', 'Joella' => 2, 'Adde' => 5);
-       $indCandidates = array(1 => 7777, 2 => 8888, 3 => 9999);
-       //$depCandidates = array('Jhon' => 1, 'Jannette' => 2,  'Sondra' => 2, 'Fadde' => 2);
-       $depCandidates = array(1 => 2222, 7 => 3333,  13 => 4444, 19 => 5555);
+       $indCandidates = array(
+                        1 => 
+                            [
+                              "id" => 1,
+                              "vote_cast" => 100,
+                              "name" => "Vivien",
+                              "candidacy_number" => 1
+                            ],
+                        2 =>
+                            [
+                              "id" => 2,
+                              "vote_cast" => 7,
+                              "name" => "Joella",
+                              "candidacy_number" => 2
+                            ],
+                        3 => 
+                            [
+                              "id" => 3,
+                              "vote_cast" => 2,
+                              "name" => "Adde",
+                              "candidacy_number" => 5
+                            ]
+                        );
+       $depCandidates = array(
+                        1 => 
+                            [
+                              "id" => 1,
+                              "vote_cast" => 100,
+                              "name" => "Jhon",
+                              "candidacy_number" => 1
+                            ],
+                        2 =>
+                            [
+                              "id" => 7,
+                              "vote_cast" => 280,
+                              "name" => "Jannette",
+                              "candidacy_number" => 2
+                            ],
+                        3 => 
+                            [
+                              "id" => 13,
+                              "vote_cast" => 98,
+                              "name" => "Sondra",
+                              "candidacy_number" => 2
+                            ],
+                        4 => 
+                            [
+                              "id" => 19,
+                              "vote_cast" => 0,
+                              "name" => "Fadde",
+                              "candidacy_number" => 2
+                            ]
+                        );
+       
        
        $candidates = array('independent' => $indCandidates, 'dependent' => $depCandidates);
        
@@ -229,6 +280,10 @@ class ApiHandlerTest extends WebTestCase
        
        $outPut = $apiHandler->process($inputData);
        $this->assertEquals($outPut, array('parliamentary vote cast sent.'));
+   }
+   
+   public function testParliamentaryEdited()
+   {
        
    }
 }
