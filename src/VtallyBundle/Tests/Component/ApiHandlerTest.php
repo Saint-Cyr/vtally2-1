@@ -189,16 +189,16 @@ class ApiHandlerTest extends WebTestCase
        $output = $apiHandler->process($inputData);
        
        $indCandidates = [
-                            ['name' => 'Vivien', 'candidacy_number' => 1, 'vote_cast' => null],
-                            ['name' => 'Joella', 'candidacy_number' => 2, 'vote_cast' => null],
-                            ['name' => 'Adde', 'candidacy_number' => 5, 'vote_cast' => null]
+                            ['id' => 1, 'name' => 'Vivien', 'candidacy_number' => 1, 'vote_cast' => null],
+                            ['id' => 2, 'name' => 'Joella', 'candidacy_number' => 2, 'vote_cast' => null],
+                            ['id' => 3, 'name' => 'Adde', 'candidacy_number' => 5, 'vote_cast' => null]
                         ];
        
        $depCandidates = [
-                            ['name' => 'Jhon', 'candidacy_number' => 1, 'vote_cast' => null],
-                            ['name' => 'Jannette', 'candidacy_number' => 2, 'vote_cast' => null],
-                            ['name' => 'Sondra', 'candidacy_number' => 2, 'vote_cast' => null],
-                            ['name' => 'Fadde', 'candidacy_number' => 2, 'vote_cast' => null]
+                            ['id' => 1, 'name' => 'Jhon', 'candidacy_number' => 1, 'vote_cast' => null],
+                            ['id' => 7, 'name' => 'Jannette', 'candidacy_number' => 2, 'vote_cast' => null],
+                            ['id' => 13, 'name' => 'Sondra', 'candidacy_number' => 2, 'vote_cast' => null],
+                            ['id' => 19, 'name' => 'Fadde', 'candidacy_number' => 2, 'vote_cast' => null]
                         ];
        
        $this->assertEquals($output, array($indCandidates, $depCandidates));

@@ -42,6 +42,18 @@ class PaEditedVoteCast
     private $pollingStation;
     
     /**
+     * @ORM\ManyToOne(targetEntity="PaBundle\Entity\DependentCandidate", inversedBy="paVoteCasts")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $dependentCandidate;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="PaBundle\Entity\IndependentCandidate", inversedBy="paVoteCasts")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $independentCandidate;
+    
+    /**
      * Get id
      *
      * @return int
@@ -98,5 +110,28 @@ class PaEditedVoteCast
     {
         return $this->wordValue;
     }
-}
 
+    /**
+     * Set pollingStation
+     *
+     * @param \VtallyBundle\Entity\PollingStation $pollingStation
+     *
+     * @return PaEditedVoteCast
+     */
+    public function setPollingStation(\VtallyBundle\Entity\PollingStation $pollingStation)
+    {
+        $this->pollingStation = $pollingStation;
+
+        return $this;
+    }
+
+    /**
+     * Get pollingStation
+     *
+     * @return \VtallyBundle\Entity\PollingStation
+     */
+    public function getPollingStation()
+    {
+        return $this->pollingStation;
+    }
+}

@@ -131,4 +131,75 @@ class PollingStationTest extends WebTestCase
         $outPut = $pollingStation->isPresidentialVoteCastsMatch($dataStructure);
         $this->assertNotTrue($outPut);
     }
+    
+    public function testIsParliamentaryDepVoteCastMatch()
+    {   
+        //Case of independentCandidate
+      
+        //Vivien (pol. Station 1)
+        $pollingStation1 = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+        $independateCandidate = $this->em->getRepository('PaBundle:IndependentCandidate')->find(1);
+        $out = $pollingStation1->getOneParliamentaryVoteCast($independateCandidate);
+        //Make sure guessing on the right fixture
+        $this->assertEquals($independateCandidate->getFirstName(), 'Vivien');
+        $this->assertEquals($out->getFigureValue(), 100);
+        
+        //Joella (pol. Station 1)
+        $pollingStation1 = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+        $independateCandidate = $this->em->getRepository('PaBundle:IndependentCandidate')->find(2);
+        $out = $pollingStation1->getOneParliamentaryVoteCast($independateCandidate);
+        //Make sure guessing on the right fixture
+        $this->assertEquals($independateCandidate->getFirstName(), 'Joella');
+        $this->assertEquals($out->getFigureValue(), 7);
+        
+        //Joella (pol. Station 2)
+        $pollingStation2 = $this->em->getRepository('VtallyBundle:PollingStation')->find(2);
+        $independateCandidate = $this->em->getRepository('PaBundle:IndependentCandidate')->find(2);
+        $out = $pollingStation2->getOneParliamentaryVoteCast($independateCandidate);
+        //Make sure guessing on the right fixture
+        $this->assertEquals($independateCandidate->getFirstName(), 'Joella');
+        $this->assertEquals($out->getFigureValue(), 150);
+        
+        //Sonde (pol. Station 4)
+        $pollingStation4 = $this->em->getRepository('VtallyBundle:PollingStation')->find(4);
+        $independateCandidate = $this->em->getRepository('PaBundle:IndependentCandidate')->find(4);
+        $out = $pollingStation4->getOneParliamentaryVoteCast($independateCandidate);
+        //Make sure guessing on the right fixture
+        $this->assertEquals($independateCandidate->getFirstName(), 'Sonde');
+        $this->assertEquals($out->getFigureValue(), 201);
+        
+        //Case of dependentCandidate
+      
+        //Jhon (pol. Station 1)
+        $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+        $independateCandidate = $this->em->getRepository('PaBundle:DependentCandidate')->find(1);
+        $out = $pollingStation->getOneParliamentaryVoteCast($independateCandidate);
+        //Make sure guessing on the right fixture
+        $this->assertEquals($independateCandidate->getFirstName(), 'Jhon');
+        $this->assertEquals($out->getFigureValue(), 100);
+        
+        //Jhon (pol. Station 2)
+        $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(2);
+        $independateCandidate = $this->em->getRepository('PaBundle:DependentCandidate')->find(1);
+        $out = $pollingStation->getOneParliamentaryVoteCast($independateCandidate);
+        //Make sure guessing on the right fixture
+        $this->assertEquals($independateCandidate->getFirstName(), 'Jhon');
+        $this->assertEquals($out->getFigureValue(), 600);
+        
+        //Jannette (pol. Station 1)
+        $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+        $independateCandidate = $this->em->getRepository('PaBundle:DependentCandidate')->find(7);
+        $out = $pollingStation->getOneParliamentaryVoteCast($independateCandidate);
+        //Make sure guessing on the right fixture
+        $this->assertEquals($independateCandidate->getFirstName(), 'Jannette');
+        $this->assertEquals($out->getFigureValue(), 280);
+        
+        //Jannette (pol. Station 4)
+        $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(4);
+        $independateCandidate = $this->em->getRepository('PaBundle:DependentCandidate')->find(2);
+        $out = $pollingStation->getOneParliamentaryVoteCast($independateCandidate);
+        //Make sure guessing on the right fixture
+        $this->assertEquals($independateCandidate->getFirstName(), 'Olga');
+        $this->assertEquals($out->getFigureValue(), 721);
+    }
 }

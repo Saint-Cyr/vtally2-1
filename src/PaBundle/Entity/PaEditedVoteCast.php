@@ -42,6 +42,18 @@ class PaEditedVoteCast
     private $pollingStation;
     
     /**
+     * @ORM\ManyToOne(targetEntity="PaBundle\Entity\DependentCandidate", inversedBy="paVoteCasts")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $dependentCandidate;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="PaBundle\Entity\IndependentCandidate", inversedBy="paVoteCasts")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $independentCandidate;
+    
+    /**
      * Get id
      *
      * @return int
@@ -121,5 +133,53 @@ class PaEditedVoteCast
     public function getPollingStation()
     {
         return $this->pollingStation;
+    }
+
+    /**
+     * Set dependentCandidate
+     *
+     * @param \PaBundle\Entity\DependentCandidate $dependentCandidate
+     *
+     * @return PaEditedVoteCast
+     */
+    public function setDependentCandidate(\PaBundle\Entity\DependentCandidate $dependentCandidate = null)
+    {
+        $this->dependentCandidate = $dependentCandidate;
+
+        return $this;
+    }
+
+    /**
+     * Get dependentCandidate
+     *
+     * @return \PaBundle\Entity\DependentCandidate
+     */
+    public function getDependentCandidate()
+    {
+        return $this->dependentCandidate;
+    }
+
+    /**
+     * Set independentCandidate
+     *
+     * @param \PaBundle\Entity\IndependentCandidate $independentCandidate
+     *
+     * @return PaEditedVoteCast
+     */
+    public function setIndependentCandidate(\PaBundle\Entity\IndependentCandidate $independentCandidate = null)
+    {
+        $this->independentCandidate = $independentCandidate;
+
+        return $this;
+    }
+
+    /**
+     * Get independentCandidate
+     *
+     * @return \PaBundle\Entity\IndependentCandidate
+     */
+    public function getIndependentCandidate()
+    {
+        return $this->independentCandidate;
     }
 }

@@ -3,6 +3,8 @@
 namespace VtallyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PaBundle\Entity\IndependentCandidate;
+use PaBundle\Entity\DependentCandidate;
 
 /**
  * PollingStation
@@ -311,6 +313,36 @@ class PollingStation
         }
         
         return false;
+    }
+    
+    /**
+     * @param IndependentCandidate|DependentCandidate $candidate
+     * @return PaVoteCast regardless of the type of the parameter (Ind or Dep candidate)
+     */
+    public function getOneParliamentaryVoteCast($candidate)
+    {
+        if($candidate instanceof IndependentCandidate){
+            //independent candidate case
+            //collect all the voteCasts
+            foreach ($this->getPaVoteCasts() as $vote){
+                if($candidate === $vote->getIndependentCandidate()){
+                    return $vote;
+                }
+            }
+            
+            
+        }elseif($candidate instanceof DependentCandidate){
+            //DependentCandidate
+            //coloct all the voteCasts
+            foreach ($this->getPaVoteCasts() as $vote){
+                if($candidate === $vote->getDependentCandidate()){
+                    return $vote;
+                }
+            }
+            
+        }
+        
+        return array('parameter must be instance of IndependentCandidate or DependentCandidate');
     }
     
     /**

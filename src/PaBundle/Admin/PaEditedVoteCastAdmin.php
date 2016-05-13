@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class PaVoteCastAdmin extends Admin
+class PaEditedVoteCastAdmin extends Admin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -16,9 +16,9 @@ class PaVoteCastAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('id')
             ->add('figureValue')
             ->add('wordValue')
-            ->add('edited')
         ;
     }
 
@@ -31,10 +31,6 @@ class PaVoteCastAdmin extends Admin
             ->add('id')
             ->add('figureValue')
             ->add('wordValue')
-            ->add('edited')
-            ->add('dependentCandidate')
-            ->add('independentCandidate')
-            ->add('pollingStation')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -51,10 +47,9 @@ class PaVoteCastAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('id')
             ->add('figureValue')
             ->add('wordValue')
-            ->add('paCandidate')
-            ->add('pollingStation', 'sonata_type_model_autocomplete', array('property' => 'code', 'to_string_callback' => function($entity, $property){return $entity->getCode();}))
         ;
     }
 
@@ -67,7 +62,6 @@ class PaVoteCastAdmin extends Admin
             ->add('id')
             ->add('figureValue')
             ->add('wordValue')
-            ->add('edited')
         ;
     }
 }

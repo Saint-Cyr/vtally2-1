@@ -212,16 +212,20 @@ class ApiHandler
                 //Get the parliamentary candidates for the second Verifier
                 case 7:
                     //Make sure the Data structure content the key pa_votes
-                    if($inputData['transaction_type'] == 'parliamentary'){
+                    if(($inputData['transaction_type'] == 'parliamentary') && ($this->validatorFactory3($inputData))){
                         return $this->getParliamentaryCandidates($inputData);
                         break;
                     }
-                    
-                //Get the parliamentary vote cast for the first Verifier
-                case 8:
-                    return $this->getParliamentaryCandidates($inputData);
-                    break;
                 
+                //Edit Parliamentary vote cast
+                case 8:
+                    //Make sure the Data structure content the key pa_votes
+                    if(array_key_exists('pa_votes', $inputData) &&
+                       $inputData['transaction_type'] == 'parliamentary'){
+                        return $this->editParliamentaryVoteCast($inputData);
+                        break;
+                    }
+                    
                     return array('Error: wrong data structure or validation faild.');
                     break;
             }
@@ -460,10 +464,10 @@ class ApiHandler
     
     public function validatorFactory2($inputData)
     {
-        if(((array_key_exists('transaction_type', $inputData))&&(array_key_exists('pol_id', $inputData))
-                &&(array_key_exists('verifier_token', $inputData)))
-                &&((isset($inputData['transaction_type'])&&(isset($inputData['pol_id'])
-                &&(isset($inputData['verifier_token'])))))){
+        if(((array_key_exists('transaction_type', $inputData)))
+                &&(array_key_exists('verifier_token', $inputData))
+                &&((isset($inputData['transaction_type']))
+                &&(isset($inputData['verifier_token'])))){
             
             return true;
         }
@@ -495,7 +499,8 @@ class ApiHandler
             $tokenTime = $setting->getTokenTime();
             //For test purpose set $tokenTime  to any value
             //$tokenTime = 20;
-            if(($inputData['verifier_token'] == $user->getUserToken())&&($user->isUserTokenValid($tokenTime))){
+            if(($inputData['verifier_token'] == $user->getUserToken())&&
+               ($user->isUserTokenValid($tokenTime))){
                 //Refresh the tokenTime
                 $user->refreshTokenTime();
                 $this->em->flush();
@@ -516,65 +521,80 @@ class ApiHandler
      */
     public function getParliamentaryCandidates(array $inputData)
     {
-        //Get the user
-        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
-        //Get the pollingStation 
-        $pollingStation = $user->getPollingStation();
-        //Get the Constituency
-        $constituency = $pollingStation->getConstituency();
         
-        if(!$user||!$pollingStation||!$constituency){
-            return array('user or pollingStation or consituency not found in the DB.');
-        }
-        
-        //Get all the independents candidates linked to the contexted pollingStation
-        $indCandidates = $constituency->getIndependentCandidates();
-        
-        //Get all the dependents candidates linked to the contexted pollingStation
-        $depCandidates = $constituency->getDependentCandidates();
-        
-        $data1 = array();
-        $data2 = array();
-        
-        //load independent candidates
-        foreach ($indCandidates as $indC){
-            //Check if it's first verifier then add $inputData['vote_cast'] => null
-            //else (second verifier) load the $inputData['vote_cast'] value from the DB.
-            if($inputData['action'] == 5){
-                $data1['vote_cast'] = null;
-            }elseif($inputData['action'] == 7){
-                $data1['vote_cast'] = 'value from DB';
+        if($this->validatorFactory3($inputData)){
+            //Get the user
+            $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
+            //Get the pollingStation 
+            $pollingStation = $user->getPollingStation();
+            //Get the Constituency
+            $constituency = $pollingStation->getConstituency();
+
+            if(!$user||!$pollingStation||!$constituency){
+                return array('user or pollingStation or consituency not found in the DB.');
             }
-            
-            $data1['name'] = $indC->getFirstName();
-            $data1['candidacy_number'] = $indC->getCandidacyNumber();
-            array_push($data2, $data1);
+
+            //Get all the independents candidates linked to the contexted pollingStation
+            $indCandidates = $constituency->getIndependentCandidates();
+
+            //Get all the dependents candidates linked to the contexted pollingStation
+            $depCandidates = $constituency->getDependentCandidates();
+
             $data1 = array();
-        }
-        
-        //load dependent candidates
-        $data = array();
-        $data4 = array();
-        foreach ($depCandidates as $dep){
-            
-            //Check if it's first verifier then add $inputData['vote_cast'] => null
-            //else (second verifier) load the $inputData['vote_cast'] value from the DB.
-            if($inputData['action'] == 5){
-                $data['vote_cast'] = null;
-            }elseif($inputData['action'] == 7){
-                $data['vote_cast'] = 'value from DB';
+            $data2 = array();
+
+            //load independent candidates
+            foreach ($indCandidates as $indC){
+                //For technical purpose only, we add the key 'id'
+                $data1['id'] = $indC->getId();
+                //Check if it's first verifier then add $inputData['vote_cast'] => null
+                //else (second verifier) load the $inputData['vote_cast'] value from the DB.
+                if($inputData['action'] == 5){
+                    //Because it's the first verifier request.
+                    $data1['vote_cast'] = null;
+                    //2nd verifier so, set the key 'vote_cast' with the right value from DB.
+                }elseif($inputData['action'] == 7){
+                    $_voteCast = $pollingStation->getOneParliamentaryVoteCast($indC);
+                    $data1['vote_cast'] = $_voteCast->getFigureValue();
+                }
+                
+                $data1['name'] = $indC->getFirstName();
+                $data1['candidacy_number'] = $indC->getCandidacyNumber();
+                array_push($data2, $data1);
+                $data1 = array();
             }
-            
-            $data['name'] = $dep->getFirstName();
-            $data['candidacy_number'] = $dep->getCandidacyNumber();
-            array_push($data4, $data);
+
+            //load dependent candidates
             $data = array();
+            $data4 = array();
+            foreach ($depCandidates as $dep){
+                //For technical purpose only, we add the key 'id'
+                $data['id'] = $dep->getId();
+                //Check if it's first verifier then add $inputData['vote_cast'] => null
+                //else (second verifier) load the $inputData['vote_cast'] value from the DB.
+                if($inputData['action'] == 5){
+                    $data['vote_cast'] = null;
+                }elseif($inputData['action'] == 7){
+                    $_voteCast = $pollingStation->getOneParliamentaryVoteCast($dep);
+                    $data['vote_cast'] = $_voteCast->getFigureValue();
+                }
+                
+                $data['name'] = $dep->getFirstName();
+                $data['candidacy_number'] = $dep->getCandidacyNumber();
+                array_push($data4, $data);
+                $data = array();
+            }
+
+            $candidates[] = $data2;
+            $candidates[] = $data4;
+
+            return $candidates;
+            
+        }  else {
+            return array('Error: validatorFactory3 faild.');
         }
         
-        $candidates[] = $data2;
-        $candidates[] = $data4;
-        
-        return $candidates;
+        return array('Error: cannot get parliamentary validatorFactory3 faild.');
     }
     
     public function sendParliamentaryVoteCast(array $inputData)
@@ -645,6 +665,104 @@ class ApiHandler
             return array('parliamentary vote cast sent.');
         }
         
+    }
+    
+    public function editParliamentaryVoteCast(array $inputData)
+    {
+        //Get the user
+        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
+        //Get the pollingStation 
+        $pollingStation = $user->getPollingStation();
+                    
+        if(!$user||!$pollingStation){
+            return array('user or pollingStation not found in the DB.');
+        }
+        
+        //Check the validations rules and the data structure
+        if($this->validatorFactory2($inputData) && ($this->validatorFactory3($inputData)) &&
+          ($this->isParliamentaryVoteCastValid($inputData['pa_votes']) && 
+          (($pollingStation->isParliamentary())/* && (!$pollingStation->isParliamentaryEdited())*/))){
+            //Get the dependentCandidates and the independentCandidate
+            $depCandidates = $inputData['pa_votes']['dependent'];
+            $indepCandidates = $inputData['pa_votes']['independent'];
+            //Define a variable that will help to know whether there is edition or not
+            $edited = false;
+            
+            // Treat the dependentCandidates
+            foreach ($depCandidates as $depC){
+                //Get the related dependentCandidate instance from the DB.
+                $_depCandidate = $this->em->getRepository('PaBundle:DependentCandidate')->find($depC['id']);
+                //Get the vote cast linked to $_depCandidate in order to compare to the sent one $depC['vote_cast'];
+                $_voteCast = $pollingStation->getOneParliamentaryVoteCast($_depCandidate);
+                
+                //Make sure $_depCandidate exist in DB.
+                if(!$_depCandidate){
+                    return array('Error: dependent candidate of id: '.$depC['id'].' does not exist in DB.');
+                }
+                
+                //Make the comparaison here
+                if($depC['vote_cast'] != $_voteCast->getFigureValue()){
+                    //Instentiate a editPaVoteCast
+                    $paEditVoteCast = new PaEditedVoteCast();
+                    //Set the vote cast values 
+                    $paEditVoteCast->setFigureValue($_voteCast->getFigureValue());
+                    //link the pollingStation
+                    $paEditVoteCast->setPollingStation($pollingStation);
+                    //link the dependentCandidate
+                    $paEditVoteCast->setDependentCandidate($_depCandidate);
+                    //update the the original vote cast sent by the 1st verifier
+                    $_voteCast->setFigureValue($depC['vote_cast']);
+                    //trigger notification
+                    // $notification = $this-> ....service container
+                    $edited = true;
+                    //persist $paEditedVoteCast
+                    $this->em->persist($paEditVoteCast);
+                }
+            }
+            
+            // Treat the independent candidates
+            foreach ($indepCandidates as $indC){
+                //Get the related dependentCandidate instance from the DB.
+                $_indCandidate = $this->em->getRepository('PaBundle:IndependentCandidate')->find($indC['id']);
+                //Get the vote cast linked to $_depCandidate in order to compare to the sent one $depC['vote_cast'];
+                $_voteCast = $pollingStation->getOneParliamentaryVoteCast($_indCandidate);
+                
+                //Make sure $_indCandidate exist in DB.
+                if(!$_indCandidate){
+                    return array('Error: independent candidate of id: '.$indC['id'].' does not exist in DB.');
+                }
+                
+                //Make the comparaison here
+                if($indC['vote_cast'] != $_voteCast->getFigureValue()){
+                    //Instentiate a editPaVoteCast
+                    $paEditVoteCast = new PaEditedVoteCast();
+                    //Set the vote cast values 
+                    $paEditVoteCast->setFigureValue($_voteCast->getFigureValue());
+                    //link the pollingStation
+                    $paEditVoteCast->setPollingStation($pollingStation);
+                    //link the independentCandidate
+                    $paEditVoteCast->setIndependentCandidate($_depCandidate);
+                    //update the the original vote cast sent by the 1st verifier
+                    $_voteCast->setFigureValue($indC['vote_cast']);
+                    //trigger notification
+                    // $notification = $this-> ....service container
+                    $edited = true;
+                    //persist $paEditedVoteCast
+                    $this->em->persist($paEditVoteCast);
+                }
+            }
+            
+            //Confirm the persistence of all persisted and loaded objects
+            $this->em->flush();
+            if($edited){
+                return array('parliamentary vote cast edited.');
+            }else{
+                return array('parliamentary vote cast confirmed.');
+            }
+        }
+        
+        return array('Error: wrong data structure or validation faild.---');
+       
     }
     
     public function isParliamentaryVoteCastValid($data)

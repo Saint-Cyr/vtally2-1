@@ -10,6 +10,12 @@ services:
         arguments: [~, PaBundle\Entity\PaVoteCast, PaBundle:PaVoteCastAdmin]
         tags:
             - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: Vote Cast }
+    
+    pa.admin.pa_edited_vote_cast:
+        class: PaBundle\Admin\PaEditedVoteCastAdmin
+        arguments: [~, PaBundle\Entity\PaEditedVoteCast, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Parliamentary, label: Edited Vote Cast }
 
     pa.admin.pa_party:
         class: PaBundle\Admin\PaPartyAdmin
