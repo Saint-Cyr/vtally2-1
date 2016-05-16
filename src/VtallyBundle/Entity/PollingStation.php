@@ -452,6 +452,7 @@ class PollingStation
         $this->setPresidentialEdited(false);
         $this->setParliamentaryEdited(false);
         $this->setPresidentialPinkSheet(false);
+        $this->setParliamentaryPinkSheet(true);
         $this->setPresidentialPinkSheetEdited(false);
         $this->setParliamentaryPinkSheetEdited(false);
     }

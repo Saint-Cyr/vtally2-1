@@ -187,8 +187,12 @@ class ApiHandler
             
             switch ($inputData['action']){
                 //login
-                case 1: 
+                case 600: 
                     return $this->login($inputData);
+                    break;
+                //Get the presidential parties (1st verifier)
+                case 700:
+                    return $this->getPresidentialVoteCast();
                     break;
                 //Sending presidential vote cast
                 case 2:
@@ -729,57 +733,61 @@ class ApiHandler
           ($this->isParliamentaryVoteCastValid($inputData['pa_votes']) && 
           (!($pollingStation->isParliamentary())))){
             
+            $depCandidates = $inputData['pa_votes']['dependent'];
+            $indCandidates = $inputData['pa_votes']['independent'];
             
-            $dependentParliamentaryVotes = $inputData['pa_votes']['dependent'];
-            $independentParliamentaryVotes = $inputData['pa_votes']['independent'];
-            
-            //Treat dependent candidates
-            foreach ($dependentParliamentaryVotes as $depId => $depVoteCast){
-                //Get the current Dependent Candidate from the DB.
-                $depCandidate = $this->em->getRepository('PaBundle:DependentCandidate')->find($depId);
-                //Make sure this dependent candidate is in the DB.
-                if(!$depCandidate){
-                    return array('Error: parliamentary dependent candidate of ID:'.$depId.' not found in the DB.');
+            // Treat the dependentCandidates
+            foreach ($depCandidates as $depC){
+                    //Get the current Dependent Candidate from the DB.
+                    $depCandidate = $this->em->getRepository('PaBundle:DependentCandidate')->find($depC['id']);
+                    //Make sure this dependent candidate is in the DB.
+                    if(!$depCandidate){
+                        return array('Error: parliamentary dependent candidate of ID:'.$depC['id'].' not found in the DB.');
+                    }
+                    //Instentiate a parliamentary vote cast
+                    $paVoteCast = new PaVoteCast();
+                    //Hydrate $paVoteCast with the needed information
+                    $paVoteCast->setFigureValue($depC['vote_cast']);
+                    $paVoteCast->setDependentCandidate($depCandidate);
+                    $paVoteCast->setPollingStation($pollingStation);
+                    //In the case wordValue functionality is used
+                    //$wordValue = some API or third party service...($value)
+                    //$paVoteCast->setWordValue($wordValue);
+                    //Persist all
+                    $this->em->persist($paVoteCast);
                 }
-                //Instentiate a parliamentary vote cast
-                $paVoteCast = new PaVoteCast();
-                //Hydrate $paVoteCast with the needed information
-                $paVoteCast->setFigureValue($depVoteCast);
-                $paVoteCast->setDependentCandidate($depCandidate);
-                $paVoteCast->setPollingStation($pollingStation);
-                //In the case wordValue functionality is used
-                //$wordValue = some API or third party service...($value)
-                //$paVoteCast->setWordValue($wordValue);
-                //Persist all
-                $this->em->persist($paVoteCast);
-            }
             
             //Treat independent candidates
-            foreach ($independentParliamentaryVotes as $indId => $indVoteCast){
-                //Get the current Dependent Candidate from the DB.
-                $indCandidate = $this->em->getRepository('PaBundle:IndependentCandidate')->find($indId);
-                //Make sure this dependent candidate is in the DB.
-                if(!$indCandidate){
-                    return array('Error: parliamentary independent candidate of ID:'.$indId.' not found in the DB.');
-                }
-                //Instentiate a parliamentary vote cast
-                $paVoteCast = new PaVoteCast();
-                //Hydrate $paVoteCast with the needed information
-                $paVoteCast->setFigureValue($indVoteCast);
-                $paVoteCast->setIndependentCandidate($indCandidate);
-                $paVoteCast->setPollingStation($pollingStation);
-                //In the case wordValue functionality is used
-                //$wordValue = some API or third party service...($value)
-                //$paVoteCast->setWordValue($wordValue);
-                //Persist all
-                $this->em->persist($paVoteCast);
+            foreach ($indCandidates as $indC){
+                    //Get the current independent Candidate from the DB.
+                    $indCandidate = $this->em->getRepository('PaBundle:IndependentCandidate')->find($indC['id']);
+                    //Make sure this independent candidate is in the DB.
+                    if(!$indCandidate){
+                        return array('Error: parliamentary independent candidate of ID:'.$indC['id'].' not found in the DB.');
+                    }
+                    //Instentiate a parliamentary vote cast
+                    $paVoteCast = new PaVoteCast();
+                    //Hydrate $paVoteCast with the needed information
+                    $paVoteCast->setFigureValue($indC['vote_cast']);
+                    $paVoteCast->setIndependentCandidate($indCandidate);
+                    $paVoteCast->setPollingStation($pollingStation);
+                    //In the case wordValue functionality is used
+                    //$wordValue = some API or third party service...($value)
+                    //$paVoteCast->setWordValue($wordValue);
+                    //Persist all
+                    $this->em->persist($paVoteCast);
             }
             
+            //set up the polling station to do not accept the sending of parliamentary vote cast
+            $pollingStation->setParliamentary(true);
             //Confirm the persistence in the DB.
+            
             //$this->em->flush();
             
             return array('parliamentary vote cast sent.');
         }
+        
+        return array('Error: wrong data structure and or validation faild.');
         
     }
     
@@ -857,7 +865,7 @@ class ApiHandler
                     //link the pollingStation
                     $paEditVoteCast->setPollingStation($pollingStation);
                     //link the independentCandidate
-                    $paEditVoteCast->setIndependentCandidate($_depCandidate);
+                    $paEditVoteCast->setIndependentCandidate($_indCandidate);
                     //update the the original vote cast sent by the 1st verifier
                     $_voteCast->setFigureValue($indC['vote_cast']);
                     //trigger notification

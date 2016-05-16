@@ -34,7 +34,7 @@ class ApiHandlerTest extends WebTestCase
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
        //Case where login successfully
-       $inputData = array('action' => 1, 'username' => 'verifier1', 'password' => 'test');
+       $inputData = array('action' => 600, 'username' => 'verifier1', 'password' => 'test');
        $outPut = $apiHandler->login($inputData);
        $this->assertEquals($outPut, array('first_name' => 'VERIFIER 1', 'pol_id' => 'Pol. Station 1'));
        
