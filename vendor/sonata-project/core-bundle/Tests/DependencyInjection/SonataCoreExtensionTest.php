@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -29,7 +29,7 @@ class SonataCoreExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter(
             'sonata.core.form_type'
         );
-        $this->assertEquals(
+        $this->assertSame(
             'standard',
             $this->container->getParameter(
                 'sonata.core.form_type'
@@ -43,11 +43,37 @@ class SonataCoreExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter(
             'sonata.core.form_type'
         );
-        $this->assertEquals(
+        $this->assertSame(
             'horizontal',
             $this->container->getParameter(
                 'sonata.core.form_type'
             )
         );
+    }
+
+    public function testPrepend()
+    {
+        $containerBuilder = $this->prophesize(
+            'Symfony\Component\DependencyInjection\ContainerBuilder'
+        );
+
+        $containerBuilder->getExtensionConfig('sonata_admin')->willReturn(array(
+            array('some_key_we_do_not_care_about' => 42),
+            array('options' => array('form_type'  => 'standard')),
+            array('options' => array('form_type'  => 'horizontal')),
+        ));
+
+        $containerBuilder->prependExtensionConfig(
+            'sonata_core',
+            array('form_type' => 'standard')
+        )->shouldBeCalled();
+
+        $containerBuilder->prependExtensionConfig(
+            'sonata_core',
+            array('form_type' => 'horizontal')
+        )->shouldBeCalled();
+
+        $extension = new SonataCoreExtension();
+        $extension->prepend($containerBuilder->reveal());
     }
 }

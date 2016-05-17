@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -34,11 +34,13 @@ class SonataCoreExtension extends Extension implements PrependExtensionInterface
     {
         $configs = $container->getExtensionConfig('sonata_admin');
 
-        if (isset($configs[0]['options']['form_type'])) {
-            $container->prependExtensionConfig(
-                $this->getAlias(),
-                array('form_type' => $configs[0]['options']['form_type'])
-            );
+        foreach ($configs as $config) {
+            if (isset($config['options']['form_type'])) {
+                $container->prependExtensionConfig(
+                    $this->getAlias(),
+                    array('form_type' => $config['options']['form_type'])
+                );
+            }
         }
     }
 
@@ -65,6 +67,8 @@ class SonataCoreExtension extends Extension implements PrependExtensionInterface
 
         $this->configureFormFactory($container, $config);
         $this->configureClassesToCompile();
+
+        $this->deprecateSlugify($container);
     }
 
     public function configureClassesToCompile()
@@ -147,5 +151,16 @@ class SonataCoreExtension extends Extension implements PrependExtensionInterface
         $definition->replaceArgument(3, $cssClasses);
 
         $container->setDefinition($identifier, $definition);
+    }
+
+    protected function deprecateSlugify(ContainerBuilder $container)
+    {
+        $definition = $container->getDefinition('sonata.core.slugify.cocur');
+        if (method_exists($definition, 'setDeprecated')) {
+            $definition->setDeprecated(true);
+
+            $definition = $container->getDefinition('sonata.core.slugify.native');
+            $definition->setDeprecated(true);
+        }
     }
 }

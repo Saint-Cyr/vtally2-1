@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -31,7 +31,7 @@ class TemplateBoxNodeTest extends \Twig_Test_NodeTestCase
             'sonata_template_box'
         );
 
-        $this->assertEquals(1, $body->getLine());
+        $this->assertSame(1, $body->getLine());
     }
 
     /**
@@ -71,19 +71,19 @@ class TemplateBoxNodeTest extends \Twig_Test_NodeTestCase
         );
 
         return array(
-            array($nodeEn, <<<EOF
+            array($nodeEn, <<<'EOF'
 // line 1
 echo "<div class='alert alert-default alert-info'>
     <strong>This is the default message</strong>
-    <div>This file can be found in <code>{\$this->getTemplateName()}</code>.</div>
+    <div>This file can be found in <code>{$this->getTemplateName()}</code>.</div>
 </div>";
 EOF
             ),
-            array($nodeFr, <<<EOF
+            array($nodeFr, <<<'EOF'
 // line 1
 echo "<div class='alert alert-default alert-info'>
     <strong>Ceci est le message par défaut</strong>
-    <div>Ce fichier peut être trouvé à l'emplacement <code>{\$this->getTemplateName()}</code>.</div>
+    <div>Ce fichier peut être trouvé à l'emplacement <code>{$this->getTemplateName()}</code>.</div>
 </div>";
 EOF
             ),

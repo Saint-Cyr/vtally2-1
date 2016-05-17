@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -13,6 +13,12 @@ namespace Sonata\CoreBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
+/**
+ * Constraint which allows inline-validation inside services.
+ *
+ * @Annotation
+ * @Target({"CLASS"})
+ */
 class InlineConstraint extends Constraint
 {
     /**

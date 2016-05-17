@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata project.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -97,21 +97,18 @@ class SonataCoreBundle extends Bundle
             'sonata_type_color_selector'        => 'Sonata\CoreBundle\Form\Type\ColorSelectorType',
         ));
 
-        FormHelper::registerFormExtensionMapping('form', array(
+        $formTypes = array(
             'form.type_extension.form.http_foundation',
             'form.type_extension.form.validator',
             'form.type_extension.csrf',
             'form.type_extension.form.data_collector',
-            'sonata.admin.form.extension.field',
-            'nelmio_api_doc.form.extension.description_form_type_extension',
-            'mopa_bootstrap.form.type_extension.help',
-            'mopa_bootstrap.form.type_extension.legend',
-            'mopa_bootstrap.form.type_extension.error',
-            'mopa_bootstrap.form.type_extension.widget',
-            'mopa_bootstrap.form.type_extension.horizontal',
-            'mopa_bootstrap.form.type_extension.widget_collection',
-            'mopa_bootstrap.form.type_extension.tabbed',
-        ));
+        );
+
+        if (class_exists('Nelmio\ApiDocBundle\Form\Extension\DescriptionFormTypeExtension')) {
+            $formTypes[] = 'nelmio_api_doc.form.extension.description_form_type_extension';
+        }
+
+        FormHelper::registerFormExtensionMapping('form', $formTypes);
 
         FormHelper::registerFormExtensionMapping('repeated', array(
             'form.type_extension.repeated.validator',

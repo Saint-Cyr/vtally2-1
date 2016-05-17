@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -13,9 +13,6 @@ namespace Sonata\BlockBundle\Tests\Entity;
 
 use Sonata\BlockBundle\Util\RecursiveBlockIteratorIterator;
 
-/**
- *
- */
 class RecursiveBlockIteratorIteratorTest extends \PHPUnit_Framework_TestCase
 {
     public function testInterface()

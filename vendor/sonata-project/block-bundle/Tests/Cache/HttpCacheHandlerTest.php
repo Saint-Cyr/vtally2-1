@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -14,9 +14,6 @@ namespace Sonata\BlockBundle\Tests\Cache;
 use Sonata\BlockBundle\Cache\HttpCacheHandler;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- *
- */
 class HttpCacheHandlerTest extends \PHPUnit_Framework_TestCase
 {
     public function testComputeTtlWithPrivateResponse()

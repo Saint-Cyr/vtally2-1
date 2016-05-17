@@ -117,6 +117,11 @@ class User extends BaseUser
         return $this->type;
     }
     
+    public function isFirstVerifier()
+    {
+        
+    }
+    
     public function __construct() 
     {
         parent::__construct();

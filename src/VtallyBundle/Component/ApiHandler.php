@@ -57,7 +57,7 @@ class ApiHandler
     }
     
     /**
-     *  data structure {"action":3, "transaction_type":"presidential", "pol_id":4, "verifier_token":"ABCD1",
+     *  data structure {"action":704, "transaction_type":"presidential", "verifier_token":"ABCD1",
      *  "pr_votes":{"NPP":4, "NDC":34, "UFP":77, "CPP":8}}
      */
     public function editPresidentialVoteCast(array $inputData)
@@ -93,7 +93,7 @@ class ApiHandler
                         //Link it to the pollingStation
                         $prEditedVoteCast->setPollingStation($pollingStation);
                         
-                        //As $onePrVoteCast is return instance of VtallyBundle:PrVoteCast, we can do:
+                        //As $onePrVoteCast is an instance of VtallyBundle:PrVoteCast, we can do:
                         $prEditedVoteCast->setFigureValue($onePrVoteCast->getFigureValue());
                         //Fetch from the DB and update the vote cast related to the pollingStation
                         $prVoteCast = $this->em->getRepository('PrBundle:PrVoteCast')->find($onePrVoteCast->getId());
@@ -135,15 +135,27 @@ class ApiHandler
             return array('Invalid data structure.');
         }
         
+        //Get the user
+        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
+        //Make sure the user exist in the DB.           
+        if(!$user){
+            return array('user not found in the DB.');
+        }
+        //Get the pollingStation 
+        $pollingStation = $user->getPollingStation();
+        //Make sure the polling station and the user exist in the DB.           
+        if(!$user||!$pollingStation){
+            return array('user or pollingStation not found in the DB.');
+        }
+        
         //See the API doc for more information 
         if(($this->validatorFactory2($inputData))&&($this->validatorFactory3($inputData))
                 &&($this->isPresidentialVoteCastValid($inputData['pr_votes']))){
             
-            //Get the polling Station
-            $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find($inputData['pol_id']);
-            //Make sure $pollingStation exist in the DB and it doesn't yet recieve presidential vote
-            if((!$pollingStation) || ($pollingStation->isPresidential())){
-                return array('Error: cannot send presidential vote cast.');
+            
+            //Make sure the pollingStation doesn't yet recieve presidential vote cast
+            if(($pollingStation->isPresidential())){
+                return array('Error: presidential vote cast allready sent.');
             }
             //Save the vote cast one by one in the DB. with theire respective relationship
             $prVotes = $inputData['pr_votes'];
@@ -192,15 +204,19 @@ class ApiHandler
                     break;
                 //Get the presidential parties (1st verifier)
                 case 700:
-                    return $this->getPresidentialVoteCast();
+                    return $this->getPresidentialVoteCast($inputData);
+                    break;
+                //Get the presidential parties (2nd verifier)
+                case 701:
+                    return $this->getPresidentialVoteCast($inputData);
                     break;
                 //Sending presidential vote cast
-                case 2:
+                case 702:
                     return $this->sendPresidentialVoteCast($inputData);
                     return array('Error: the concerned polling station is not activated.');
                     break;
                 //Edit presidential vote cast
-                case 3:
+                case 704:
                     return $this->editPresidentialVoteCast($inputData);
                     break;
                 //Get the parliamentary candidates for the first Verifier
@@ -257,13 +273,13 @@ class ApiHandler
         }
         
         //Make sure every request have the key action
-        if(((($inputData['action'] == 4 || $inputData['action'] == 5) || ($inputData['action'] == 603) ||
+        if(((($inputData['action'] == 703 || $inputData['action'] == 5) || ($inputData['action'] == 603) ||
                 ($inputData['action'] == 605))
                 &&($this->validatorFactory1($inputData))&&($this->validatorFactory3($inputData)))){ 
             
             switch ($inputData['action']){
                 //Send presidential pinkSheet
-                case 4:
+                case 703:
                     //Get the user
                     $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
                     //Get the pollingStation 
@@ -272,7 +288,7 @@ class ApiHandler
                     if(!$user||!$pollingStation){
                         return array('user or pollingStation not found in the DB.');
                     }
-                    //return $pollingStation->getPrPinkSheet()->getName();
+                    
                     //Make sure presidential pink sheet has not yet been sent
                     if($pollingStation->isPresidentialPinkSheet()){
                         return array('Error: presidential pinkSheet allready sent.');
@@ -348,7 +364,7 @@ class ApiHandler
      * @param Request $request
      * @return string
      * @dataStructure array('file' => v1, 'verifier_token' => v2,
-     *                      'action' => v3, 'transaction_type' => v4);
+     *                      'action' => 703, 'transaction_type' => v4);
      */
     public function sendPresidentialPinkSheet(Request $request, array $inputData)
     {
@@ -889,6 +905,49 @@ class ApiHandler
         
         return array('Error: wrong data structure or validation faild.');
        
+    }
+    
+    /**
+     * @return ['NPP' => null, 'NDC' => null, 'UFP' => null, 'CPP' => null,
+                'PPP' => null, 'NCP' => null, 'PCP' => null, 'GFP' => null, ]; for the firstVerfier
+     * and for the 2nd verifier with value = v1 (v1 is a PrVoteCast->getFigureValue())
+     */
+    public function getPresidentialVoteCast(array $inputData)
+    {
+        if($this->validatorFactory3($inputData)){
+            //Get the user
+            $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
+            //Get the pollingStation 
+            $pollingStation = $user->getPollingStation();
+            //Get the Constituency
+            $constituency = $pollingStation->getConstituency();
+
+            if(!$user||!$pollingStation||!$constituency){
+                return array('user or pollingStation or consituency not found in the DB.');
+            }
+            
+            //Fetch all the presidential parties from the DB.
+            $prParties = $this->em->getRepository('PrBundle:PrParty')->findAll();
+            //Build the data structure.
+            $parties = array();
+            
+            
+            foreach ($prParties as $prParty){
+                if($inputData['action'] == 701){
+                    //When the second verifier request, use the polling station to get the right data
+                    $parties = $pollingStation->getPresidentialVoteCastForApi();
+                    
+                }elseif($inputData['action'] == 700){
+                    //When the first verifer($inputData['action'] = 700
+                    $parties[$prParty->getName()] = null;
+                }
+                
+            }
+
+            return $parties;
+        }
+        
+        return array('Error: wrong data structure or validation faild.');
     }
     
     public function isParliamentaryVoteCastValid($data)

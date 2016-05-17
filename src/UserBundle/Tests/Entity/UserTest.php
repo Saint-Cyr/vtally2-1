@@ -44,6 +44,8 @@ class UserTest extends WebTestCase
         $output = $user->isUserTokenValid($tokenTime);
         $this->assertTrue($output);
         
+        
+        
         $user->setTokenTime(new \DateTime("3 min ago"));
         //parameter tokenTime suppose to come from VtallyBundle:Setting (express in min)
         $tokenTime = 3;
@@ -55,7 +57,6 @@ class UserTest extends WebTestCase
         $tokenTime = 1;
         $output = $user->isUserTokenValid($tokenTime);
         $this->assertTrue($output);
-        
         
         //Case where token is not valid
         $user->setTokenTime(new \DateTime("3 min ago"));

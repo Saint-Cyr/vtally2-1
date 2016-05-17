@@ -33,13 +33,15 @@ class ApiHandlerTest extends WebTestCase
        //Get the apiHandler service
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
-       //Case where login successfully
+       //Case where login successfully for 1st verifier
        $inputData = array('action' => 600, 'username' => 'verifier1', 'password' => 'test');
        $outPut = $apiHandler->login($inputData);
        $this->assertEquals($outPut, array('first_name' => 'VERIFIER 1', 'pol_id' => 'Pol. Station 1'));
        
-       $outPut = $apiHandler->process($inputData);
-       $this->assertEquals($outPut, array('first_name' => 'VERIFIER 1', 'pol_id' => 'Pol. Station 1'));
+       //Case where login successfully for 2nd verifier
+       $inputData = array('action' => 600, 'username' => 'verifier2', 'password' => 'test');
+       $outPut = $apiHandler->login($inputData);
+       $this->assertEquals($outPut, array('first_name' => 'VERIFIER 2', 'pol_id' => 'Pol. Station 1'));
        
        //Case login faild: wrong username
        $inputData = array('username' => 'verifier11', 'password' => 'test');
@@ -60,20 +62,18 @@ class ApiHandlerTest extends WebTestCase
        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('username' => 'verifier1'));
        $user->refreshTokenTime();
        //Case where sending presidential data does succed
-       $inputData = array('transaction_type' => 'presidential', 'verifier_token' => 'ABCD1', 'pol_id' => 1,
+       $inputData = array('transaction_type' => 'presidential', 'verifier_token' => 'ABCD1', 'action' => 702,
                           'pr_votes' => array('NPP' => 0, 'NDC' => 0, 'UFP' => 0));
        
-       $outPut = $apiHandler->sendPresidentialVoteCast($inputData);
+       $outPut = $apiHandler->process($inputData);
        $this->assertEquals($outPut, array('presidential vote cast sent!'));
        
-       //Case where sending presidential data doesn't succed (transation_type => Parliamentary)
-       $inputData = array('transaction_type' => 'Parliamentary', 'verifier_token' => 'ABCD1', 'pol_id' => 1,
+       //Case where sending votes does not succed
+       $inputData = array('transaction_type' => 'presidential', 'verifier_token' => 'ABCD####', 'action' => 702,
                           'pr_votes' => array('NPP' => 0, 'NDC' => 0, 'UFP' => 0));
        
-       $outPut = $apiHandler->sendPresidentialVoteCast($inputData);
-       $this->assertEquals($outPut, array('Invalid data structure.'));
-       
-       //Case where sending presidential data succed
+       $outPut = $apiHandler->process($inputData);
+       $this->assertEquals($outPut, array('user not found in the DB.'));
    }
    
    public function testEditPresidentialVoteCast()
@@ -183,7 +183,7 @@ class ApiHandlerTest extends WebTestCase
    {
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
-       //When login by the FirstVerifier
+       //When request by the FirstVerifier
        //list of independent and dependent candidate of the context pollingStation (For Constituency 1)
        $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'parliamentary', 'action' => 5);
        $output = $apiHandler->process($inputData);
@@ -202,6 +202,64 @@ class ApiHandlerTest extends WebTestCase
                         ];
        
        $this->assertEquals($output, array($indCandidates, $depCandidates));
+   }
+   
+   public function testGetPresidentialVoteCast()
+   {
+       //Case where the data structure is right
+       //Get the API handler
+       $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
+       
+       /***************---When request by the firstVerifier----**********************/
+       //list of presidential dependendCandidates and the data structure
+       $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'presidential', 'action' => 700);
+       //make the request
+       $outPut = $apiHandler->process($inputData);
+       $presidentialCandidates = ['NPP' => null, 'NDC' => null, 'UFP' => null, 'CPP' => null,
+                                  'PPP' => null, 'NCP' => null, 'PCP' => null, 'GFP' => null, ];
+       
+       $this->assertEquals($outPut, $presidentialCandidates);
+       
+       //Case where the data structure si not right 
+       //Wrong verifier token
+       $inputData = array('verifier_token' => 'ABCD900', 'transaction_type' => 'presidential', 'action' => 700);
+       //make the request
+       $outPut = $apiHandler->process($inputData);
+       $presidentialCandidates = array('Error: wrong data structure or validation faild.');
+       
+       $this->assertEquals($outPut, $presidentialCandidates);
+       
+       //Wrong transaction_type
+       $inputData = array('verifier_token' => 'ABCD900', 'transaction_type' => 'parliamentary', 'action' => 700);
+       //make the request
+       $outPut = $apiHandler->process($inputData);
+       $response = array('Error: wrong data structure or validation faild.');
+       $this->assertEquals($outPut, $response);
+       
+       //Wrong action #ID
+       $inputData = array('verifier_token' => 'ABCD900', 'transaction_type' => 'parliamentary', 'action' => 777);
+       //make the request
+       $outPut = $apiHandler->process($inputData);
+       $response = array('Error: wrong data structure or validation faild.');
+       $this->assertEquals($outPut, $response);
+       
+       /***************---When request by the second verifier----**********************/
+       //When it successed
+       //Data structure is right
+       $inputData = array('verifier_token' => 'ABCD2', 'transaction_type' => 'presidential', 'action' => 701);
+       //make the request
+       $outPut = $apiHandler->process($inputData);
+       $presidentialCandidates = ['NPP' => 0, 'NDC' => 1, 'UFP' => 150, 'CPP' => 25, ];
+       $this->assertEquals($outPut, $presidentialCandidates);
+       
+       //When it faild
+       //Data structure is not right (wrong token)
+       $inputData = array('verifier_token' => 'ABCD888##!', 'transaction_type' => 'presidential', 'action' => 701);
+       //make the request
+       $outPut = $apiHandler->process($inputData);
+       $response = array('Error: wrong data structure or validation faild.');
+       
+       $this->assertEquals($response, $outPut);
    }
    
    public function testSendParliamentaryVoteCast()
