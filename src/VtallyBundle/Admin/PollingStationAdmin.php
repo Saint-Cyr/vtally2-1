@@ -35,7 +35,7 @@ class PollingStationAdmin extends Admin
             ->add('name')
             ->add('code')
             ->add('constituency')
-            ->add('active')
+            ->add('active', null, array('editable' => true))
             ->add('presidential', null, array('label' => 'Pr. Sent'))
             ->add('parliamentary', null, array('label' => 'Pa. Sent'))
             ->add('presidentialPinkSheet', null, array('label' => 'Pr. Pink'))
@@ -67,10 +67,10 @@ class PollingStationAdmin extends Admin
             ->add('presidential')
             ->add('parliamentary')
             ->add('presidentialPinkSheet')
+            ->add('parliamentaryPinkSheet')
             ->add('parliamentaryEdited')
             ->add('parliamentaryPinkSheetEdited')
             ->add('users')
-            
         ;
     }
 

@@ -65,7 +65,7 @@ class ApiHandler
         //Collect the user in order to get his pollingStation
         $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
         
-        //For maintenance perpuse, make sure the system responde well when error occure
+        //Make sure $user exist in DB.
         if(!$user){
             return array('user not found in the DB.');
         }
@@ -273,8 +273,8 @@ class ApiHandler
         }
         
         //Make sure every request have the key action
-        if(((($inputData['action'] == 703 || $inputData['action'] == 5) || ($inputData['action'] == 603) ||
-                ($inputData['action'] == 605))
+        if(((($inputData['action'] == 703 || $inputData['action'] == 705) || ($inputData['action'] == 803) ||
+                ($inputData['action'] == 805))
                 &&($this->validatorFactory1($inputData))&&($this->validatorFactory3($inputData)))){ 
             
             switch ($inputData['action']){
@@ -296,7 +296,7 @@ class ApiHandler
                     return $this->sendPresidentialPinkSheet($request, $inputData);
                     break;
                 //Edit presidential pinkSheet
-                case 5:
+                case 705:
                     //Get the user
                     $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
                     //Get the pollingStation 
@@ -315,7 +315,7 @@ class ApiHandler
                     break;
                     
                 //Send parliamentary pinkSheet
-                case 603:
+                case 803:
                     //Get the user
                     $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
                     //Get the pollingStation 
@@ -333,7 +333,7 @@ class ApiHandler
                     break;
                     
                 //Edit parliamentary pinkSheet
-                case 605:
+                case 805:
                     //Get the user
                     $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
                     //Get the pollingStation 
@@ -380,8 +380,10 @@ class ApiHandler
         
         //Instentiate the prPinkSheet
         $prPinkSheet = new PrPinkSheet();
+        //create the pink sheet name according to the convention
+        $pinkSheetName = 'pr_'.$pollingStation->getId().'.'.$uploadedFile->guessExtension();
         //set the pink Sheet name
-        $prPinkSheet->setName($uploadedFile->getClientOriginalName());
+        $prPinkSheet->setName($pinkSheetName);
         //Link the pinkSheet to the pollingStation
         $pollingStation->setPrPinkSheet($prPinkSheet);
         //Set presidentialPinkSheet to true
@@ -392,7 +394,7 @@ class ApiHandler
         //Get the directory path
         $directory = __DIR__.'/../../../web/pinkSheet/presidential';
         //Move the file in the directory
-        $file = $uploadedFile->move($directory, $uploadedFile->getClientOriginalName());
+        $file = $uploadedFile->move($directory, $pinkSheetName);
         
         return array('file uploaded.');
     }
@@ -402,22 +404,34 @@ class ApiHandler
         //Collect the pinkSheet based on $pinkSheet = $user->getPollingStation()->getPrPinkSheet();
         $user = $this->em->getRepository('UserBundle:User')
                      ->findOneBy(array('userToken' => $inputData['verifier_token']));
+        //Get the pollingStation related to the user
+        $pollingStation = $user->getPollingStation();
+        //Make sure $user is in the DB.
+        if(!$user){
+            return array('user of verifier_toke'.$inputData['verifier_token'].' not found in the DB');
+        }
+        //Make sure $pollingStation exist
+        if(!$pollingStation){
+            return array('user of verifier_toke'.$inputData['verifier_token'].' is not linked to a polling station');
+        }
+        //Make sure that this is the first and last time to edit the presidential PinkSheet for
+        //this polling station ($PollingStation)
+        if($pollingStation->isPresidentialPinkSheetEdited()){
+            return array('presidential pink sheet for pol. Station #ID:'.$pollingStation->getId().' allready edited ');
+        }
         $prPinkSheet = $user->getPollingStation()->getPrPinkSheet();
-        //Send the move the edited pink sheet to it location
-        
         //Get the uploaded file
         $uploadedFile = $request->files->get('file');
+        //create the pink sheet name according to the convention
+        $pinkSheetName = '~pr_'.$pollingStation->getId().'.'.$uploadedFile->guessExtension();
         //Get the directory path
         $directory = __DIR__.'/../../../web/pinkSheet/presidentialEdited';
         //Move the file in the directory
-        $file = $uploadedFile->move($directory, $uploadedFile->getClientOriginalName());
-        //make sure the edited file have different name than the original one
-        if($uploadedFile->getClientOriginalName() == $prPinkSheet->getName()){
-            return array('Error: the name of the edited presidential pink sheet must be different of the original:'
-                . ' see documentation for naming convention');
-        }
+        $file = $uploadedFile->move($directory, $pinkSheetName);
         //Set the pinkSheet property edited to true
         $prPinkSheet->setEdited(true);
+        //Set the polling station property presidentialPinkSheetEdited to true
+        $pollingStation->setPresidentialPinkSheetEdited(true);
         //Persist the change
         $this->em->persist($prPinkSheet);
         $this->em->flush();
@@ -436,17 +450,22 @@ class ApiHandler
         //Get the user in order to get the pollingStation
         $user = $this->em->getRepository('UserBundle:User')
                      ->findOneBy(array('userToken' => $inputData['verifier_token']));
+        //Make sure $user exist in DB.
+        if(!$user){
+             // return some message
+        }
         
         //Now get the pollingStation
         $pollingStation = $user->getPollingStation();
         
         //Get the uploaded file
         $uploadedFile = $request->files->get('file');
-        
+        //create the pink sheet name according to the convention
+        $pinkSheetName = 'pa_'.$pollingStation->getId().'.'.$uploadedFile->guessExtension();
         //Instentiate the paPinkSheet
         $paPinkSheet = new PaPinkSheet();
         //set the pink Sheet name
-        $paPinkSheet->setName($uploadedFile->getClientOriginalName());
+        $paPinkSheet->setName($pinkSheetName);
         //Link the pinkSheet to the pollingStation
         $pollingStation->setPaPinkSheet($paPinkSheet);
         //Set the property presidentialPinkSheet to true to prevent 
@@ -457,8 +476,8 @@ class ApiHandler
         $this->em->flush();
         //Get the directory path
         $directory = __DIR__.'/../../../web/pinkSheet/parliamentary';
-        //Move the file in the directory
-        $file = $uploadedFile->move($directory, $uploadedFile->getClientOriginalName());
+        //Move the file in the directory    
+        $file = $uploadedFile->move($directory, $pinkSheetName);
         
         return array('parliamentary pink sheet file uploaded.');
     }
@@ -474,20 +493,28 @@ class ApiHandler
         //Collect the pinkSheet based on $pinkSheet = $user->getPollingStation()->getPaPinkSheet();
         $user = $this->em->getRepository('UserBundle:User')
                      ->findOneBy(array('userToken' => $inputData['verifier_token']));
-        $paPinkSheet = $user->getPollingStation()->getPaPinkSheet();
+        //Make sure $user is in the DB.
+        if(!$user){
+            return array('user of verifier_toke'.$inputData['verifier_token'].' not found in the DB');
+        }
+        //Get the polling station linked to the current verifier
+        $pollingStation = $user->getPollingStation();
+        //Make sure $pollingStation exist
+        if(!$pollingStation){
+            return array('user of verifier_toke'.$inputData['verifier_token'].' is not linked to a polling station');
+        }
+        //Get the parliamentary pink sheet linked to the pollingStation
+        $paPinkSheet = $pollingStation->getPaPinkSheet();
         //Send the move the edited pink sheet to it location
         
         //Get the uploaded file
         $uploadedFile = $request->files->get('file');
+        //create the pink sheet name according to the convention
+        $pinkSheetName = '~pa_'.$pollingStation->getId().'.'.$uploadedFile->guessExtension();
         //Get the directory path
         $directory = __DIR__.'/../../../web/pinkSheet/parliamentaryEdited';
         //Move the file in the directory
-        $file = $uploadedFile->move($directory, $uploadedFile->getClientOriginalName());
-        //make sure the edited file have different name than the original one
-        if($uploadedFile->getClientOriginalName() == $paPinkSheet->getName()){
-            return array('Error: the name of the edited parliamentary pink sheet must be different of the original:'
-                . ' see documentation for naming convention');
-        }
+        $file = $uploadedFile->move($directory, $pinkSheetName);
         //Set the pinkSheet property edited to true
         $paPinkSheet->setEdited(true);
         //Set the property parliamentaryPinkSheetEdited to true
@@ -541,10 +568,8 @@ class ApiHandler
         $encoder = $factory->getEncoder($user);
         $validated = $encoder->isPasswordValid($user->getPassword(),$password,$user->getSalt());
         if (!$validated) {
-            
             http_response_code(400);
             return false;
-       
         } else {
             
             $token = new UsernamePasswordToken($user, null, "main", $user->getRoles());
