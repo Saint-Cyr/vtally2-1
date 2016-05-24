@@ -40,7 +40,7 @@ class DefaultControllerTest extends WebTestCase
             ->get('doctrine')
             ->getManager();
         
-        //$this->initialization();  
+            //$this->initialization();  
     }
     
     public function testHomePage()

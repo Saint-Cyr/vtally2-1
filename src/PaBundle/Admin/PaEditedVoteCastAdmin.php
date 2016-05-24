@@ -18,6 +18,7 @@ class PaEditedVoteCastAdmin extends Admin
         $datagridMapper
             ->add('id')
             ->add('figureValue')
+            ->add('pollingStation')
             ->add('wordValue')
         ;
     }
@@ -30,6 +31,8 @@ class PaEditedVoteCastAdmin extends Admin
         $listMapper
             ->add('id')
             ->add('figureValue')
+            ->add('dependentCandidate')
+            ->add('independentCandidate')
             ->add('wordValue')
             ->add('_action', 'actions', array(
                 'actions' => array(

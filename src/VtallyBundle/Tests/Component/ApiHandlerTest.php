@@ -36,22 +36,22 @@ class ApiHandlerTest extends WebTestCase
        //Case where login successfully for 1st verifier
        $inputData = array('action' => 600, 'username' => 'verifier1', 'password' => 'test');
        $outPut = $apiHandler->login($inputData);
-       $this->assertEquals($outPut, array('first_name' => 'VERIFIER 1', 'pol_id' => 'Pol. Station 1'));
+       $this->assertEquals($outPut->getData(), array('first_name' => 'VERIFIER 1', 'pol_id' => 'Pol. Station 1'));
        
        //Case where login successfully for 2nd verifier
        $inputData = array('action' => 600, 'username' => 'verifier2', 'password' => 'test');
        $outPut = $apiHandler->login($inputData);
-       $this->assertEquals($outPut, array('first_name' => 'VERIFIER 2', 'pol_id' => 'Pol. Station 1'));
+       $this->assertEquals($outPut->getData(), array('first_name' => 'VERIFIER 2', 'pol_id' => 'Pol. Station 1'));
        
        //Case login faild: wrong username
        $inputData = array('username' => 'verifier11', 'password' => 'test');
        $outPut = $apiHandler->login($inputData);
-       $this->assertEquals($outPut, array('Bad credentials.'));
+       $this->assertEquals($outPut->getData(), array('Bad credentials.'));
        
        //Case login faild: wrong password
        $inputData = array('username' => 'verifier1', 'password' => 'testt');
        $outPut = $apiHandler->login($inputData);
-       $this->assertEquals($outPut, array('Bad credentials.'));
+       $this->assertEquals($outPut->getData(), array('Bad credentials.'));
    }
    
    public function testSendPresidentialVoteCast()
@@ -66,14 +66,15 @@ class ApiHandlerTest extends WebTestCase
                           'pr_votes' => array('NPP' => 0, 'NDC' => 0, 'UFP' => 0));
        
        $outPut = $apiHandler->process($inputData);
-       $this->assertEquals($outPut, array('presidential vote cast sent!'));
+       $this->assertEquals($outPut->getData(), array('presidential vote cast sent.'));
        
        //Case where sending votes does not succed
        $inputData = array('transaction_type' => 'presidential', 'verifier_token' => 'ABCD####', 'action' => 702,
                           'pr_votes' => array('NPP' => 0, 'NDC' => 0, 'UFP' => 0));
        
        $outPut = $apiHandler->process($inputData);
-       $this->assertEquals($outPut, array('user not found in the DB.'));
+       $this->assertEquals($outPut->getData(), array('user of verifier_token: ABCD#### not found in the DB'));
+       
    }
    
    public function testEditPresidentialVoteCast()
@@ -183,9 +184,9 @@ class ApiHandlerTest extends WebTestCase
    {
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
-       //When request by the FirstVerifier
+       //When request by the 1st Verifier
        //list of independent and dependent candidate of the context pollingStation (For Constituency 1)
-       $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'parliamentary', 'action' => 5);
+       $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'parliamentary', 'action' => 800);
        $output = $apiHandler->process($inputData);
        
        $indCandidates = [
@@ -202,6 +203,26 @@ class ApiHandlerTest extends WebTestCase
                         ];
        
        $this->assertEquals($output, array($indCandidates, $depCandidates));
+       //When request by the 2nd verifier     
+      $candidates = [
+                       //Independent candidates
+                       [
+                           ["id" => 1,"vote_cast" => 100,"name" => "Vivien","candidacy_number" => 1],
+                           ["id" => 2,"vote_cast" => 7,"name" => "Joella","candidacy_number" => 2],
+                           ["id" => 3,"vote_cast" => 2,"name" => "Adde","candidacy_number" => 5]
+                       ],
+                       //Dependent candidates
+                       [
+                           ["id" => 1,"vote_cast" => 100,"name" => "Jhon","candidacy_number" => 1],
+                           ["id" => 7,"vote_cast" => 280,"name" => "Jannette","candidacy_number" => 2],
+                           ["id" => 13,"vote_cast" => 98,"name" => "Sondra","candidacy_number" => 2],
+                           ["id" => 19,"vote_cast" => 0,"name" => "Fadde","candidacy_number" => 2]
+                       ]
+                    ];
+       
+       $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'parliamentary', 'action' => 801);
+       $output = $apiHandler->process($inputData);
+       $this->assertEquals($output, $candidates);
    }
    
    public function testGetPresidentialVoteCast()
@@ -241,7 +262,7 @@ class ApiHandlerTest extends WebTestCase
        //make the request
        $outPut = $apiHandler->process($inputData);
        $response = array('Error: wrong data structure or validation faild.');
-       $this->assertEquals($outPut, $response);
+       $this->assertEquals($outPut->getData(), $response);
        
        /***************---When request by the second verifier----**********************/
        //When it successed
@@ -333,7 +354,7 @@ class ApiHandlerTest extends WebTestCase
        
        $candidates = array('independent' => $indCandidates, 'dependent' => $depCandidates);
        
-       $inputData = array('action' => 6, 'transaction_type' => 'parliamentary', 'verifier_token' => 'ABCD1', 'pol_id' => 1,
+       $inputData = array('action' => 802, 'transaction_type' => 'parliamentary', 'verifier_token' => 'ABCD1', 'pol_id' => 1,
                           'pa_votes' => $candidates);
        
        $outPut = $apiHandler->process($inputData);

@@ -445,14 +445,14 @@ PaBundle\Entity\PaVoteCast:
         figureValue: 240
         wordValue: One Thousand three hundred twenty two
         dependentCandidate: "@dependent_candidate13"
-        pollingStation: "@polling_station1"
+        pollingStation: "@polling_station2"
         edited: false
         
     pa_vote_cast19:
         figureValue: 460
         wordValue: One Thousand three hundred twenty two
         dependentCandidate: "@dependent_candidate13"
-        pollingStation: "@polling_station1"
+        pollingStation: "@polling_station3"
         edited: false
         
     pa_vote_cast20:

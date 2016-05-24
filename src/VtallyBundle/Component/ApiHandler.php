@@ -12,6 +12,7 @@ use PrBundle\Entity\PrParty;
 use PrBundle\Entity\PrPinkSheet;
 use PaBundle\Entity\PaPinkSheet;
 use PrBundle\Entity\PrVoteCast;
+use FOS\RestBundle\View\View;
 use PaBundle\Entity\PaVoteCast;
 use PaBundle\Entity\PaEditedVoteCast;
 use VtallyBundle\Entity\PollingStation;
@@ -50,10 +51,12 @@ class ApiHandler
             $user->refreshTokenTime();
             $this->em->flush();
             
-            return array('first_name' => $user->getFirstName(), 'pol_id' => $user->getPollingStation()->getName());
+            $response = array('first_name' => $user->getFirstName(), 'pol_id' => $user->getPollingStation()->getName());
+            
+            return View::create($response, 200);
         }
         
-        return array('Bad credentials.');
+        return View::create(array('Bad credentials.'), 401);
     }
     
     /**
@@ -64,14 +67,16 @@ class ApiHandler
     {
         //Collect the user in order to get his pollingStation
         $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
-        
-        //Make sure $user exist in DB.
+        //Make sure $user is in the DB.
         if(!$user){
-            return array('user not found in the DB.');
+            return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB'), 404);
         }
-        
-        //Get the polling Station
+        //Get the pollingStation related to the user
         $pollingStation = $user->getPollingStation();
+        //Make sure $pollingStation exist
+        if(!$pollingStation){
+            return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station'), 404);
+        }
        
         //See the API documentation to learn more about the constraints
         if(($pollingStation->isPresidential())&&($this->validatorFactory2($inputData))
@@ -116,14 +121,15 @@ class ApiHandler
                     //make change in DB.
                     $this->em->flush();
                     $pollingStation->setPresidentialEdited(true);
-                    return 'presidential vote cast edited.';
+                    return View::create(array('presidential vote cast edited.'), 200);
                 }
             }
             
-            return array('presidential vote cast comfirmed.');
+            return View::create(array('presidential vote cast comfirmed.'), 200);
         }
         
-        return array('cannot edit presidential vote cast: check data structure or validation rules');
+        return View::create(array('cannot edit presidential vote cast: check data structure or validation rules'), 401);
+        //return array('cannot edit presidential vote cast: check data structure or validation rules');
         
     }
     
@@ -132,30 +138,28 @@ class ApiHandler
         //make sure vote cast is for Presidential  
         if(!array_key_exists('pr_votes', $inputData)||($inputData['transaction_type'] != 'presidential')){
             
-            return array('Invalid data structure.');
+            return View::create(array('invalid data structure'), 401);
         }
         
         //Get the user
         $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
-        //Make sure the user exist in the DB.           
+        //Make sure $user is in the DB.
         if(!$user){
-            return array('user not found in the DB.');
+            return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB'), 404);
         }
-        //Get the pollingStation 
+        //Get the pollingStation related to the user
         $pollingStation = $user->getPollingStation();
-        //Make sure the polling station and the user exist in the DB.           
-        if(!$user||!$pollingStation){
-            return array('user or pollingStation not found in the DB.');
+        //Make sure $pollingStation exist
+        if(!$pollingStation){
+            return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station'), 404);
         }
         
         //See the API doc for more information 
         if(($this->validatorFactory2($inputData))&&($this->validatorFactory3($inputData))
                 &&($this->isPresidentialVoteCastValid($inputData['pr_votes']))){
-            
-            
             //Make sure the pollingStation doesn't yet recieve presidential vote cast
             if(($pollingStation->isPresidential())){
-                return array('Error: presidential vote cast allready sent.');
+                return View::create(array('Error: presidential vote cast allready sent.'), 401);
             }
             //Save the vote cast one by one in the DB. with theire respective relationship
             $prVotes = $inputData['pr_votes'];
@@ -179,12 +183,11 @@ class ApiHandler
             //Set the PollingStation property presidential to true
             $pollingStation->setPresidential(true);
             //$this->em->flush();
-            
-            return array('presidential vote cast sent!');
+            return View::create(array('presidential vote cast sent.'), 200);
             
         }
         
-        return array('Error: cannot send presidential vote cast');
+        return View::create(array('Error: cannot send presidential vote cast'), 401);
     }
     
     public function isPresidentialVoteCastValid(array $votes)
@@ -213,26 +216,28 @@ class ApiHandler
                 //Sending presidential vote cast
                 case 702:
                     return $this->sendPresidentialVoteCast($inputData);
-                    return array('Error: the concerned polling station is not activated.');
                     break;
                 //Edit presidential vote cast
                 case 704:
                     return $this->editPresidentialVoteCast($inputData);
                     break;
                 //Get the parliamentary candidates for the first Verifier
-                case 5:
+                case 800:
                     return $this->getParliamentaryCandidates($inputData);
                     break;
                 //Send Parliamentary vote cast
-                case 6:
+                case 802:
                     //Make sure the Data structure content the key pa_votes
-                    if(array_key_exists('pa_votes', $inputData) && $inputData['transaction_type'] == 'parliamentary'){
+                    if(array_key_exists('pa_votes', $inputData) && (array_key_exists('transaction_type', $inputData))
+                            && ($inputData['transaction_type'] == 'parliamentary')){
                         return $this->sendParliamentaryVoteCast($inputData);
                         break;
+                    }else{
+                        return View::create(array('Error: wrong data structure see API Doc. Data structure:#DS10.'), 401);
                     }
-                    
-                //Get the parliamentary candidates for the second Verifier
-                case 7:
+                
+                //Get the parliamentary candidates for the 2nd Verifier
+                case 801:
                     //Make sure the Data structure content the key pa_votes
                     if(($inputData['transaction_type'] == 'parliamentary') && ($this->validatorFactory3($inputData))){
                         return $this->getParliamentaryCandidates($inputData);
@@ -240,22 +245,21 @@ class ApiHandler
                     }
                 
                 //Edit Parliamentary vote cast
-                case 8:
+                case 804:
                     //Make sure the Data structure content the key pa_votes
                     if(array_key_exists('pa_votes', $inputData) &&
                        $inputData['transaction_type'] == 'parliamentary'){
                         return $this->editParliamentaryVoteCast($inputData);
                         break;
                     }
-                    
-                    return array('Error: wrong data structure or validation faild.');
+                    return View::create(array('Error: wrong data structure or validation faild.'), 401);
                     break;
             }
+            return View::create(array('Error: wrong data structure or validation faild.'), 401);
             
-            return array('Error: wrong data structure or validation faild.');
         }
         
-        return array('Error: wrong data structure or validation faild.');
+        return View::create(array('Error: wrong data structure or validation faild.'), 401);
     }
     
     public function processPinkSheet(Request $request)
@@ -269,7 +273,7 @@ class ApiHandler
         //Warnning !!! Make sure the file extension is only the recommanded one
         $file = $request->files->get('file');
         if(($file->guessExtension() != 'jpg') && ($file->guessExtension() != 'jpeg') && ($file->guessExtension() != 'pdf')){
-            return array('Error: file Extension non suported.');
+            return View::create(array('Error: file Extension non suported.'), 401);
         }
         
         //Make sure every request have the key action
@@ -282,33 +286,39 @@ class ApiHandler
                 case 703:
                     //Get the user
                     $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
-                    //Get the pollingStation 
+                    //Make sure $user is in the DB.
+                    if(!$user){
+                        return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB'), 404);
+                    }
+                    //Get the pollingStation related to the user
                     $pollingStation = $user->getPollingStation();
-                    
-                    if(!$user||!$pollingStation){
-                        return array('user or pollingStation not found in the DB.');
+                    //Make sure $pollingStation exist
+                    if(!$pollingStation){
+                        return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station'), 404);
                     }
                     
                     //Make sure presidential pink sheet has not yet been sent
                     if($pollingStation->isPresidentialPinkSheet()){
-                        return array('Error: presidential pinkSheet allready sent.');
+                        return View::create(array('Error: presidential pinkSheet allready sent.'), 401);
                     }
                     return $this->sendPresidentialPinkSheet($request, $inputData);
                     break;
                 //Edit presidential pinkSheet
                 case 705:
-                    //Get the user
-                    $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
-                    //Get the pollingStation 
+                    //Make sure $user is in the DB.
+                    if(!$user){
+                        return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB'), 404);
+                    }
+                    //Get the pollingStation related to the user
                     $pollingStation = $user->getPollingStation();
-                    
-                    if(!$user||!$pollingStation){
-                        return array('user or pollingStation not found in the DB.');
+                    //Make sure $pollingStation exist
+                    if(!$pollingStation){
+                        return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station'), 404);
                     }
                     
                     //Make sure presidential pink sheet has been sent allready
                     if(!$pollingStation->isPresidentialPinkSheet()){
-                        return array('Error: presidential pinkSheet not yet sent.');
+                        return View::create(array('Error: presidential pinkSheet not yet sent.'), 404);
                     }
                     
                     return $this->editPresidentialPinkSheet($request, $inputData);
@@ -316,13 +326,15 @@ class ApiHandler
                     
                 //Send parliamentary pinkSheet
                 case 803:
-                    //Get the user
-                    $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
-                    //Get the pollingStation 
+                    //Make sure $user is in the DB.
+                    if(!$user){
+                        return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB'), 404);
+                    }
+                    //Get the pollingStation related to the user
                     $pollingStation = $user->getPollingStation();
-                    
-                    if(!$user||!$pollingStation){
-                        return array('user or pollingStation not found in the DB.');
+                    //Make sure $pollingStation exist
+                    if(!$pollingStation){
+                        return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station'), 404);
                     }
                     
                     //Make sure presidential pink sheet has not yet been sent
@@ -336,11 +348,15 @@ class ApiHandler
                 case 805:
                     //Get the user
                     $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
-                    //Get the pollingStation 
+                    //Make sure $user is in the DB.
+                    if(!$user){
+                        return array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB');
+                    }
+                    //Get the pollingStation related to the user
                     $pollingStation = $user->getPollingStation();
-                    
-                    if(!$user||!$pollingStation){
-                        return array('user or pollingStation not found in the DB.');
+                    //Make sure $pollingStation exist
+                    if(!$pollingStation){
+                        return array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station');
                     }
                     
                     //Make sure parliamentary pink sheet has been allready sent and has not
@@ -404,15 +420,15 @@ class ApiHandler
         //Collect the pinkSheet based on $pinkSheet = $user->getPollingStation()->getPrPinkSheet();
         $user = $this->em->getRepository('UserBundle:User')
                      ->findOneBy(array('userToken' => $inputData['verifier_token']));
-        //Get the pollingStation related to the user
-        $pollingStation = $user->getPollingStation();
         //Make sure $user is in the DB.
         if(!$user){
-            return array('user of verifier_toke'.$inputData['verifier_token'].' not found in the DB');
+            return array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB');
         }
+        //Get the pollingStation related to the user
+        $pollingStation = $user->getPollingStation();
         //Make sure $pollingStation exist
         if(!$pollingStation){
-            return array('user of verifier_toke'.$inputData['verifier_token'].' is not linked to a polling station');
+            return array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station');
         }
         //Make sure that this is the first and last time to edit the presidential PinkSheet for
         //this polling station ($PollingStation)
@@ -450,14 +466,16 @@ class ApiHandler
         //Get the user in order to get the pollingStation
         $user = $this->em->getRepository('UserBundle:User')
                      ->findOneBy(array('userToken' => $inputData['verifier_token']));
-        //Make sure $user exist in DB.
+        //Make sure $user is in the DB.
         if(!$user){
-             // return some message
+            return array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB');
         }
-        
-        //Now get the pollingStation
+        //Get the pollingStation related to the user
         $pollingStation = $user->getPollingStation();
-        
+        //Make sure $pollingStation exist
+        if(!$pollingStation){
+            return array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station');
+        }
         //Get the uploaded file
         $uploadedFile = $request->files->get('file');
         //create the pink sheet name according to the convention
@@ -493,15 +511,12 @@ class ApiHandler
         //Collect the pinkSheet based on $pinkSheet = $user->getPollingStation()->getPaPinkSheet();
         $user = $this->em->getRepository('UserBundle:User')
                      ->findOneBy(array('userToken' => $inputData['verifier_token']));
-        //Make sure $user is in the DB.
-        if(!$user){
-            return array('user of verifier_toke'.$inputData['verifier_token'].' not found in the DB');
-        }
+        
         //Get the polling station linked to the current verifier
         $pollingStation = $user->getPollingStation();
         //Make sure $pollingStation exist
         if(!$pollingStation){
-            return array('user of verifier_toke'.$inputData['verifier_token'].' is not linked to a polling station');
+            return array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station');
         }
         //Get the parliamentary pink sheet linked to the pollingStation
         $paPinkSheet = $pollingStation->getPaPinkSheet();
@@ -601,16 +616,18 @@ class ApiHandler
             //Get the user object based on the username
             $user = $this->em->getRepository('UserBundle:User')
                     ->findOneBy(array('username' => $inputData['username']));
+        //Make sure the key verifier_token exists
+        }elseif (!array_key_exists('verifier_token', $inputData)&&(!array_key_exists('username', $inputData))) {
+            return false;
         }
         
-        //Continous only if the user exist in DB
+        //Make sure $user is in the DB.
         if(!$user){
-            return array('user not found in DB.');
+            return array('Error:validatorFactory1- user not found in the DB');
         }
-        
-        //Get the pollingStation related to $user
+        //Get the pollingStation related to the user
         $pollingStation = $user->getPollingStation();
-        
+        //Make sure $pollingStation exist
         if(!$pollingStation){
             return false;
         }
@@ -686,15 +703,20 @@ class ApiHandler
         if($this->validatorFactory3($inputData)){
             //Get the user
             $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
-            //Get the pollingStation 
+            
+            //Make sure $user is in the DB.
+            if(!$user){
+                return array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB');
+            }
+            //Get the pollingStation related to the user
             $pollingStation = $user->getPollingStation();
+            //Make sure $pollingStation exist
+            if(!$pollingStation){
+                return array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station');
+            }
             //Get the Constituency
             $constituency = $pollingStation->getConstituency();
-
-            if(!$user||!$pollingStation||!$constituency){
-                return array('user or pollingStation or consituency not found in the DB.');
-            }
-
+            
             //Get all the independents candidates linked to the contexted pollingStation
             $indCandidates = $constituency->getIndependentCandidates();
 
@@ -710,11 +732,11 @@ class ApiHandler
                 $data1['id'] = $indC->getId();
                 //Check if it's first verifier then add $inputData['vote_cast'] => null
                 //else (second verifier) load the $inputData['vote_cast'] value from the DB.
-                if($inputData['action'] == 5){
+                if($inputData['action'] == 800){
                     //Because it's the first verifier request.
                     $data1['vote_cast'] = null;
                     //2nd verifier so, set the key 'vote_cast' with the right value from DB.
-                }elseif($inputData['action'] == 7){
+                }elseif($inputData['action'] == 801){
                     $_voteCast = $pollingStation->getOneParliamentaryVoteCast($indC);
                     $data1['vote_cast'] = $_voteCast->getFigureValue();
                 }
@@ -733,9 +755,9 @@ class ApiHandler
                 $data['id'] = $dep->getId();
                 //Check if it's first verifier then add $inputData['vote_cast'] => null
                 //else (second verifier) load the $inputData['vote_cast'] value from the DB.
-                if($inputData['action'] == 5){
+                if($inputData['action'] == 800){
                     $data['vote_cast'] = null;
-                }elseif($inputData['action'] == 7){
+                }elseif($inputData['action'] == 801){
                     $_voteCast = $pollingStation->getOneParliamentaryVoteCast($dep);
                     $data['vote_cast'] = $_voteCast->getFigureValue();
                 }
@@ -758,15 +780,24 @@ class ApiHandler
         return array('Error: cannot get parliamentary validatorFactory3 faild.');
     }
     
+    /**
+     * 
+     * @param array $inputData
+     * @return array
+     */
     public function sendParliamentaryVoteCast(array $inputData)
     {
         //Get the user
         $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
-        //Get the pollingStation 
+        //Make sure $user is in the DB.
+        if(!$user){
+            return array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB');
+        }
+        //Get the pollingStation related to the user
         $pollingStation = $user->getPollingStation();
-                    
-        if(!$user||!$pollingStation){
-            return array('user or pollingStation not found in the DB.');
+        //Make sure $pollingStation exist
+        if(!$pollingStation){
+            return array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station');
         }
         
         //Check the validations rules and the data structure
@@ -836,11 +867,15 @@ class ApiHandler
     {
         //Get the user
         $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
-        //Get the pollingStation 
+        //Make sure $user is in the DB.
+        if(!$user){
+            return array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB');
+        }
+        //Get the pollingStation related to the user
         $pollingStation = $user->getPollingStation();
-                    
-        if(!$user||!$pollingStation){
-            return array('user or pollingStation not found in the DB.');
+        //Make sure $pollingStation exist
+        if(!$pollingStation){
+            return array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station');
         }
         
         //Check the validations rules and the data structure
@@ -920,7 +955,7 @@ class ApiHandler
             //lock the pollingStation in order to do not allow an edition of parliamentary votes again
             $pollingStation->setParliamentaryEdited(true);
             //Confirm the persistence of all persisted and loaded objects
-            $this->em->flush();
+            //$this->em->flush();
             if($edited){
                 return array('parliamentary vote cast edited.');
             }else{
@@ -942,14 +977,18 @@ class ApiHandler
         if($this->validatorFactory3($inputData)){
             //Get the user
             $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
-            //Get the pollingStation 
+            //Make sure $user is in the DB.
+            if(!$user){
+                return array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB');
+            }
+            //Get the pollingStation related to the user
             $pollingStation = $user->getPollingStation();
+            //Make sure $pollingStation exist
+            if(!$pollingStation){
+                return array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station');
+            }
             //Get the Constituency
             $constituency = $pollingStation->getConstituency();
-
-            if(!$user||!$pollingStation||!$constituency){
-                return array('user or pollingStation or consituency not found in the DB.');
-            }
             
             //Fetch all the presidential parties from the DB.
             $prParties = $this->em->getRepository('PrBundle:PrParty')->findAll();
