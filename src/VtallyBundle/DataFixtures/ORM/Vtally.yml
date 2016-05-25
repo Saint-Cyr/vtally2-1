@@ -1166,6 +1166,7 @@ UserBundle\Entity\User:
         enabled: true
         roles: [ROLE_VERIFIER]
         userToken: ABCD1
+        verifierType: true
         pollingStation: "@polling_station1"
         
     Verifier2:
@@ -1177,4 +1178,5 @@ UserBundle\Entity\User:
         enabled: true
         roles: [ROLE_VERIFIER]
         userToken: ABCD2
+        verifierType: false
         pollingStation: "@polling_station1"

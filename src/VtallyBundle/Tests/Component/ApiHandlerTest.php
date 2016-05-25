@@ -36,12 +36,12 @@ class ApiHandlerTest extends WebTestCase
        //Case where login successfully for 1st verifier
        $inputData = array('action' => 600, 'username' => 'verifier1', 'password' => 'test');
        $outPut = $apiHandler->login($inputData);
-       $this->assertEquals($outPut->getData(), array('first_name' => 'VERIFIER 1', 'pol_id' => 'Pol. Station 1'));
+       $this->assertEquals($outPut->getData(), array('first_name' => 'VERIFIER 1', 'pol_id' => 'Pol. Station 1', 'verifier_token' => 'ABCD1'));
        
        //Case where login successfully for 2nd verifier
        $inputData = array('action' => 600, 'username' => 'verifier2', 'password' => 'test');
        $outPut = $apiHandler->login($inputData);
-       $this->assertEquals($outPut->getData(), array('first_name' => 'VERIFIER 2', 'pol_id' => 'Pol. Station 1'));
+       $this->assertEquals($outPut->getData(), array('first_name' => 'VERIFIER 2', 'pol_id' => 'Pol. Station 1', 'verifier_token' => 'ABCD2'));
        
        //Case login faild: wrong username
        $inputData = array('username' => 'verifier11', 'password' => 'test');
@@ -66,7 +66,7 @@ class ApiHandlerTest extends WebTestCase
                           'pr_votes' => array('NPP' => 0, 'NDC' => 0, 'UFP' => 0));
        
        $outPut = $apiHandler->process($inputData);
-       $this->assertEquals($outPut->getData(), array('presidential vote cast sent.'));
+       $this->assertEquals($outPut->getData(), array('presidential vote cast sent.', 'verifier_token' => 'ABCD1'));
        
        //Case where sending votes does not succed
        $inputData = array('transaction_type' => 'presidential', 'verifier_token' => 'ABCD####', 'action' => 702,
@@ -189,40 +189,41 @@ class ApiHandlerTest extends WebTestCase
        $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'parliamentary', 'action' => 800);
        $output = $apiHandler->process($inputData);
        
-       $indCandidates = [
+       $candidates = ['independent' => [
                             ['id' => 1, 'name' => 'Vivien', 'candidacy_number' => 1, 'vote_cast' => null],
                             ['id' => 2, 'name' => 'Joella', 'candidacy_number' => 2, 'vote_cast' => null],
                             ['id' => 3, 'name' => 'Adde', 'candidacy_number' => 5, 'vote_cast' => null]
-                        ];
+                        ],
        
-       $depCandidates = [
+       'dependent' => [
                             ['id' => 1, 'name' => 'Jhon', 'candidacy_number' => 1, 'vote_cast' => null],
                             ['id' => 7, 'name' => 'Jannette', 'candidacy_number' => 2, 'vote_cast' => null],
                             ['id' => 13, 'name' => 'Sondra', 'candidacy_number' => 2, 'vote_cast' => null],
                             ['id' => 19, 'name' => 'Fadde', 'candidacy_number' => 2, 'vote_cast' => null]
-                        ];
+                        ], 'verifier_token' => 'ABCD1'];
        
-       $this->assertEquals($output, array($indCandidates, $depCandidates));
+       $this->assertEquals($output->getData(), $candidates);
        //When request by the 2nd verifier     
       $candidates = [
                        //Independent candidates
-                       [
-                           ["id" => 1,"vote_cast" => 100,"name" => "Vivien","candidacy_number" => 1],
-                           ["id" => 2,"vote_cast" => 7,"name" => "Joella","candidacy_number" => 2],
-                           ["id" => 3,"vote_cast" => 2,"name" => "Adde","candidacy_number" => 5]
-                       ],
+                    'independent' =>   [
+                                            ["id" => 1,"vote_cast" => 100,"name" => "Vivien","candidacy_number" => 1],
+                                            ["id" => 2,"vote_cast" => 7,"name" => "Joella","candidacy_number" => 2],
+                                            ["id" => 3,"vote_cast" => 2,"name" => "Adde","candidacy_number" => 5]
+                                        ],
                        //Dependent candidates
-                       [
-                           ["id" => 1,"vote_cast" => 100,"name" => "Jhon","candidacy_number" => 1],
-                           ["id" => 7,"vote_cast" => 280,"name" => "Jannette","candidacy_number" => 2],
-                           ["id" => 13,"vote_cast" => 98,"name" => "Sondra","candidacy_number" => 2],
-                           ["id" => 19,"vote_cast" => 0,"name" => "Fadde","candidacy_number" => 2]
-                       ]
+                    'dependent' =>      [
+                                            ["id" => 1,"vote_cast" => 100,"name" => "Jhon","candidacy_number" => 1],
+                                            ["id" => 7,"vote_cast" => 280,"name" => "Jannette","candidacy_number" => 2],
+                                            ["id" => 13,"vote_cast" => 98,"name" => "Sondra","candidacy_number" => 2],
+                                            ["id" => 19,"vote_cast" => 0,"name" => "Fadde","candidacy_number" => 2]
+                                        ],
+                    'verifier_token' => 'ABCD1'
                     ];
        
        $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'parliamentary', 'action' => 801);
        $output = $apiHandler->process($inputData);
-       $this->assertEquals($output, $candidates);
+       $this->assertEquals($output->getData(), $candidates);
    }
    
    public function testGetPresidentialVoteCast()
@@ -236,10 +237,10 @@ class ApiHandlerTest extends WebTestCase
        $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'presidential', 'action' => 700);
        //make the request
        $outPut = $apiHandler->process($inputData);
-       $presidentialCandidates = ['NPP' => null, 'NDC' => null, 'UFP' => null, 'CPP' => null,
-                                  'PPP' => null, 'NCP' => null, 'PCP' => null, 'GFP' => null, ];
+       $presidentialCandidates =['pr_votes' => ['NPP' => null, 'NDC' => null, 'UFP' => null, 'CPP' => null,
+                                  'PPP' => null, 'NCP' => null, 'PCP' => null, 'GFP' => null, ], 'verifier_token' => 'ABCD1'];
        
-       $this->assertEquals($outPut, $presidentialCandidates);
+       $this->assertEquals($outPut->getData(), $presidentialCandidates);
        
        //Case where the data structure si not right 
        //Wrong verifier token
@@ -248,14 +249,14 @@ class ApiHandlerTest extends WebTestCase
        $outPut = $apiHandler->process($inputData);
        $presidentialCandidates = array('Error: wrong data structure or validation faild.');
        
-       $this->assertEquals($outPut, $presidentialCandidates);
+       $this->assertEquals($outPut->getData(), $presidentialCandidates);
        
        //Wrong transaction_type
        $inputData = array('verifier_token' => 'ABCD900', 'transaction_type' => 'parliamentary', 'action' => 700);
        //make the request
        $outPut = $apiHandler->process($inputData);
        $response = array('Error: wrong data structure or validation faild.');
-       $this->assertEquals($outPut, $response);
+       $this->assertEquals($outPut->getData(), $response);
        
        //Wrong action #ID
        $inputData = array('verifier_token' => 'ABCD900', 'transaction_type' => 'parliamentary', 'action' => 777);
@@ -270,8 +271,8 @@ class ApiHandlerTest extends WebTestCase
        $inputData = array('verifier_token' => 'ABCD2', 'transaction_type' => 'presidential', 'action' => 701);
        //make the request
        $outPut = $apiHandler->process($inputData);
-       $presidentialCandidates = ['NPP' => 0, 'NDC' => 1, 'UFP' => 150, 'CPP' => 25, ];
-       $this->assertEquals($outPut, $presidentialCandidates);
+       $presidentialCandidates = ['pr_votes' => ['NPP' => 0, 'NDC' => 1, 'UFP' => 150, 'CPP' => 25, ], 'verifier_token' => 'ABCD2'];
+       $this->assertEquals($outPut->getData(), $presidentialCandidates);
        
        //When it faild
        //Data structure is not right (wrong token)
@@ -280,7 +281,7 @@ class ApiHandlerTest extends WebTestCase
        $outPut = $apiHandler->process($inputData);
        $response = array('Error: wrong data structure or validation faild.');
        
-       $this->assertEquals($response, $outPut);
+       $this->assertEquals($response, $outPut->getData());
    }
    
    public function testSendParliamentaryVoteCast()
@@ -358,7 +359,7 @@ class ApiHandlerTest extends WebTestCase
                           'pa_votes' => $candidates);
        
        $outPut = $apiHandler->process($inputData);
-       $this->assertEquals($outPut, array('parliamentary vote cast sent.'));
+       $this->assertEquals($outPut->getData(), array('parliamentary vote cast sent.', 'verifier_token' => 'ABCD1'));
    }
    
    public function testParliamentaryEdited()
