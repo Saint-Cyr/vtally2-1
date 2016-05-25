@@ -34,6 +34,13 @@ class User extends BaseUser
     /**
      * @var string
      *
+     * @ORM\Column(name="verifierType", type="boolean", nullable=true)
+     */
+    private $verifierType;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="userToken", type="string", length=255, nullable=true)
      */
     private $userToken;
@@ -119,7 +126,11 @@ class User extends BaseUser
     
     public function isFirstVerifier()
     {
+        if($this->getRoles() === array('ROLE_FIRST_VERIFIER')){
+            return true;
+        }
         
+        return false;
     }
     
     public function __construct() 
@@ -297,6 +308,30 @@ class User extends BaseUser
 
         return $this;
     }
+    
+    /**
+     * @return string token to identify a session
+     */
+    public function generateUserToken()
+    {
+        /**** to be removed in production **********/
+        if($this->getVerifierType()){
+            $this->setUserToken('ABCD1');
+        }else{
+            $this->setUserToken('ABCD2');
+        }
+        return $this->getUserToken();
+        /**** to be removed in production **********/
+        
+        $p = new OAuthProvider();
+
+        $t = $p->generateToken(4);
+        //$token = rand(1, 99999);
+        //Update 
+        $this->setUserToken($this->getId().$token.$this->getLastName());
+        //Issue it.
+        return $this->getUserToken();
+    }
 
     /**
      * Get userToken
@@ -332,5 +367,29 @@ class User extends BaseUser
     public function getTokenTime()
     {
         return $this->tokenTime;
+    }
+
+    /**
+     * Set verifierType
+     *
+     * @param boolean $verifierType
+     *
+     * @return User
+     */
+    public function setVerifierType($verifierType)
+    {
+        $this->verifierType = $verifierType;
+
+        return $this;
+    }
+
+    /**
+     * Get verifierType
+     *
+     * @return boolean
+     */
+    public function getVerifierType()
+    {
+        return $this->verifierType;
     }
 }

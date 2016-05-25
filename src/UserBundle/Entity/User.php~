@@ -34,6 +34,13 @@ class User extends BaseUser
     /**
      * @var string
      *
+     * @ORM\Column(name="verifierType", type="boolean")
+     */
+    private $verifierType;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="userToken", type="string", length=255, nullable=true)
      */
     private $userToken;
@@ -79,7 +86,7 @@ class User extends BaseUser
      */
     private $tokenTime;
     
-    /*public function isUserTokenValid($configuredTime)
+    public function isUserTokenValid($configuredTime)
     {
         //Get the last minute
         $lastMin = $this->getTokenTime()->format('i');
@@ -99,7 +106,7 @@ class User extends BaseUser
         }
         
         return false;
-    }*/
+    }
     
     public function refreshTokenTime()
     {
@@ -117,10 +124,20 @@ class User extends BaseUser
         return $this->type;
     }
     
+    public function isFirstVerifier()
+    {
+        if($this->getRoles() === array('ROLE_FIRST_VERIFIER')){
+            return true;
+        }
+        
+        return false;
+    }
+    
     public function __construct() 
     {
         parent::__construct();
         $this->setCreatedAt(new \DateTime("now"));
+        $this->setTokenTime(new \DateTime("now"));
     }
 
 
@@ -291,6 +308,23 @@ class User extends BaseUser
 
         return $this;
     }
+    
+    /**
+     * @return string token to identify a session
+     */
+    public function generateUserToken()
+    {
+        //To be removed in production
+        $this->setUserToken('ABCD1');
+        return $this->getUserToken();
+        
+        //Generate the token
+        $token = rand(1, 99999);
+        //Update 
+        $this->setUserToken($token);
+        //Issue it.
+        return $this->getUserToken();
+    }
 
     /**
      * Get userToken
@@ -303,4 +337,52 @@ class User extends BaseUser
     }
     
     
+
+    /**
+     * Set tokenTime
+     *
+     * @param \DateTime $tokenTime
+     *
+     * @return User
+     */
+    public function setTokenTime($tokenTime)
+    {
+        $this->tokenTime = $tokenTime;
+
+        return $this;
+    }
+
+    /**
+     * Get tokenTime
+     *
+     * @return \DateTime
+     */
+    public function getTokenTime()
+    {
+        return $this->tokenTime;
+    }
+
+    /**
+     * Set verifierType
+     *
+     * @param boolean $verifierType
+     *
+     * @return User
+     */
+    public function setVerifierType($verifierType)
+    {
+        $this->verifierType = $verifierType;
+
+        return $this;
+    }
+
+    /**
+     * Get verifierType
+     *
+     * @return boolean
+     */
+    public function getVerifierType()
+    {
+        return $this->verifierType;
+    }
 }

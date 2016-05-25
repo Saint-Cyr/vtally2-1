@@ -70,6 +70,5 @@ class UserTest extends WebTestCase
         $tokenTime = 0;
         $output = $user->isUserTokenValid($tokenTime);
         $this->assertNotTrue($output);
-       
     }
 }
