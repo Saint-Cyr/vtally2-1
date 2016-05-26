@@ -42,3 +42,9 @@ services:
     vtally.api_handler:
         class: VtallyBundle\Component\ApiHandler
         arguments: ["@doctrine.orm.entity_manager", "@security.encoder_factory", "@fos_user.user_provider.username", "@security.token_storage", "@service_container"]
+    
+    vtally.block_import_csv:
+        class: VtallyBundle\Component\ImportCSVHandler
+        arguments: ["vtally.block_upload", "@templating", "@service_container"]
+        tags:
+            - { name: sonata.block }

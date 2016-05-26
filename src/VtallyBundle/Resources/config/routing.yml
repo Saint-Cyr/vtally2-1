@@ -6,3 +6,7 @@ votes:
   type: rest
   resource:     "VtallyBundle:Api"
   prefix:  api
+
+vtally_importCSV:
+    path:  /admin/import/file
+    defaults: { _controller: VtallyBundle:Default:importCSV }

@@ -26,16 +26,19 @@ sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts: [admin]
+        vtally.block_import_csv: ~
 
 sonata_admin:
   title_logo: images/logo.png
   title: VTALLY2
   dashboard:
         blocks:
+            - { position: left, type: vtally.block_import_csv }
             - { position: left, type: sonata.admin.block.admin_list, settings: {groups: [Presidential]} }
             - { position: left, type: sonata.admin.block.admin_list, settings: {groups: [Default]} }
             - { position: right, type: sonata.admin.block.admin_list, settings: {groups: [Parliamentary]} }
             - { position: right, type: sonata.admin.block.admin_list, settings: {groups: [User / Security]} }
+            
   security:
       handler: sonata.admin.security.handler.role
             
@@ -71,7 +74,7 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    #serializer:      { enable_annotations: true }
+    serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
     default_locale:  "%locale%"
