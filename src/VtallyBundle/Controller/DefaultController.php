@@ -72,6 +72,7 @@ class DefaultController extends Controller
         try{
             
             $workflow->addWriter($doctrineWriter);
+            
             //treat the type separatly
             if(CSVTypes::getNameOfType($curType) == 'Polling Station'){
                 $repository = $em->getRepository('VtallyBundle:Constituency');
