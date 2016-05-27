@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\ConfigurationRoute;
 use Sensio\Bundle\FrameworkExtraBundle\ConfigurationTemplate;
 use Ddeboer\DataImport\ValueConverter\StringToObjectConverter;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\HttpFoundation\Request;
 use VtallyBundle\Component\CSVTypes;
 use Ddeboer\DataImport\Reader\CsvReader;
@@ -68,27 +69,33 @@ class DefaultController extends Controller
         //disable truncate
         $doctrineWriter->disableTruncate();
         
-        $workflow->addWriter($doctrineWriter);
-        $converter = new StringToObjectConverter($repository, 'name');
-        $workflow->addValueConverter('input_name', $converter);
-        $workflow->process();
-        exit;
-        
-        //loop over each row (one row is like: id;name;active;...)
-        foreach ($reader as $row){
-            var_dump($row['constituency']);exit;
-            $doctrineWriter->prepare()
-                       ->writeItem(array(
-                                        'name' => $row['name'],
-                                        'code' => $row['code'],
-                                        'constituency' => $row['constituency'],
-                                        ))
-                       ->finish();
+        try{
+            
+            $workflow->addWriter($doctrineWriter);
+            //treat the type separatly
+            if(CSVTypes::getNameOfType($curType) == 'Polling Station'){
+                $repository = $em->getRepository('VtallyBundle:Constituency');
+            }elseif(CSVTypes::getNameOfType($curType) == 'Constituency'){
+                $repository = $em->getRepository('VtallyBundle:Region');
+            }
+            
+            $converter = new StringToObjectConverter($repository, 'code');
+            $workflow->addValueConverter('constituency', $converter);
+            $workflow->process();
+            
+        }catch (UniqueConstraintViolationException $e){
+
+            $this->get('session')->getFlashBag()
+                 ->add('sonata_flash_error', 'Error: cannot import the CSV file because it contains one or many entry that allready '
+                         . 'exists in the Data Base');
+            return $this->redirect($this->generateUrl('sonata_admin_dashboard'));
         }
+
+        
         /** End @Saint-Cyr **/
 
         $this->get('session')->getFlashBag()
-             ->add('sonata_flash_info', CSVTypes::getNameOfType($curType)." CSV file upload work in progress...");
+             ->add('sonata_flash_success', CSVTypes::getNameOfType($curType)." CSV file uploaded successfully !");
             
         return $this->redirect($this->generateUrl('sonata_admin_dashboard'));
     }
