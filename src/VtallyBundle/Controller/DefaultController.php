@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 <?php
 
 namespace VtallyBundle\Controller;
@@ -103,4 +101,3 @@ class DefaultController extends Controller
         return $this->redirect($this->generateUrl('sonata_admin_dashboard'));
     }
 }
->>>>>>> dev-test
