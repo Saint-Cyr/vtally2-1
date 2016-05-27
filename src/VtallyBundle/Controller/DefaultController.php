@@ -48,7 +48,7 @@ class DefaultController extends Controller
         $filename=$dummyImport."/".$fname;
         @mkdir($dummyImport);
         @unlink($filename);
-
+        
         // move file to dummy filename
         $uploadedFile->move($dummyImport, $fname);            
 
