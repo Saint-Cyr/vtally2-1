@@ -67,6 +67,50 @@ class Constituency
         return $this->name;
     }
     
+    public function getWinner()
+    {
+        //return null if one Dependent or Independent candidate as been link to this consituency
+        if((count($this->getDependentCandidates())) != 0 || (count($this->getIndependentCandidates()) != 0)){
+            
+            foreach ($this->getDependentCandidates() as $depCandidate){
+                $tab[] = $depCandidate;
+            }
+
+            foreach ($this->getIndependentCandidates() as $indCandidate){
+                $tab[] = $indCandidate;
+            }
+
+            $candidates = array_merge($tab);
+
+            $winner = array('candidate' => null, 'voteCast' => null);
+
+            foreach ($candidates as $candidate){
+                if($winner['voteCast'] <= $candidate->getTotalVoteCast()){
+                    $winner['candidate'] = $candidate;
+                    $winner['voteCast'] = $candidate->getTotalVoteCast();
+                }
+            }
+
+            //If election is not yet started
+            $vote = false;
+
+            foreach ($candidates as $candidate){
+                if($candidate->getTotalVoteCast() != 0){
+                    $vote = true;
+                }
+            }
+
+            if($vote){
+                return $winner['candidate'];
+            }else{
+                //If election does not yet start (everybody vote cast is 0), the return null
+                return null;
+            }
+        }else{
+            return null;
+        }
+                
+    }
     
     /**
      * Get id
@@ -277,4 +321,15 @@ class Constituency
     {
         return $this->independentCandidates;
     }
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->pollingStations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->dependentCandidates = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->independentCandidates = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
 }

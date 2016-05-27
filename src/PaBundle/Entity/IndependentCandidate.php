@@ -98,6 +98,8 @@ class IndependentCandidate
     {
         if(!$this->getFirstName()){
             return 'New Independent Candidate';
+        }  else {
+            return $this->getFirstName();
         }
     }
 

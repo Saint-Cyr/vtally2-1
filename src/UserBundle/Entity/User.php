@@ -30,7 +30,21 @@ class User extends BaseUser
      * @ORM\Column(name="firstName", type="string", length=255)
      */
     private $firstName;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="verifierType", type="boolean", nullable=true)
+     */
+    private $verifierType;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="userToken", type="string", length=255, nullable=true)
+     */
+    private $userToken;
+    
     /**
      * @var string
      *
@@ -44,6 +58,12 @@ class User extends BaseUser
      * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="VtallyBundle\Entity\PollingStation", inversedBy="users")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $pollingStation;
 
     /**
      * @var string
@@ -59,6 +79,41 @@ class User extends BaseUser
      */
     private $address;
     
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tokenTime", type="datetime", length=255, nullable=true)
+     */
+    private $tokenTime;
+    
+    public function isUserTokenValid($configuredTime)
+    {
+        //Get the last minute
+        $lastMin = $this->getTokenTime()->format('i');
+        
+        //Get the current minute
+        $currentDate = new \DateTime("now");
+        $currentMin = $currentDate->format('i');
+        
+        //Calculate the lapsed minute base on the parameter
+        $lapsedMinute = $currentMin - $lastMin;
+        
+        if(($configuredTime >= $lapsedMinute)&&($currentDate->format('y') == $this->getTokenTime()->format('y'))
+                &&($currentDate->format('m') == $this->getTokenTime()->format('m')
+                &&($currentDate->format('H') == $this->getTokenTime()->format('H')))){
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public function refreshTokenTime()
+    {
+        //$this->setUserToken(rand(0, 999999));
+        $this->setTokenTime(new \DateTime("now"));
+    }
+    
     public function setType($type)
     {
         $this->type = $type;
@@ -69,10 +124,20 @@ class User extends BaseUser
         return $this->type;
     }
     
+    public function isFirstVerifier()
+    {
+        if($this->getRoles() === array('ROLE_FIRST_VERIFIER')){
+            return true;
+        }
+        
+        return false;
+    }
+    
     public function __construct() 
     {
         parent::__construct();
         $this->setCreatedAt(new \DateTime("now"));
+        $this->setTokenTime(new \DateTime("now"));
     }
 
 
@@ -205,5 +270,126 @@ class User extends BaseUser
     {
         return $this->address;
     }
-}
 
+    /**
+     * Set pollingStation
+     *
+     * @param \VtallyBundle\Entity\PollingStation $pollingStation
+     *
+     * @return User
+     */
+    public function setPollingStation(\VtallyBundle\Entity\PollingStation $pollingStation)
+    {
+        $this->pollingStation = $pollingStation;
+
+        return $this;
+    }
+
+    /**
+     * Get pollingStation
+     *
+     * @return \VtallyBundle\Entity\PollingStation
+     */
+    public function getPollingStation()
+    {
+        return $this->pollingStation;
+    }
+
+    /**
+     * Set userToken
+     *
+     * @param string $userToken
+     *
+     * @return User
+     */
+    public function setUserToken($userToken)
+    {
+        $this->userToken = $userToken;
+
+        return $this;
+    }
+    
+    /**
+     * @return string token to identify a session
+     */
+    public function generateUserToken()
+    {
+        /**** to be removed in production **********/
+        if($this->getVerifierType()){
+            $this->setUserToken('ABCD1');
+        }else{
+            $this->setUserToken('ABCD2');
+        }
+        return $this->getUserToken();
+        /**** to be removed in production **********/
+        
+        $p = new OAuthProvider();
+
+        $t = $p->generateToken(4);
+        //$token = rand(1, 99999);
+        //Update 
+        $this->setUserToken($this->getId().$token.$this->getLastName());
+        //Issue it.
+        return $this->getUserToken();
+    }
+
+    /**
+     * Get userToken
+     *
+     * @return string
+     */
+    public function getUserToken()
+    {
+        return $this->userToken;
+    }
+    
+    
+
+    /**
+     * Set tokenTime
+     *
+     * @param \DateTime $tokenTime
+     *
+     * @return User
+     */
+    public function setTokenTime($tokenTime)
+    {
+        $this->tokenTime = $tokenTime;
+
+        return $this;
+    }
+
+    /**
+     * Get tokenTime
+     *
+     * @return \DateTime
+     */
+    public function getTokenTime()
+    {
+        return $this->tokenTime;
+    }
+
+    /**
+     * Set verifierType
+     *
+     * @param boolean $verifierType
+     *
+     * @return User
+     */
+    public function setVerifierType($verifierType)
+    {
+        $this->verifierType = $verifierType;
+
+        return $this;
+    }
+
+    /**
+     * Get verifierType
+     *
+     * @return boolean
+     */
+    public function getVerifierType()
+    {
+        return $this->verifierType;
+    }
+}

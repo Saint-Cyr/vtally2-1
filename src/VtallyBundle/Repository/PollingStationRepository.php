@@ -16,6 +16,7 @@ class PollingStationRepository extends \Doctrine\ORM\EntityRepository
         $qb->select('p')
            ->where('p.active = true');
            //->setParameter($var, true);
+        $qb->setMaxResults();
         return $qb;
     }
 }

@@ -27,6 +27,13 @@ class Setting
      * @ORM\Column(name="type", type="string", length=255)
      */
     private $type;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tokenTime", type="integer", length=255)
+     */
+    private $tokenTime;
 
     /**
      * Get id

@@ -18,6 +18,8 @@ class PollingStationAdmin extends Admin
         $datagridMapper
             ->add('name')
             ->add('code')
+            ->add('presidential')
+            ->add('active')
             ->add('district')
             ->add('constituency')
         ;
@@ -32,15 +34,20 @@ class PollingStationAdmin extends Admin
             ->add('id')
             ->add('name')
             ->add('code')
-            ->add('district')
-            ->add('prVoteCast')
             ->add('constituency')
-            ->add('active')
+            ->add('active', null, array('editable' => true))
+            ->add('presidential', null, array('label' => 'Pr. Sent'))
+            ->add('parliamentary', null, array('label' => 'Pa. Sent'))
+            ->add('presidentialPinkSheet', null, array('label' => 'Pr. Pink'))
+            ->add('parliamentaryPinkSheet', null, array('label' => 'Pa. Pink'))
+            ->add('presidentialEdited', null, array('label' => 'Pr. Edited'))
+            ->add('parliamentaryEdited', null, array('label' => 'Pa. Edited'))
+            ->add('presidentialPinkSheetEdited', null, array('label' => 'Pr. Edited pink'))
+            ->add('parliamentaryPinkSheetEdited', null, array('label' => 'Pa. Edited pink'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
                     'edit' => array(),
-                    'delete' => array(),
                 )
             ))
         ;
@@ -57,7 +64,13 @@ class PollingStationAdmin extends Admin
             ->add('district')
             ->add('constituency')
             ->add('active')
-            
+            ->add('presidential')
+            ->add('parliamentary')
+            ->add('presidentialPinkSheet')
+            ->add('parliamentaryPinkSheet')
+            ->add('parliamentaryEdited')
+            ->add('parliamentaryPinkSheetEdited')
+            ->add('users')
         ;
     }
 
@@ -70,7 +83,9 @@ class PollingStationAdmin extends Admin
             ->add('id')
             ->add('name')
             ->add('code')
+            ->add('users')
             ->add('district')
+            ->add('prVoteCastsView')
             ->add('constituency')
         ;
     }

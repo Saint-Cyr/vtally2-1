@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -40,7 +40,7 @@ class BasePickerTypeTest extends \PHPUnit_Framework_TestCase
 {
     public function testFinishView()
     {
-        $type = new BasePickerTest(new MomentFormatConverter());
+        $type = new BasePickerTest(new MomentFormatConverter(), $this->getMock('Symfony\Component\Translation\TranslatorInterface'));
 
         $view = new FormView();
         $form = new Form($this->getMock('Symfony\Component\Form\FormConfigInterface'));
@@ -56,6 +56,11 @@ class BasePickerTypeTest extends \PHPUnit_Framework_TestCase
             $this->assertFalse(strpos($dpKey, 'dp_'));
         }
 
-        $this->assertEquals('text', $view->vars['type']);
+        $this->assertSame('text', $view->vars['type']);
+    }
+
+    public function testLegacyConstructor()
+    {
+        new BasePickerTest(new MomentFormatConverter());
     }
 }

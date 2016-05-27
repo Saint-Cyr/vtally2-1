@@ -1,21 +1,21 @@
 pa_national:
-    path: /pa/national
+    path: pa/national
     defaults: { _controller: PaBundle:Parliamentary:national }
 
 pa_region:
-    path: /pa/region/{id}
+    path:     pa/region/{id}
     defaults: { _controller: PaBundle:Parliamentary:region }
     requirements:
         id: \d+
 
 pa_constituency:
-    path: /pa/constituency/{id}
+    path:     pa/constituency/{id}
     defaults: { _controller: PaBundle:Parliamentary:constituency }
     requirements:
         id: \d+
-        
+
 pa_polling_station:
-    path: /pa/polling-station/{id}
+    path:     pa/polling-station/{id}
     defaults: { _controller: PaBundle:Parliamentary:pollingStation }
     requirements:
         id: \d+

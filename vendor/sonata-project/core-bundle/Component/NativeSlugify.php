@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Sonata package.
+ * This file is part of the Sonata Project package.
  *
  * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
@@ -10,6 +10,8 @@
  */
 
 namespace Sonata\CoreBundle\Component;
+
+@trigger_error('The '.__NAMESPACE__.'\NativeSlugify class is deprecated since version 2.3 and will be removed in 3.0.', E_USER_DEPRECATED);
 
 /**
  * Do not use this class, it is only here to be BC.

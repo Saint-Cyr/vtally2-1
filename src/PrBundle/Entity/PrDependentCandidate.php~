@@ -50,11 +50,6 @@ class PrDependentCandidate
     private $candidacyNumber;
     
     /**
-     * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrVoteCast", mappedBy="prDependentCandidate", cascade={"remove"})
-     */
-    private $prVoteCasts;
-    
-    /**
      * @ORM\OneToOne(targetEntity="PrBundle\Entity\PrParty", inversedBy="prDependentCandidate")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -165,5 +160,28 @@ class PrDependentCandidate
     {
         return $this->candidacyNumber;
     }
-}
 
+    /**
+     * Set prParty
+     *
+     * @param \PrBundle\Entity\PrParty $prParty
+     *
+     * @return PrDependentCandidate
+     */
+    public function setPrParty(\PrBundle\Entity\PrParty $prParty)
+    {
+        $this->prParty = $prParty;
+
+        return $this;
+    }
+
+    /**
+     * Get prParty
+     *
+     * @return \PrBundle\Entity\PrParty
+     */
+    public function getPrParty()
+    {
+        return $this->prParty;
+    }
+}

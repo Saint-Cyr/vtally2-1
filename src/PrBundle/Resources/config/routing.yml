@@ -1,1 +1,23 @@
 
+
+national:
+    path:     pr/national
+    defaults: { _controller: PrBundle:Presidential:national }
+
+region:
+    path:     pr/region/{id}
+    defaults: { _controller: PrBundle:Presidential:region }
+    requirements:
+        id: \d+
+
+constituency:
+    path:     pr/constituency/{id}
+    defaults: { _controller: PrBundle:Presidential:constituency }
+    requirements:
+        id: \d+
+
+polling_station:
+    path:     pr/polling-station/{id}
+    defaults: { _controller: PrBundle:Presidential:pollingStation }
+    requirements:
+        id: \d+

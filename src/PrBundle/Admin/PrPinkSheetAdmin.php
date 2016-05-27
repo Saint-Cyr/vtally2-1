@@ -31,6 +31,8 @@ class PrPinkSheetAdmin extends Admin
             ->add('id')
             ->add('name')
             ->add('edited')
+            ->add('pollingStation')
+            
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -50,6 +52,7 @@ class PrPinkSheetAdmin extends Admin
             ->add('id')
             ->add('name')
             ->add('edited')
+            
         ;
     }
 

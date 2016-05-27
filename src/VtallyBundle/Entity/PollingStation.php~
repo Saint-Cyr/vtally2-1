@@ -3,6 +3,8 @@
 namespace VtallyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PaBundle\Entity\IndependentCandidate;
+use PaBundle\Entity\DependentCandidate;
 
 /**
  * PollingStation
@@ -34,6 +36,62 @@ class PollingStation
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="presidential", type="boolean")
+     */
+    private $presidential;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="parliamentary", type="boolean")
+     */
+    private $parliamentary;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="parliamentaryEdited", type="boolean")
+     */
+    private $parliamentaryEdited;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="presidentialPinkSheet", type="boolean")
+     */
+    private $presidentialPinkSheet;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="parliamentaryPinkSheet", type="boolean")
+     */
+    private $parliamentaryPinkSheet;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="parliamentaryPinkSheetEdited", type="boolean")
+     */
+    private $parliamentaryPinkSheetEdited;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="presidentialPinkSheetEdited", type="boolean")
+     */
+    private $presidentialPinkSheetEdited;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="presidentialEdited", type="boolean", nullable=true)
+     */
+    private $presidentialEdited;
 
     /**
      * @var string
@@ -66,14 +124,29 @@ class PollingStation
     private $paNotifications;
     
     /**
-     * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrVoteCast", mappedBy="pollingStation", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrVoteCast", mappedBy="pollingStation", cascade={"persist", "remove"})
      */
     private $prVoteCasts;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="UserBundle\Entity\User", mappedBy="pollingStation", cascade={"remove", "persist"})
+     */
+    private $users;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrEditedVoteCast", mappedBy="pollingStation", cascade={"remove"})
+     */
+    private $prEditedVoteCasts;
     
     /**
      * @ORM\OneToMany(targetEntity="PaBundle\Entity\PaVoteCast", mappedBy="pollingStation", cascade={"remove"})
      */
     private $paVoteCasts;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="PaBundle\Entity\PaEditedVoteCast", mappedBy="pollingStation", cascade={"remove"})
+     */
+    private $paEditedVoteCasts;
     
     /**
      * @ORM\OneToOne(targetEntity="PrBundle\Entity\PrPinkSheet", inversedBy="pollingStation")
@@ -238,6 +311,97 @@ class PollingStation
     {
         return $this->prVoteCasts;
     }
+    
+    /**
+     * @return array('partyName' => 'voteCastValue') For API purpose
+     * in order to check whether a the votes data structure sent by
+     * the second verifier match this one or not
+     */
+    public function getPresidentialVoteCastForAPI()
+    {
+        //Prepare the Data Structure
+        $dataStructure = array();
+        //Build the Data structure
+        foreach ($this->getPrVoteCasts() as $vote){
+            $dataStructure[$vote->getPrParty()->getName()] = $vote->getFigureValue();
+        }
+        
+        return $dataStructure;
+    }
+    
+    /**
+     * @return boolean return true if votes matched
+     * and false else
+     */
+    public function isPresidentialVoteCastsMatch(array $prVotes)
+    {
+        if($prVotes == $this->getPresidentialVoteCastForAPI()){
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * @param IndependentCandidate|DependentCandidate $candidate
+     * @return PaVoteCast regardless of the type of the parameter (Ind or Dep candidate)
+     */
+    public function getOneParliamentaryVoteCast($candidate)
+    {
+        if($candidate instanceof IndependentCandidate){
+            //independent candidate case
+            //collect all the voteCasts
+            foreach ($this->getPaVoteCasts() as $vote){
+                if($candidate === $vote->getIndependentCandidate()){
+                    return $vote;
+                }
+            }
+            
+            
+        }elseif($candidate instanceof DependentCandidate){
+            //DependentCandidate
+            //coloct all the voteCasts
+            foreach ($this->getPaVoteCasts() as $vote){
+                if($candidate === $vote->getDependentCandidate()){
+                    return $vote;
+                }
+            }
+            
+        }
+        
+        return array('parameter must be instance of IndependentCandidate or DependentCandidate');
+    }
+    
+    /**
+     * @return an instance of VtallyBundle\Entity\PrVoteCast if in it the given parameter does not match 
+     * it related item in the DB. If there is not change, return false
+     * @param array in the format array($partyName => $voteValue)
+     */
+    public function isOnePresidentialVoteCastChanged(array $inputData)
+    {
+        foreach ($this->getPrVoteCasts() as $prVoteCast){
+            foreach ($inputData as $item => $v){
+                //When the given party name and it related vote cast is different from the one in the DB
+                if(($prVoteCast->getPrParty()->getName() == $item)&&($prVoteCast->getFigureValue() != $v)){
+                    return $prVoteCast;
+                }
+            }
+            
+        }
+        
+        return false;
+    }
+    
+    public function setOnePresidentialVoteCast(array $onePrVoteCast)
+    {
+        foreach ($this->getPrVoteCasts() as $prVoteCast){
+            foreach ($onePrVoteCast as $partyName => $voteValue){
+                if($prVoteCast->getPrParty()->getName() == $partyName)
+                    $prVoteCast->setFigureValue ($voteValue);
+            }
+        }
+    }
 
     /**
      * Add paVoteCast
@@ -281,6 +445,15 @@ class PollingStation
         $this->prNotifications = new \Doctrine\Common\Collections\ArrayCollection();
         $this->prVoteCasts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->paVoteCasts = new \Doctrine\Common\Collections\ArrayCollection();
+        //Initialization
+        $this->setActive(false);
+        $this->setPresidential(false);
+        $this->setParliamentary(false);
+        $this->setPresidentialEdited(false);
+        $this->setParliamentaryEdited(false);
+        $this->setPresidentialPinkSheet(false);
+        
+        $this->setParliamentaryPinkSheetEdited(false);
     }
 
     /**
@@ -421,5 +594,359 @@ class PollingStation
     public function getPaPinkSheet()
     {
         return $this->paPinkSheet;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return PollingStation
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Add prEditedVoteCast
+     *
+     * @param \PrBundle\Entity\PrEditedVoteCast $prEditedVoteCast
+     *
+     * @return PollingStation
+     */
+    public function addPrEditedVoteCast(\PrBundle\Entity\PrEditedVoteCast $prEditedVoteCast)
+    {
+        $this->prEditedVoteCasts[] = $prEditedVoteCast;
+
+        return $this;
+    }
+
+    /**
+     * Remove prEditedVoteCast
+     *
+     * @param \PrBundle\Entity\PrEditedVoteCast $prEditedVoteCast
+     */
+    public function removePrEditedVoteCast(\PrBundle\Entity\PrEditedVoteCast $prEditedVoteCast)
+    {
+        $this->prEditedVoteCasts->removeElement($prEditedVoteCast);
+    }
+
+    /**
+     * Get prEditedVoteCasts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrEditedVoteCasts()
+    {
+        return $this->prEditedVoteCasts;
+    }
+
+    /**
+     * Add paEditedVoteCast
+     *
+     * @param \PaBundle\Entity\PaEditedVoteCast $paEditedVoteCast
+     *
+     * @return PollingStation
+     */
+    public function addPaEditedVoteCast(\PaBundle\Entity\PaEditedVoteCast $paEditedVoteCast)
+    {
+        $this->paEditedVoteCasts[] = $paEditedVoteCast;
+
+        return $this;
+    }
+
+    /**
+     * Remove paEditedVoteCast
+     *
+     * @param \PaBundle\Entity\PaEditedVoteCast $paEditedVoteCast
+     */
+    public function removePaEditedVoteCast(\PaBundle\Entity\PaEditedVoteCast $paEditedVoteCast)
+    {
+        $this->paEditedVoteCasts->removeElement($paEditedVoteCast);
+    }
+
+    /**
+     * Get paEditedVoteCasts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPaEditedVoteCasts()
+    {
+        return $this->paEditedVoteCasts;
+    }
+
+    /**
+     * Add user
+     *
+     * @param \UserBundle\Entity\User $user
+     *
+     * @return PollingStation
+     */
+    public function addUser(\UserBundle\Entity\User $user)
+    {
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove user
+     *
+     * @param \UserBundle\Entity\User $user
+     */
+    public function removeUser(\UserBundle\Entity\User $user)
+    {
+        $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set presidential
+     *
+     * @param boolean $presidential
+     *
+     * @return PollingStation
+     */
+    public function setPresidential($presidential)
+    {
+        $this->presidential = $presidential;
+
+        return $this;
+    }
+
+    /**
+     * Get presidential
+     *
+     * @return boolean
+     */
+    public function isPresidential()
+    {
+        return $this->presidential;
+    }
+
+    /**
+     * Get presidential
+     *
+     * @return boolean
+     */
+    public function getPresidential()
+    {
+        return $this->presidential;
+    }
+
+    /**
+     * Set presidentialEdited
+     *
+     * @param boolean $presidentialEdited
+     *
+     * @return PollingStation
+     */
+    public function setPresidentialEdited($presidentialEdited)
+    {
+        $this->presidentialEdited = $presidentialEdited;
+
+        return $this;
+    }
+
+    /**
+     * Get presidentialEdited
+     *
+     * @return boolean
+     */
+    public function getPresidentialEdited()
+    {
+        return $this->presidentialEdited;
+    }
+
+    /**
+     * Set presidentialPinkSheet
+     *
+     * @param boolean $presidentialPinkSheet
+     *
+     * @return PollingStation
+     */
+    public function setPresidentialPinkSheet($presidentialPinkSheet)
+    {
+        $this->presidentialPinkSheet = $presidentialPinkSheet;
+
+        return $this;
+    }
+
+    /**
+     * Get presidentialPinkSheet
+     *
+     * @return boolean
+     */
+    public function isPresidentialPinkSheet()
+    {
+        return $this->presidentialPinkSheet;
+    }
+
+    /**
+     * Set parliamentary
+     *
+     * @param boolean $parliamentary
+     *
+     * @return PollingStation
+     */
+    public function setParliamentary($parliamentary)
+    {
+        $this->parliamentary = $parliamentary;
+
+        return $this;
+    }
+
+    /**
+     * Get parliamentary
+     *
+     * @return boolean
+     */
+    public function isParliamentary()
+    {
+        return $this->parliamentary;
+    }
+
+    /**
+     * Get presidentialPinkSheet
+     *
+     * @return boolean
+     */
+    public function getPresidentialPinkSheet()
+    {
+        return $this->presidentialPinkSheet;
+    }
+
+    /**
+     * Get parliamentary
+     *
+     * @return boolean
+     */
+    public function getParliamentary()
+    {
+        return $this->parliamentary;
+    }
+
+    /**
+     * Set parliamentaryEdited
+     *
+     * @param boolean $parliamentaryEdited
+     *
+     * @return PollingStation
+     */
+    public function setParliamentaryEdited($parliamentaryEdited)
+    {
+        $this->parliamentaryEdited = $parliamentaryEdited;
+
+        return $this;
+    }
+
+    /**
+     * Get parliamentaryEdited
+     *
+     * @return boolean
+     */
+    public function isParliamentaryEdited()
+    {
+        return $this->parliamentaryEdited;
+    }
+
+    /**
+     * Get parliamentaryEdited
+     *
+     * @return boolean
+     */
+    public function getParliamentaryEdited()
+    {
+        return $this->parliamentaryEdited;
+    }
+
+    /**
+     * Set parliamentaryPinkSheet
+     *
+     * @param boolean $parliamentaryPinkSheet
+     *
+     * @return PollingStation
+     */
+    public function setParliamentaryPinkSheet($parliamentaryPinkSheet)
+    {
+        $this->parliamentaryPinkSheet = $parliamentaryPinkSheet;
+
+        return $this;
+    }
+
+    /**
+     * Get parliamentaryPinkSheet
+     *
+     * @return boolean
+     */
+    public function isParliamentaryPinkSheet()
+    {
+        return $this->parliamentaryPinkSheet;
+    }
+
+    /**
+     * Get parliamentaryPinkSheet
+     *
+     * @return boolean
+     */
+    public function getParliamentaryPinkSheet()
+    {
+        return $this->parliamentaryPinkSheet;
+    }
+
+    /**
+     * Set parliamentaryPinkSheetEdited
+     *
+     * @param boolean $parliamentaryPinkSheetEdited
+     *
+     * @return PollingStation
+     */
+    public function setParliamentaryPinkSheetEdited($parliamentaryPinkSheetEdited)
+    {
+        $this->parliamentaryPinkSheetEdited = $parliamentaryPinkSheetEdited;
+
+        return $this;
+    }
+
+    /**
+     * Get parliamentaryPinkSheetEdited
+     *
+     * @return boolean
+     */
+    public function isParliamentaryPinkSheetEdited()
+    {
+        return $this->parliamentaryPinkSheetEdited;
     }
 }

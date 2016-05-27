@@ -17,7 +17,6 @@ class PrPartyAdmin extends Admin
     {
         $datagridMapper
             ->add('name')
-            ->add('candidate')
         ;
     }
 
@@ -29,7 +28,6 @@ class PrPartyAdmin extends Admin
         $listMapper
             ->add('id')
             ->add('name')
-            ->add('candidate')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -47,7 +45,7 @@ class PrPartyAdmin extends Admin
     {
         $formMapper
             ->add('name')
-            ->add('candidate')
+            
         ;
     }
 
@@ -59,7 +57,7 @@ class PrPartyAdmin extends Admin
         $showMapper
             ->add('id')
             ->add('name')
-            ->add('candidate')
+            ->add('prVoteCasts')
         ;
     }
 }
