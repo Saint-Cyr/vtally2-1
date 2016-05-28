@@ -32,6 +32,7 @@ class ConstituencyAdmin extends Admin
             ->add('id')
             ->add('name')
             ->add('code')
+            ->add('region')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),

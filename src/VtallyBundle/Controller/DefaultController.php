@@ -76,12 +76,16 @@ class DefaultController extends Controller
             //treat the type separatly
             if(CSVTypes::getNameOfType($curType) == 'Polling Station'){
                 $repository = $em->getRepository('VtallyBundle:Constituency');
+                $property = 'constituency';
+                $route = 'admin_vtally_pollingstation_list';
             }elseif(CSVTypes::getNameOfType($curType) == 'Constituency'){
                 $repository = $em->getRepository('VtallyBundle:Region');
+                $property = 'region';
+                $route = 'admin_vtally_constituency_list';
             }
             
             $converter = new StringToObjectConverter($repository, 'code');
-            $workflow->addValueConverter('constituency', $converter);
+            $workflow->addValueConverter($property, $converter);
             $workflow->process();
             
         }catch (UniqueConstraintViolationException $e){
@@ -98,6 +102,6 @@ class DefaultController extends Controller
         $this->get('session')->getFlashBag()
              ->add('sonata_flash_success', CSVTypes::getNameOfType($curType)." CSV file uploaded successfully !");
             
-        return $this->redirect($this->generateUrl('sonata_admin_dashboard'));
+        return $this->redirect($this->generateUrl($route));
     }
 }

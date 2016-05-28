@@ -20,6 +20,13 @@ class Region
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255)
+     */
+    private $code;
 
     /**
      * @var string
@@ -111,5 +118,29 @@ class Region
     public function getConstituencies()
     {
         return $this->constituencies;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return Region
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 }

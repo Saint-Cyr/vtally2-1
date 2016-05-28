@@ -1029,12 +1029,16 @@ PrBundle\Entity\PrVoteCast:
 VtallyBundle\Entity\Region:
     region1:
         name: Greater Accra
+        code: R1
     region2:
         name: Ashanty Region
+        code: R2
     region3:
         name: Brong Ahafo
+        code: R3
     region4:
         name: Volta Region
+        code: R4
     
 VtallyBundle\Entity\CollationCenter:
     collation_center_{1..10}:
