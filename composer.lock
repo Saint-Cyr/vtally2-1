@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0381624820e422797581c8b39cd8fdfb",
-    "content-hash": "54d135f180ab3701d6555a9184f8e50b",
+    "hash": "408a9f400865ed4d5f0c4cf3bba09158",
+    "content-hash": "8703ff4df7bf9919af3d1e02c367f54f",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -1466,6 +1466,52 @@
                 "sql"
             ],
             "time": "2014-01-12 16:20:24"
+        },
+        {
+            "name": "kendrick/symfony-debug-toolbar-git",
+            "version": "1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kendrick-k/symfony-debug-toolbar-git.git",
+                "reference": "9ceddba23c895f36a897acc6dd52a525ed37c397"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kendrick-k/symfony-debug-toolbar-git/zipball/9ceddba23c895f36a897acc6dd52a525ed37c397",
+                "reference": "9ceddba23c895f36a897acc6dd52a525ed37c397",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": ">=2.3",
+                "symfony/twig-bundle": ">=2.0",
+                "twig/twig": ">=1.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.*"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Kendrick\\SymfonyDebugToolbarGit\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kendrick"
+                }
+            ],
+            "description": "Git information into Symfony Debug Toolbar",
+            "homepage": "https://github.com/kendrick-k/symfony-debug-toolbar-git",
+            "keywords": [
+                "debug",
+                "git",
+                "symfony"
+            ],
+            "time": "2016-02-12 16:57:16"
         },
         {
             "name": "knplabs/knp-menu",

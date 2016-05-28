@@ -35,7 +35,8 @@
         "ddeboer/data-import-bundle": "~0.1",
         "hautelook/alice-bundle": "1.2.2",
         "knplabs/knp-time-bundle": "dev-master",
-        "doctrine/doctrine-migrations-bundle": "^1.0"
+        "doctrine/doctrine-migrations-bundle": "^1.0",
+        "kendrick/symfony-debug-toolbar-git": "1.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

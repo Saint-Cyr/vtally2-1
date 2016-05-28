@@ -122,3 +122,6 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+symfony_debug_toolbar_git:
+    repository_commit_url: ""
