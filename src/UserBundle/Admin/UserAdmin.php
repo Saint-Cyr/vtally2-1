@@ -88,31 +88,23 @@ class UserAdmin extends Admin
                     'first_options'  => array('label' => 'Password'),
                     'second_options' => array('label' => 'Repeat Password'),
                 ))
-            ->add('locked')
+                
             ->add('firstName')
             ->add('lastName')
-            ->add('image')
-            ->add('userToken')
             ->add('address');
+        
         if($this->isGranted('ROLE_ADMIN')){
-            $formMapper->add('pollingStation');
+            $formMapper->add('pollingStation', 'sonata_type_model_autocomplete', 
+                  array('property' => 'name', 'to_string_callback' => function($entity, $property){return $entity->getName();}));
+            
         }
         
         if ($this->isGranted('EDIT')) {
             $formMapper
-                ->add('enabled', 'checkbox', array(
-                    'label' => 'Account Enabled',
-                    'required' => false
-                    ))
-                ->add('locked', 'checkbox', array(
-                    'label' => 'Account Locked',
-                    'required' => false
-                    ))
                 ->add('type', 'choice', array('choices' => $typeContext,
                                               'expanded' => true))
             ;
         }
-        ;
     }
 
     /**
