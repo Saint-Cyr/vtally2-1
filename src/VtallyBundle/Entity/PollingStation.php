@@ -5,6 +5,7 @@ namespace VtallyBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use PaBundle\Entity\IndependentCandidate;
 use PaBundle\Entity\DependentCandidate;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * PollingStation
@@ -169,6 +170,18 @@ class PollingStation
     public function __toString() 
     {
         return $this->name;
+    }
+    
+    /**
+     * @Assert\IsTrue(message = "Polling Station inactif or it allready has 2 verifiers")
+     */
+    public function isVerifierValid()
+    {
+       if((count($this->getUsers()) < 2) && ($this->isActive())){
+           return true;
+       }
+       
+       return false;
     }
 
     /**

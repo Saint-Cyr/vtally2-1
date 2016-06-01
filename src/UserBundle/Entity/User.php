@@ -4,6 +4,7 @@ namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -28,6 +29,12 @@ class User extends BaseUser
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=255)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $firstName;
     
@@ -49,6 +56,12 @@ class User extends BaseUser
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=255, nullable=true)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "The last name must be at least {{ limit }} characters long",
+     *      maxMessage = "The last name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $lastName;
 
@@ -60,6 +73,7 @@ class User extends BaseUser
     private $createdAt;
     
     /**
+     * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="VtallyBundle\Entity\PollingStation", inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
      */
@@ -138,6 +152,18 @@ class User extends BaseUser
         parent::__construct();
         $this->setCreatedAt(new \DateTime("now"));
         $this->setTokenTime(new \DateTime("now"));
+    }
+    
+    /**
+     * @Assert\IsTrue(message = "A verifier has to be linked to a polling station")
+     */
+    public function isPollingStationValid()
+    {
+        if(!$this->getPollingStation() && ($this->getType() == 'verifier1' || $this->getType() == 'verifier2')){
+            return false;
+        }
+       
+        return true;
     }
 
 
