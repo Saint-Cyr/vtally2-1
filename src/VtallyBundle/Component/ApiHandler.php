@@ -30,15 +30,17 @@ class ApiHandler
     private $manager;
     private $security;
     private $container;
+    private $notificationHandler;
 
 
-    public function __construct($em, $factory, $user_provider, $securityToken, $container) 
+    public function __construct($em, $factory, $user_provider, $securityToken, $container, $notificationHandler) 
     {
         $this->em = $em;
         $this->factory = $factory;
         $this->user_provider = $user_provider;
         $this->security = $securityToken;
         $this->container = $container;
+        $this->notificationHandler = $notificationHandler;
     }
     
     public function login($inputData)
@@ -75,6 +77,7 @@ class ApiHandler
         if(!$user){
             return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB'), 404);
         }
+                
         //Get the pollingStation related to the user
         $pollingStation = $user->getPollingStation();
         //Make sure $pollingStation exist
@@ -90,6 +93,14 @@ class ApiHandler
             $edited = false;
             
             $votes = $inputData['pr_votes'];
+            //prepare notification process
+            $notificationHandler = $this->notificationHandler;
+            //get the total of income voters based on the vote cast values
+            $total = 0;
+            foreach ($votes as $p => $v){
+                $total = $total + $v;
+            }
+        
             //Process each one of the votes item
             if(!$pollingStation->isPresidentialVoteCastsMatch($votes)){
                 
@@ -120,11 +131,22 @@ class ApiHandler
                     }
                 }
                 
+                //process mappingVote & over-voting notification
+                if($total == $pollingStation->getVoterNumber()){
+                    //Process Matching vote
+                    $notificationHandler->processMismatchVote($total, $user);
+                }elseif ($total > $pollingStation->getVoterNumber()) {
+                    //Process over-voting notification
+                    $notificationHandler->processOverVoting($total, $user);
+                }
+                
                 //In the case where there is a change, then set the apropriate pollingStation property true
                 if($edited){
+                    //process mismatch notification
+                    $notificationHandler->processMisMatchVote($total, $user);
+                    $pollingStation->setPresidentialEdited(true);
                     //make change in DB.
                     $this->em->flush();
-                    $pollingStation->setPresidentialEdited(true);
                     return View::create(array('info' => 'presidential vote cast edited.', 'verifier_token' => $user->getVerifierToken()), 200);
                 }
             }

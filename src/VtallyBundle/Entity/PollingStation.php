@@ -100,6 +100,13 @@ class PollingStation
      * @ORM\Column(name="code", type="string", length=255, unique=true)
      */
     private $code;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="voterNumber", type="integer", length=255, unique=false)
+     */
+    private $voterNumber;
 
     /**
      * @var string
@@ -996,5 +1003,39 @@ class PollingStation
     public function isPresidentialPinkSheetEdited()
     {
         return $this->presidentialPinkSheetEdited;
+    }
+
+    /**
+     * Get presidentialPinkSheetEdited
+     *
+     * @return boolean
+     */
+    public function getPresidentialPinkSheetEdited()
+    {
+        return $this->presidentialPinkSheetEdited;
+    }
+
+    /**
+     * Set voterNumber
+     *
+     * @param integer $voterNumber
+     *
+     * @return PollingStation
+     */
+    public function setVoterNumber($voterNumber)
+    {
+        $this->voterNumber = $voterNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get voterNumber
+     *
+     * @return integer
+     */
+    public function getVoterNumber()
+    {
+        return $this->voterNumber;
     }
 }
