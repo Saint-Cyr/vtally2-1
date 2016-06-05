@@ -202,4 +202,28 @@ class PollingStationTest extends WebTestCase
         $this->assertEquals($independateCandidate->getFirstName(), 'Olga');
         $this->assertEquals($out->getFigureValue(), 721);
     }
+    
+    public function testGetFirstVerifier()
+    {
+        //Get the first & secondVerifier from fixture (DB)
+        $firstVerifier = $this->em->getRepository('UserBundle:User')->find(5);
+        $secondVerifier = $this->em->getRepository('UserBundle:User')->find(6);
+        //Get the polling Station in order to compare its frist & second verifier to the above ones
+        $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+        $_firstVerifier = $pollingStation->getFirstVerifier();
+        
+        $this->assertEquals($firstVerifier, $pollingStation->getFirstVerifier());
+        $this->assertEquals($_firstVerifier->getFirstName(), 'VERIFIER 1');
+    }
+    
+    public function testGetSecondVerifier()
+    {
+        //Get the 2nd verifier from fixture (DB)
+        $secondVerifier = $this->em->getRepository('UserBundle:User')->find(6);
+        //Get the polling Station in order to compare its frist & second verifier to the above ones
+        $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+        $_secondVerifier = $pollingStation->getSecondVerifier();
+        //$this->assertEquals($secondVerifier, $pollingStation->getSecondVerifier());
+        $this->assertEquals($_secondVerifier->getFirstName(), 'VERIFIER 2');
+    }
 }
