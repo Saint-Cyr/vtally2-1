@@ -190,6 +190,35 @@ class PollingStation
        
        return false;
     }
+    
+    /**
+     * 
+     * @return type UserBundle:User
+     */
+    public function getFirstVerifier()
+    {
+        //Get all the linked users (1st & 2nd verifier)
+        $users = $this->getUsers();
+        foreach ($users as $user){
+            if($user->getVerifierType()){
+                return $user;
+            }
+        }
+    }
+    
+    /**
+     * @return UserBundle:User Description
+     */
+    public function getSecondVerifier()
+    {
+        //Get all the linked users (1st & 2nd verifier)
+        $users = $this->getUsers();
+        foreach ($users as $user){
+            if(!$user->getVerifierType()){
+                return $user;
+            }
+        }
+    }
 
     /**
      * Get id
