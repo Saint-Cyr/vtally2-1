@@ -52,3 +52,9 @@ services:
         arguments: ["vtally.block_upload", "@templating", "@service_container"]
         tags:
             - { name: sonata.block }
+
+    vtally.admin.notification:
+        class: VtallyBundle\Admin\NotificationAdmin
+        arguments: [~, VtallyBundle\Entity\Notification, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Default, label: Notification }

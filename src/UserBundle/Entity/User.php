@@ -55,6 +55,13 @@ class User extends BaseUser
     /**
      * @var string
      *
+     * @ORM\Column(name="phoneNumber", type="string", length=255, nullable=true)
+     */
+    private $phoneNumber;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="lastName", type="string", length=255, nullable=true)
      * @Assert\Length(
      *      min = 2,
@@ -417,5 +424,29 @@ class User extends BaseUser
     public function getVerifierType()
     {
         return $this->verifierType;
+    }
+
+    /**
+     * Set phoneNumber
+     *
+     * @param string $phoneNumber
+     *
+     * @return User
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get phoneNumber
+     *
+     * @return string
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
     }
 }

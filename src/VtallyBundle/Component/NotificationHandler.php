@@ -10,7 +10,9 @@
 namespace VtallyBundle\Component; 
 use PrBundle\Entity\PrParty;
 use PrBundle\Entity\PrPinkSheet;
+use UserBundle\Entity\User;
 use PaBundle\Entity\PaPinkSheet;
+use VtallyBundle\Entity\Notification;
 use PrBundle\Entity\PrVoteCast;
 use FOS\RestBundle\View\View;
 use PaBundle\Entity\PaVoteCast;
@@ -38,18 +40,50 @@ class NotificationHandler
         $this->user_provider = $user_provider;
     }
     
+    /**
+     * 
+     * @param type $votes
+     * @param User $user
+     * @return null
+     */
+    public function processMatchingVote($votes, User $user)
+    {
+        //Get the pollingStation
+        $pollingStation = $user->getPollingStation();
+        //Get the firstVerifier
+        $firstVerifier = $pollingStation->getFirstVerifier();
+        //Get second verifier
+        $secondVerifier = $pollingStation->getSecondVerifier();
+        //create new instance of Notification entity
+        $notification = new Notification();
+        //Hydrate it with the right information
+        $notification->setPollingStation($pollingStation->getName());
+        $notification->setFirstVerifier($firstVerifier->getPhoneNumber());
+        $notification->setSecondVerifier($secondVerifier->getPhoneNumber());
+        //Persist $notification in DB
+        $this->em->persist($notification);
+        //$this->em->flush();
+        
+    }
     
-    public function processMatchingVote()
+    /**
+     * 
+     * @param type $votes
+     * @param User $user
+     * @return null
+     */
+    public function processMismatchingVote($votes, User $user)
     {
         
     }
     
-    public function processMismatchVote()
-    {
-        
-    }
-    
-    public function processOverVoting()
+    /**
+     * 
+     * @param type $votes
+     * @param User $user
+     * @return null
+     */
+    public function processOverVoting($votes, User $user)
     {
         
     }

@@ -1055,66 +1055,77 @@ VtallyBundle\Entity\PollingStation:
         code: PS 1
         constituency: "@constituency1"
         #presidential: true
+        voterNumber: 1000
         active: true
         district: <city()>
         
     polling_station2:
         name: Pol. Station 2
         code: PS 2
+        voterNumber: 5000
         constituency: "@constituency1"
         district: <city()>
         
     polling_station3:
         name: Pol. Station 3
         code: PS 3
+        voterNumber: 100
         constituency: "@constituency1"
         district: <city()>
         
     polling_station4:
         name: Pol. Station 4
         code: PS 4
+        voterNumber: 1000
         constituency: "@constituency2"
         district: <city()>
         
     polling_station5:
         name: Pol. Station 5
         code: PS 5
+        voterNumber: 1000
         constituency: "@constituency3"
         district: <city()>
         
     polling_station6:
         name: Pol. Station 6
         code: PS 6
+        voterNumber: 1000
         constituency: "@constituency4"
         district: <city()>
         
     polling_station7:
         name: Pol. Station 7
         code: PS 7
+        voterNumber: 1000
         constituency: "@constituency5"
         district: <city()>
         
     polling_station8:
         name: Pol. Station 8
         code: PS 8
+        voterNumber: 1000
         constituency: "@constituency6"
         district: <city()>
         
     polling_station9:
         name: Pol. Station 9
         code: PS 9
+        voterNumber: 1000
         constituency: "@constituency7"
         district: <city()>
         
     polling_station10:
         name: Pol. Station 10
         code: PS 10
+        voterNumber: 1000
         constituency: "@constituency8"
         district: <city()>
     
     polling_station11:
         name: Pol. Station 11
         code: PS 11
+        voterNumber: 1000
         constituency: "@constituency9"
         district: <city()>
 
@@ -1166,7 +1177,8 @@ UserBundle\Entity\User:
         email (unique): verifier1@domain.com
         plainPassword: test
         firstName: VERIFIER 1
-        #tokenTime: <new \DateTime()>
+        phoneNumber: 0000000000
+        pollingStation: "@polling_station1"
         enabled: true
         roles: [ROLE_VERIFIER]
         userToken: ABCD1
@@ -1178,7 +1190,8 @@ UserBundle\Entity\User:
         email (unique): verifier2@domain.com
         plainPassword: test
         firstName: VERIFIER 2
-        #tokenTime: <new \DateTime('4 min ago')>
+        phoneNumber: 0268568006
+        pollingStation: "@polling_station1"
         enabled: true
         roles: [ROLE_VERIFIER]
         userToken: ABCD2
