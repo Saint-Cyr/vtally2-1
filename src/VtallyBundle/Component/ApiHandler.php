@@ -151,11 +151,10 @@ class ApiHandler
                 }
             }
             
-            return View::create(array('presidential vote cast comfirmed.', 'verifier_token' => $user->getUserToken()), 200);
+            return View::create(array('info' => 'presidential vote cast comfirmed.', 'verifier_token' => $user->getUserToken()), 200);
         }
         
         return View::create(array('cannot edit presidential vote cast: check data structure or validation rules'), 401);
-        
     }
     
     public function sendPresidentialVoteCast(array $inputData)
@@ -987,7 +986,7 @@ class ApiHandler
             if($edited){
                 return View::create(array('parliamentary vote cast edited.', 'verifier_token' => $user->getUserToken()), 200);
             }else{
-                return View::create(array('parliamentary vote cast confirmed.', 'verifier_token' => $user->getUserToken()), 200);
+                return View::create(array('info' => 'parliamentary vote cast confirmed.', 'verifier_token' => $user->getUserToken()), 200);
             }
         }
         

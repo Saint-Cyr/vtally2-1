@@ -59,14 +59,14 @@ class ApiHandlerTest extends WebTestCase
        //Get the apiHandler service
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
-       //Case where sending presidential data does succed
+       //Case where edit presidential data does succed
        $inputData = array('action' => 704, 'transaction_type' => 'presidential',
-                          'verifier_token' => 'ABCD1', 'pr_votes' => array('NPP' => 0, 'NDC' => 1, 'UFP' => 0));
+                          'verifier_token' => 'ABCD1', 'pr_votes' => array('NPP' => 0, 'NDC' => 1));
        //Set the $pollingStation->isPresidential() to true;
        $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
        $pollingStation->setPresidential(true);
        $outPut = $apiHandler->editPresidentialVoteCast($inputData);
-       $this->assertEquals($outPut->getData(), array('info' => 'presidential vote cast edited.', 'verifier_token' => 'ABCD1'));
+       $this->assertEquals($outPut->getData(), array('info' => 'presidential vote cast comfirmed.', 'verifier_token' => 'ABCD1'));
    }
    
    public function testSendPresidentialVoteCast()
@@ -365,9 +365,20 @@ class ApiHandlerTest extends WebTestCase
        $this->assertEquals($outPut->getData(), array('parliamentary vote cast sent.', 'verifier_token' => 'ABCD1'));
    }
    
-   public function testParliamentaryEdited()
+   public function testEditParliamentaryVoteCast()
    {
+       //Get the apiHandler service
+       $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
+       //Case where edit parliamentary vote cast does not happend
+       $inputData = array('action' => 804, 'transaction_type' => 'parliamentary',
+                          'verifier_token' => 'ABCD1', 'pa_votes' => array('independent' => array(array('id' => 1, 'vote_cast' => 100, 'name' => 'Vivien', 'candidacy_number' => 1)), 
+                                                                            'dependent' => array(array('id' => 1, 'vote_cast' => 100, 'name' => 'Jhon', 'candidacy_number' => 1))));
+       //Set the $pollingStation->isPresidential() to true;
+       $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+       $pollingStation->setParliamentary(true);
+       $outPut = $apiHandler->editParliamentaryVoteCast($inputData);
+       $this->assertEquals($outPut->getData(), array('info' => 'parliamentary vote cast confirmed.', 'verifier_token' => 'ABCD1'));
    }
 }
   
