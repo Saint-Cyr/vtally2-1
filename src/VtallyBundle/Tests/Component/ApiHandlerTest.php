@@ -54,10 +54,28 @@ class ApiHandlerTest extends WebTestCase
        $this->assertEquals($outPut->getData(), array('Bad credentials.'));
    }
    
+   public function testEditPresidentialVoteCast()
+   {
+       //Get the apiHandler service
+       $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
+       
+       //Case where sending presidential data does succed
+       $inputData = array('action' => 704, 'transaction_type' => 'presidential',
+                          'verifier_token' => 'ABCD1', 'pr_votes' => array('NPP' => 0, 'NDC' => 1, 'UFP' => 0));
+       //Set the $pollingStation->isPresidential() to true;
+       $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+       $pollingStation->setPresidential(true);
+       $outPut = $apiHandler->editPresidentialVoteCast($inputData);
+       $this->assertEquals($outPut->getData(), array('info' => 'presidential vote cast edited.', 'verifier_token' => 'ABCD1'));
+   }
+   
    public function testSendPresidentialVoteCast()
    {
        //Get the ApiHandler service
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
+       //Set the $pollingStation->isPresidential() to false;
+       $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+       $pollingStation->setPresidential(false);
        //Refresh the user
        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('username' => 'verifier1'));
        $user->refreshTokenTime();
@@ -76,21 +94,6 @@ class ApiHandlerTest extends WebTestCase
        $this->assertEquals($outPut->getData(), array('user of verifier_token: ABCD#### not found in the DB'));
        
    }
-   
-   public function testEditPresidentialVoteCast()
-   {
-       //Get the apiHandler service
-       $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
-       
-       /*Case where sending presidential data does succed
-       $inputData = array('action' => 3, 'transaction_type' => 'presidential',
-                          'verifier_token' => 'ABCD2', 'votes' => array('NPP' => 0, 'NDC' => 1));
-       
-       $outPut = $apiHandler->editPresidentialVoteCast($inputData);
-       $this->assertEquals($outPut, array('presidential vote cast sent!'));*/
-   }
-   
-  
     
    public function testIsDataStructureValid()
    {

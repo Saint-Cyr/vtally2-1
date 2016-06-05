@@ -143,11 +143,11 @@ class ApiHandler
                 //In the case where there is a change, then set the apropriate pollingStation property true
                 if($edited){
                     //process mismatch notification
-                    $notificationHandler->processMisMatchVote($total, $user);
+                    $notificationHandler->processNotification('Mismatch-votes', $total, $user);
                     $pollingStation->setPresidentialEdited(true);
                     //make change in DB.
-                    $this->em->flush();
-                    return View::create(array('info' => 'presidential vote cast edited.', 'verifier_token' => $user->getVerifierToken()), 200);
+                    //$this->em->flush();
+                    return View::create(array('info' => 'presidential vote cast edited.', 'verifier_token' => $user->getUserToken()), 200);
                 }
             }
             

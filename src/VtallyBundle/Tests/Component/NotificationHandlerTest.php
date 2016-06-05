@@ -28,28 +28,15 @@ class NotificationHandlerTest extends WebTestCase
         $this->em = $this->application->getKernel()->getContainer()->get('doctrine.orm.entity_manager');
     }
     
-    public function testProcessMatchingVote()
+    public function testProcessNotification()
     {
         //Get the notification handler
         $notificationHandler = $this->application->getKernel()->getContainer()->get('vtally.notification_handler');
         //Get a dummy user from the DB just to help making the method call
         $user = $this->em->getRepository('UserBundle:User')->find(5);
         //Process the call
-        $outPut = $notificationHandler->processMatchingVote(777, $user);
+        $outPut = $notificationHandler->processNotification('Matching-vote', 777, $user);
         $this->assertEquals(null, $outPut);
     }
-    
-    public function testProcessMismatchingVote()
-    {
-        //Get the notification handler
-        $notificationHandler = $this->application->getKernel()->getContainer()->get('vtally.notification_handler');
-        //Get a dummy user from the DB just to help making the method call
-        $user = $this->em->getRepository('UserBundle:User')->find(5);
-        //Process the call
-        $outPut = $notificationHandler->processMismatchingVote(777, $user);
-        $this->assertEquals(null, $outPut);
-    }
-    
-   
 }
   
