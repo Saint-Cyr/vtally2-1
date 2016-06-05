@@ -46,7 +46,7 @@ class NotificationHandler
      * @param User $user
      * @return null
      */
-    public function processMatchingVote($votes, User $user)
+    public function processNotification($type, $votes, User $user)
     {
         //Get the pollingStation
         $pollingStation = $user->getPollingStation();
@@ -57,39 +57,12 @@ class NotificationHandler
         //create new instance of Notification entity
         $notification = new Notification();
         //Hydrate it with the right information
+        $notification->setType($type);
         $notification->setPollingStation($pollingStation->getName());
         $notification->setFirstVerifier($firstVerifier->getPhoneNumber());
         $notification->setSecondVerifier($secondVerifier->getPhoneNumber());
         //Persist $notification in DB
         $this->em->persist($notification);
         //$this->em->flush();
-        
-    }
-    
-    /**
-     * 
-     * @param type $votes
-     * @param User $user
-     * @return null
-     */
-    public function processMismatchingVote($votes, User $user)
-    {
-        
-    }
-    
-    /**
-     * 
-     * @param type $votes
-     * @param User $user
-     * @return null
-     */
-    public function processOverVoting($votes, User $user)
-    {
-        
-    }
-    
-    public function processCollationCenter()
-    {
-        
     }
 }
