@@ -1,0 +1,119 @@
+
+<div class="page-content" id="vtallyChart">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="portlet box">
+                            <div class="portlet-header">
+                                <div class="caption">General Presidential Vote Cast</div>
+                                <div class="tools"><i class="fa fa-chevron-up"></i>
+                                    <i data-toggle="modal" data-target="#modal-config" class="fa fa-cog"></i>
+                                    <i class="fa fa-refresh"></i><i class="fa fa-times"></i></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div id="basic-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="col-lg-6">
+                        <div class="portlet box">
+                            <div class="portlet-header">
+                                <div class="caption">General Parliamentary site percentage</div>
+                                <div class="tools"><i class="fa fa-chevron-up"></i><i data-toggle="modal" data-target="#modal-config" class="fa fa-cog"></i><i class="fa fa-refresh"></i><i class="fa fa-times"></i></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div id="stacked-bar"></div>
+                            </div>
+                        </div>
+                    </div
+                </div>
+            </div>
+            <!--END CONTENT--><!--BEGIN FOOTER-->
+
+<script type="text/javascript">
+$(function () {
+
+     /* Column bar */
+    $('#basic-bar').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            categories: ['NPP', 'NDC', 'UFP', 'CPP']
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Total Presidential Vote Cast'
+            }
+        },
+        legend: {
+            backgroundColor: '#FFFFFF',
+            reversed: true
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal'
+            }
+        },
+        series: [{
+            name: 'Presidential',
+            data: [5, 3, 4, 7]
+        }]
+    });
+    
+    
+    //Pie Chart
+    $(function () {
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#stacked-bar').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: ''
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: 'Parliamentary',
+                colorByPoint: true,
+                data: [{
+                    name: 'NPP',
+                    y: 26.33
+                }, {
+                    name: 'NDC',
+                    y:21
+                }, {
+                    name: 'UFP',
+                    y: 33
+                }, {
+                    name: 'CPP',
+                    y: 14
+                }]
+            }]
+        });
+    });
+});
+
+});
+</script>
