@@ -74,4 +74,21 @@ class NotificationHandler
         $this->em->persist($notification);
         //$this->em->flush();
     }
+    
+    /**
+     * 
+     * @param type $number
+     * @param type $message
+     */
+    public function sendSMS($phoneNumber, $message)
+    {
+        //comment to prevent automated test to execute it
+        /*$phone = '+233'.$phoneNumber;
+        //load it from configuration (DB or file)
+        $sender_id = 'VTALLY';
+        $key = "b448874f4b8bd19b9eff"; //your unique API key;
+        $message = urlencode($message); //encode url;
+        $url = "http://bulk.mnotify.net/smsapi?key=$key&to=$phone&msg=$message&sender_id=$sender_id";
+        $result = file_get_contents($url);*/
+    }
 }

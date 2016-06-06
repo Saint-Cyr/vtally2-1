@@ -45,6 +45,7 @@ class UserAdmin extends Admin
             ->add('email')
             ->add('firstName')
             ->add('lastName')
+            ->add('phoneNumber')
             ->add('userToken')
             ->add('isActive')
         ;
@@ -97,6 +98,7 @@ class UserAdmin extends Admin
             
             ->add('firstName')
             ->add('lastName')
+            ->add('phoneNumber')
             ->add('address');
         
                 

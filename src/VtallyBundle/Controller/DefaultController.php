@@ -24,6 +24,11 @@ class DefaultController extends Controller
         return new Response('Administration Dashboard');
     }
     
+    public function notificationAction()
+    {
+        return $this->render('VtallyBundle:vote:charts.html.twig');
+    }
+    
     public function importCSVAction(Request $request) 
     {
         // Get FileId to "import"

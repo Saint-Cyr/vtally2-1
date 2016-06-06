@@ -1,6 +1,10 @@
 vtally_dashboard:
     path:     /
     defaults: { _controller: VtallyBundle:Default:dashboard }
+    
+vtally_notification:
+    path:     /notification
+    defaults: { _controller: VtallyBundle:Default:notification }
 
 votes: 
   type: rest

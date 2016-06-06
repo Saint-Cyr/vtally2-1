@@ -1190,7 +1190,7 @@ UserBundle\Entity\User:
         email (unique): verifier2@domain.com
         plainPassword: test
         firstName: VERIFIER 2
-        phoneNumber: 0268568006
+        phoneNumber: 268568006
         pollingStation: "@polling_station1"
         enabled: true
         roles: [ROLE_VERIFIER]

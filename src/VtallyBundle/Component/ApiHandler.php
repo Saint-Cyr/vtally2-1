@@ -164,7 +164,8 @@ class ApiHandler
             
             return View::create(array('invalid data structure'), 401);
         }
-        
+        //prepare notification process
+        $notificationHandler = $this->notificationHandler;
         //Get the user
         $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
         //Make sure $user is in the DB.
@@ -207,6 +208,8 @@ class ApiHandler
             //Set the PollingStation property presidential to true
             $pollingStation->setPresidential(true);
             //$this->em->flush();
+            //Send SMS to second verifier to inform him
+            $notificationHandler->sendSMS($pollingStation->getSecondVerifier()->getPhoneNumber(), 'Presidential vote cast sent.');
             return View::create(array('presidential vote cast sent.', 'verifier_token' => $user->getUserToken()), 200);
             
         }
@@ -839,7 +842,8 @@ class ApiHandler
         if(!$pollingStation){
             return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station'), 404);
         }
-        
+        //Prepare notification process
+        $notificationHandler = $this->notificationHandler;
         //Check the validations rules and the data structure
         if($this->validatorFactory2($inputData) && ($this->validatorFactory3($inputData)) &&
           ($this->isParliamentaryVoteCastValid($inputData['pa_votes']) && 
@@ -895,6 +899,8 @@ class ApiHandler
             //Confirm the persistence in the DB.
             
             //$this->em->flush();
+            //Send SMS to second verifier to inform him
+            $notificationHandler->sendSMS($pollingStation->getSecondVerifier()->getPhoneNumber(), 'Parliamentary vote cast sent.');
             return View::create(array('parliamentary vote cast sent.', 'verifier_token' => $user->getUserToken()), 200);
         }
         return View::create(array('Error: wrong data structure and or validation faild.'), 401);

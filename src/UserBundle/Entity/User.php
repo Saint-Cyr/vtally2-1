@@ -55,7 +55,7 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="phoneNumber", type="string", length=255, nullable=true)
+     * @ORM\Column(name="phoneNumber", type="integer", length=255, nullable=true)
      */
     private $phoneNumber;
     
@@ -429,7 +429,7 @@ class User extends BaseUser
     /**
      * Set phoneNumber
      *
-     * @param string $phoneNumber
+     * @param integer $phoneNumber
      *
      * @return User
      */
@@ -443,7 +443,7 @@ class User extends BaseUser
     /**
      * Get phoneNumber
      *
-     * @return string
+     * @return integer
      */
     public function getPhoneNumber()
     {

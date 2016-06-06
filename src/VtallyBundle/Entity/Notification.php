@@ -29,7 +29,7 @@ class Notification
     private $firstVerifier;
     
     /**
-     * @ORM\ManyToOne(targetEntity="VtallyBundle\Entity\PollingStation", inversedBy="prNotifications")
+     * @ORM\ManyToOne(targetEntity="VtallyBundle\Entity\PollingStation", inversedBy="notifications")
      * @ORM\JoinColumn(nullable=false)
      */
     private $pollingStation;
