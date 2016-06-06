@@ -27,6 +27,12 @@ class Notification
      * @ORM\Column(name="firstVerifier", type="string", length=255)
      */
     private $firstVerifier;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="VtallyBundle\Entity\PollingStation", inversedBy="prNotifications")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $pollingStation;
 
     /**
      * @var string
@@ -34,13 +40,6 @@ class Notification
      * @ORM\Column(name="secondVerifier", type="string", length=255)
      */
     private $secondVerifier;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="pollingStation", type="string", length=255)
-     */
-    private $pollingStation;
     
      /**
      * @var string
@@ -109,30 +108,6 @@ class Notification
     }
 
     /**
-     * Set pollingStation
-     *
-     * @param string $pollingStation
-     *
-     * @return Notification
-     */
-    public function setPollingStation($pollingStation)
-    {
-        $this->pollingStation = $pollingStation;
-
-        return $this;
-    }
-
-    /**
-     * Get pollingStation
-     *
-     * @return string
-     */
-    public function getPollingStation()
-    {
-        return $this->pollingStation;
-    }
-
-    /**
      * Set type
      *
      * @param string $type
@@ -154,5 +129,29 @@ class Notification
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set pollingStation
+     *
+     * @param \VtallyBundle\Entity\PollingStation $pollingStation
+     *
+     * @return Notification
+     */
+    public function setPollingStation(\VtallyBundle\Entity\PollingStation $pollingStation)
+    {
+        $this->pollingStation = $pollingStation;
+
+        return $this;
+    }
+
+    /**
+     * Get pollingStation
+     *
+     * @return \VtallyBundle\Entity\PollingStation
+     */
+    public function getPollingStation()
+    {
+        return $this->pollingStation;
     }
 }
