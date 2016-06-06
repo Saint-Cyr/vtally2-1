@@ -127,6 +127,11 @@ class PollingStation
     private $prNotifications;
     
     /**
+     * @ORM\OneToMany(targetEntity="VtallyBundle\Entity\Notification", mappedBy="pollingStation", cascade={"remove"})
+     */
+    private $notifications;
+    
+    /**
      * @ORM\OneToMany(targetEntity="PaBundle\Entity\PaNotification", mappedBy="pollingStation", cascade={"remove"})
      */
     private $paNotifications;
@@ -1066,5 +1071,39 @@ class PollingStation
     public function getVoterNumber()
     {
         return $this->voterNumber;
+    }
+
+    /**
+     * Add notification
+     *
+     * @param \VtallyBundle\Entity\Notification $notification
+     *
+     * @return PollingStation
+     */
+    public function addNotification(\VtallyBundle\Entity\Notification $notification)
+    {
+        $this->notifications[] = $notification;
+
+        return $this;
+    }
+
+    /**
+     * Remove notification
+     *
+     * @param \VtallyBundle\Entity\Notification $notification
+     */
+    public function removeNotification(\VtallyBundle\Entity\Notification $notification)
+    {
+        $this->notifications->removeElement($notification);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
     }
 }

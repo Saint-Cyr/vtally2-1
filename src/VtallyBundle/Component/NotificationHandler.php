@@ -18,6 +18,8 @@ use FOS\RestBundle\View\View;
 use PaBundle\Entity\PaVoteCast;
 use PaBundle\Entity\PaEditedVoteCast;
 use VtallyBundle\Entity\PollingStation;
+use PaBundle\Entity\PaNotification;
+use PrBundle\Entity\PrNotification;
 use VtallyBundle\Entity\Region;
 use VtallyBundle\Entity\Constituency;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,13 +42,14 @@ class NotificationHandler
         $this->user_provider = $user_provider;
     }
     
-    /**
-     * 
-     * @param type $votes
-     * @param User $user
-     * @return null
-     */
-    public function processNotification($type, $votes, User $user)
+   /**
+    * 
+    * @param type $transactionType presidential|parliamentary|default
+    * @param type $notificationType matching-vote|over-voting|mismatching-vote...
+    * @param type $votes total vote cast
+    * @param User $user
+    */
+    public function processNotification($transactionType, $notificationType, $votes = null, User $user)
     {
         //Get the pollingStation
         $pollingStation = $user->getPollingStation();
@@ -54,11 +57,17 @@ class NotificationHandler
         $firstVerifier = $pollingStation->getFirstVerifier();
         //Get second verifier
         $secondVerifier = $pollingStation->getSecondVerifier();
-        //create new instance of Notification entity
-        $notification = new Notification();
+        //create new instance of Notification entity depending on $transactionType
+        if($transactionType == 'default'){
+            $notification = new Notification();
+        }elseif($transactionType == 'presidential'){
+            $notification = new PrNotification();
+        }elseif($transactionType == 'parliamentary'){
+            $notification = new PaNotification();
+        }
         //Hydrate it with the right information
-        $notification->setType($type);
-        $notification->setPollingStation($pollingStation->getName());
+        $notification->setType($notificationType);
+        $notification->setPollingStation($pollingStation);
         $notification->setFirstVerifier($firstVerifier->getPhoneNumber());
         $notification->setSecondVerifier($secondVerifier->getPhoneNumber());
         //Persist $notification in DB

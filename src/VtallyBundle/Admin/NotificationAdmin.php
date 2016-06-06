@@ -30,6 +30,7 @@ class NotificationAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
+            ->add('type')
             ->add('firstVerifier')
             ->add('secondVerifier')
             ->add('pollingStation')

@@ -96,9 +96,9 @@ class ApiHandler
             //prepare notification process
             $notificationHandler = $this->notificationHandler;
             //get the total of income voters based on the vote cast values
-            $total = 0;
+            $totalVoteCast = 0;
             foreach ($votes as $p => $v){
-                $total = $total + $v;
+                $totalVoteCast = $totalVoteCast + $v;
             }
         
             //Process each one of the votes item
@@ -131,19 +131,19 @@ class ApiHandler
                     }
                 }
                 
-                //process mappingVote & over-voting notification
-                if($total == $pollingStation->getVoterNumber()){
-                    //Process Matching vote
-                    $notificationHandler->processMismatchVote($total, $user);
-                }elseif ($total > $pollingStation->getVoterNumber()) {
+                //Process matching-vote & over-voting notification
+                if($totalVoteCast == $pollingStation->getVoterNumber()){
+                    //Process Matching vote cast notification
+                    $notificationHandler->processNotification('default', 'Matching-vote cast', $totalVoteCast, $user);
+                }elseif ($totalVoteCast > $pollingStation->getVoterNumber()) {
                     //Process over-voting notification
-                    $notificationHandler->processOverVoting($total, $user);
+                    $notificationHandler->processNotification('default', 'Over-voting', $totalVoteCast, $user);
                 }
                 
                 //In the case where there is a change, then set the apropriate pollingStation property true
                 if($edited){
                     //process mismatch notification
-                    $notificationHandler->processNotification('Mismatch-votes', $total, $user);
+                    $notificationHandler->processNotification('presidential', 'Mismatch-votes', $totalVoteCast, $user);
                     $pollingStation->setPresidentialEdited(true);
                     //make change in DB.
                     //$this->em->flush();
@@ -329,6 +329,8 @@ class ApiHandler
                     break;
                 //Edit presidential pinkSheet
                 case 705:
+                    //Get the user
+                    $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
                     //Make sure $user is in the DB.
                     if(!$user){
                         return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB'), 404);
@@ -342,7 +344,7 @@ class ApiHandler
                     
                     //Make sure presidential pink sheet has been sent allready
                     if(!$pollingStation->isPresidentialPinkSheet()){
-                        return View::create(array('Error: presidential pinkSheet not yet sent.'), 404);
+                        return View::create(array('Error: presidential pinkSheet not yet sent.'), 401);
                     }
                     
                     return $this->editPresidentialPinkSheet($request, $inputData);
@@ -350,6 +352,8 @@ class ApiHandler
                     
                 //Send parliamentary pinkSheet
                 case 803:
+                    //Get the user
+                    $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
                     //Make sure $user is in the DB.
                     if(!$user){
                         return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB'), 404);
@@ -453,7 +457,8 @@ class ApiHandler
         if(!$pollingStation){
             return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station'), 404);
         }
-        
+        //Prepare notification process
+        $notificationHandler = $this->notificationHandler;
         //Make sure that this is the first and last time to edit the presidential PinkSheet for
         //this polling station ($PollingStation)
         if($pollingStation->isPresidentialPinkSheetEdited()){
@@ -475,6 +480,8 @@ class ApiHandler
         //Persist the change
         $this->em->persist($prPinkSheet);
         $this->em->flush();
+        //Process the Presidential Mismatching-pinkSheet notification
+        $notificationHandler->processNotification('presidential', 'Pink-sheet mismatch', null, $user);
         //FeedBack
         return View::create(array('presidential pink Sheet edited.', 'verifier_token' => $user->getUserToken()), 200);
     }
@@ -535,7 +542,8 @@ class ApiHandler
         //Collect the pinkSheet based on $pinkSheet = $user->getPollingStation()->getPaPinkSheet();
         $user = $this->em->getRepository('UserBundle:User')
                      ->findOneBy(array('userToken' => $inputData['verifier_token']));
-        
+        //prepare notification process
+        $notificationHandler = $this->notificationHandler;
         //Make sure $user is in the DB.
         if(!$user){
             return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB'), 404);
@@ -566,6 +574,8 @@ class ApiHandler
         //Persist the change
         $this->em->persist($paPinkSheet);
         $this->em->flush();
+        //Process the Parliamentary Mismatching-pinkSheet notification
+        $notificationHandler->processNotification('parliamentary', 'Pink-sheet mismatch', null, $user);
         //FeedBack
         return View::create(array('parliamentary pink Sheet edited.', 'verifier_token' => $user->getUserToken()), 200);
     }
@@ -915,8 +925,14 @@ class ApiHandler
             //Define a variable that will help to know whether there is edition or not
             $edited = false;
             
+            //prepare notification process
+            $notificationHandler = $this->notificationHandler;
+            //get the total of income voters based on the vote cast values
+            $totalVoteCast = 0;
             // Treat the dependentCandidates
             foreach ($depCandidates as $depC){
+                //Incremente the $totalVoteCast for Notification purpose only (this line)!
+                $totalVoteCast = $totalVoteCast + $depC['vote_cast'];
                 //Get the related dependentCandidate instance from the DB.
                 $_depCandidate = $this->em->getRepository('PaBundle:DependentCandidate')->find($depC['id']);
                 //Get the vote cast linked to $_depCandidate in order to compare to the sent one $depC['vote_cast'];
@@ -949,6 +965,8 @@ class ApiHandler
             
             // Treat the independent candidates
             foreach ($indepCandidates as $indC){
+                //Incremente the $totalVoteCast for Notification purpose only (this line)!
+                $totalVoteCast = $totalVoteCast + $indC['vote_cast'];
                 //Get the related dependentCandidate instance from the DB.
                 $_indCandidate = $this->em->getRepository('PaBundle:IndependentCandidate')->find($indC['id']);
                 //Get the vote cast linked to $_depCandidate in order to compare to the sent one $depC['vote_cast'];
@@ -984,6 +1002,8 @@ class ApiHandler
             //Confirm the persistence of all persisted and loaded objects
             //$this->em->flush();
             if($edited){
+                //Process the Parliamentary Mismatching-notification
+                $notificationHandler->processNotification('parliamentary', 'Mismatching-vote', $totalVoteCast, $user);
                 return View::create(array('parliamentary vote cast edited.', 'verifier_token' => $user->getUserToken()), 200);
             }else{
                 return View::create(array('info' => 'parliamentary vote cast confirmed.', 'verifier_token' => $user->getUserToken()), 200);

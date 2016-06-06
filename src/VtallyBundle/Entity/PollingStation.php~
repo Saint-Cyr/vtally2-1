@@ -104,7 +104,7 @@ class PollingStation
     /**
      * @var string
      *
-     * @ORM\Column(name="voterNumber", type="integer", length=255, unique=true)
+     * @ORM\Column(name="voterNumber", type="integer", length=255, unique=false)
      */
     private $voterNumber;
 
@@ -125,6 +125,11 @@ class PollingStation
      * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrNotification", mappedBy="pollingStation", cascade={"remove"})
      */
     private $prNotifications;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="VtallyBundle\Entity\Notification", mappedBy="pollingStation", cascade={"remove"})
+     */
+    private $notifications;
     
     /**
      * @ORM\OneToMany(targetEntity="PaBundle\Entity\PaNotification", mappedBy="pollingStation", cascade={"remove"})
@@ -189,6 +194,35 @@ class PollingStation
        }
        
        return false;
+    }
+    
+    /**
+     * 
+     * @return type UserBundle:User
+     */
+    public function getFirstVerifier()
+    {
+        //Get all the linked users (1st & 2nd verifier)
+        $users = $this->getUsers();
+        foreach ($users as $user){
+            if($user->getVerifierType()){
+                return $user;
+            }
+        }
+    }
+    
+    /**
+     * @return UserBundle:User Description
+     */
+    public function getSecondVerifier()
+    {
+        //Get all the linked users (1st & 2nd verifier)
+        $users = $this->getUsers();
+        foreach ($users as $user){
+            if(!$user->getVerifierType()){
+                return $user;
+            }
+        }
     }
 
     /**

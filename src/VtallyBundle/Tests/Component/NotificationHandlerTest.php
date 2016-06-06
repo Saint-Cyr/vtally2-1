@@ -35,7 +35,7 @@ class NotificationHandlerTest extends WebTestCase
         //Get a dummy user from the DB just to help making the method call
         $user = $this->em->getRepository('UserBundle:User')->find(5);
         //Process the call
-        $outPut = $notificationHandler->processNotification('Matching-vote', 777, $user);
+        $outPut = $notificationHandler->processNotification('default', 'Matching-vote', 777, $user);
         $this->assertEquals(null, $outPut);
     }
 }
