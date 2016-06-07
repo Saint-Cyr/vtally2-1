@@ -21,12 +21,13 @@ class DefaultController extends Controller
 {
     public function dashboardAction()
     {
-        return new Response('Administration Dashboard');
-    }
-    
-    public function notificationAction()
-    {
-        return $this->render('VtallyBundle:vote:charts.html.twig');
+        //to be removed
+        $region = $this->get('doctrine')->getManager()->getRepository('VtallyBundle:Region')->find(1);
+        //Get the statisticHandler service
+        $statisticHandler = $this->get('vtally.statistic_handler');
+        //Get presidential vote cast for national level
+        $presidentialVoteCast = $statisticHandler->getPresidentialRegion($region);
+        return $this->render('VtallyBundle:vote:charts.html.twig', array('presidentialVoteCast' => $presidentialVoteCast));
     }
     
     public function importCSVAction(Request $request) 

@@ -231,7 +231,7 @@ class StatisticHandlerTest extends WebTestCase
         $parties = $this->statisticHandler->getPresidentialNation();
         
         $this->assertEquals($parties[0]->getName(), 'CPP');
-        //$this->assertEquals($parties[0]->getVoteCast(), 10981);
+        //$this->assertEquals($parties[0]->getVoteCast(), 10971);
     }
 
 

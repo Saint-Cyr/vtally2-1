@@ -42,7 +42,7 @@ $(function () {
             text: ''
         },
         xAxis: {
-            categories: ['NPP', 'NDC', 'UFP', 'CPP']
+            categories: [{% for prParty in presidentialVoteCast %}'{{ prParty.name }}', {% endfor %}]
         },
         yAxis: {
             min: 0,
@@ -61,7 +61,7 @@ $(function () {
         },
         series: [{
             name: 'Presidential',
-            data: [5, 3, 4, 7]
+            data: [{% for prParty in presidentialVoteCast %} {{ prParty.voteCast }}, {% endfor %}]
         }]
     });
     

@@ -127,7 +127,7 @@ class StatisticHandler
     
     /**
      * @param PollingStation $pollingStation
-     * @return type
+     * @return array of PrParty
      */
     public function getPresidentialPollingStation(PollingStation$pollingStation)
     {
@@ -147,7 +147,7 @@ class StatisticHandler
     /**
      * 
      * @param Constituency $constituency
-     * @return array
+     * @return array of PrParty
      */
     public function getPresidentialConstituency(Constituency $constituency)
     {
@@ -195,9 +195,15 @@ class StatisticHandler
      */
     public function getPresidentialNation()
     {
-        $parties = $this->em->getRepository('PrBundle:PrParty')->findAll();
-        return $parties;
+        //Get all the regions
+        $regions = $this->em->getRepository('VtallyBundle:Region')->findAll();
+        $prParties1 = $this->em->getRepository('PrBundle:PrParty')->findAll();
+        //For each region, increase the value of each prParty
+        foreach ($regions as $reg){
+            //Get the vote cast for this region
+            $prParties2 = $this->getPresidentialRegion($reg);
+            $merged = $this->presidentialMerge($prParties1, $prParties2);
+        }
+        return $merged;
     }
-    
-    
 }
