@@ -71,4 +71,18 @@ class UserTest extends WebTestCase
         $output = $user->isUserTokenValid($tokenTime);
         $this->assertNotTrue($output);
     }
+    
+    public function testIsFirstVerifier()
+    {
+        //Case where it's true
+        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('username' => 'verifier1'));
+        $this->assertTrue($user->isFirstVerifier());
+    }
+    
+    public function testIsSecondVerifier()
+    {
+        //Case where it's true
+        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('username' => 'verifier2'));
+        $this->assertTrue($user->isSecondVerifier());
+    }
 }

@@ -756,65 +756,68 @@ class ApiHandler
             if(!$pollingStation){
                 return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station'), 404);
             }
-            //Get the Constituency
-            $constituency = $pollingStation->getConstituency();
             
-            //Get all the independents candidates linked to the contexted pollingStation
-            $indCandidates = $constituency->getIndependentCandidates();
+            if(($user->isFirstVerifier() && $inputData['action'] == 800) || ($user->isSecondVerifier() && $inputData['action'] == 801)){
+                //Get the Constituency
+                $constituency = $pollingStation->getConstituency();
 
-            //Get all the dependents candidates linked to the contexted pollingStation
-            $depCandidates = $constituency->getDependentCandidates();
+                //Get all the independents candidates linked to the contexted pollingStation
+                $indCandidates = $constituency->getIndependentCandidates();
 
-            $data1 = array();
-            $data2 = array();
+                //Get all the dependents candidates linked to the contexted pollingStation
+                $depCandidates = $constituency->getDependentCandidates();
 
-            //load independent candidates
-            foreach ($indCandidates as $indC){
-                //For technical purpose only, we add the key 'id'
-                $data1['id'] = $indC->getId();
-                //Check if it's first verifier then add $inputData['vote_cast'] => null
-                //else (second verifier) load the $inputData['vote_cast'] value from the DB.
-                if($inputData['action'] == 800){
-                    //Because it's the first verifier request.
-                    $data1['vote_cast'] = null;
-                    //2nd verifier so, set the key 'vote_cast' with the right value from DB.
-                }elseif($inputData['action'] == 801){
-                    $_voteCast = $pollingStation->getOneParliamentaryVoteCast($indC);
-                    $data1['vote_cast'] = $_voteCast->getFigureValue();
-                }
-                
-                $data1['name'] = $indC->getFirstName();
-                $data1['candidacy_number'] = $indC->getCandidacyNumber();
-                array_push($data2, $data1);
                 $data1 = array();
-            }
+                $data2 = array();
 
-            //load dependent candidates
-            $data = array();
-            $data4 = array();
-            foreach ($depCandidates as $dep){
-                //For technical purpose only, we add the key 'id'
-                $data['id'] = $dep->getId();
-                //Check if it's first verifier then add $inputData['vote_cast'] => null
-                //else (second verifier) load the $inputData['vote_cast'] value from the DB.
-                if($inputData['action'] == 800){
-                    $data['vote_cast'] = null;
-                }elseif($inputData['action'] == 801){
-                    $_voteCast = $pollingStation->getOneParliamentaryVoteCast($dep);
-                    $data['vote_cast'] = $_voteCast->getFigureValue();
+                //load independent candidates
+                foreach ($indCandidates as $indC){
+                    //For technical purpose only, we add the key 'id'
+                    $data1['id'] = $indC->getId();
+                    //Check if it's first verifier then add $inputData['vote_cast'] => null
+                    //else (second verifier) load the $inputData['vote_cast'] value from the DB.
+                    if($inputData['action'] == 800){
+                        //Because it's the first verifier request.
+                        $data1['vote_cast'] = null;
+                        //2nd verifier so, set the key 'vote_cast' with the right value from DB.
+                    }elseif($inputData['action'] == 801){
+                        $_voteCast = $pollingStation->getOneParliamentaryVoteCast($indC);
+                        $data1['vote_cast'] = $_voteCast->getFigureValue();
+                    }
+
+                    $data1['name'] = $indC->getFirstName();
+                    $data1['candidacy_number'] = $indC->getCandidacyNumber();
+                    array_push($data2, $data1);
+                    $data1 = array();
                 }
-                
-                $data['name'] = $dep->getFirstName();
-                $data['candidacy_number'] = $dep->getCandidacyNumber();
-                array_push($data4, $data);
-                $data = array();
-            }
 
-            $candidates['independent'] = $data2;
-            $candidates['dependent'] = $data4;
-            $candidates['verifier_token'] = $user->getUserToken();
-            
-            return View::create($candidates, 200);
+                //load dependent candidates
+                $data = array();
+                $data4 = array();
+                foreach ($depCandidates as $dep){
+                    //For technical purpose only, we add the key 'id'
+                    $data['id'] = $dep->getId();
+                    //Check if it's first verifier then add $inputData['vote_cast'] => null
+                    //else (second verifier) load the $inputData['vote_cast'] value from the DB.
+                    if($inputData['action'] == 800){
+                        $data['vote_cast'] = null;
+                    }elseif($inputData['action'] == 801){
+                        $_voteCast = $pollingStation->getOneParliamentaryVoteCast($dep);
+                        $data['vote_cast'] = $_voteCast->getFigureValue();
+                    }
+
+                    $data['name'] = $dep->getFirstName();
+                    $data['candidacy_number'] = $dep->getCandidacyNumber();
+                    array_push($data4, $data);
+                    $data = array();
+                }
+
+                $candidates['independent'] = $data2;
+                $candidates['dependent'] = $data4;
+                $candidates['verifier_token'] = $user->getUserToken();
+
+                return View::create($candidates, 200);
+            }
             
         }  else {
             return View::create(array('Error: validatorFactory3 faild.'), 401);

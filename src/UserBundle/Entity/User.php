@@ -147,7 +147,15 @@ class User extends BaseUser
     
     public function isFirstVerifier()
     {
-        if($this->getRoles() === array('ROLE_FIRST_VERIFIER')){
+        if($this->getVerifierType()){
+            return true;
+        }
+        return false;
+    }
+    
+    public function isSecondVerifier()
+    {
+        if(!$this->getVerifierType()){
             return true;
         }
         

@@ -44,6 +44,7 @@ class UserAdmin extends Admin
             ->add('username')
             ->add('email')
             ->add('firstName')
+            ->add('type')
             ->add('lastName')
             ->add('phoneNumber')
             ->add('userToken')
