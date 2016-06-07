@@ -40,3 +40,6 @@ monolog:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+symfony_debug_toolbar_git:
+    repository_commit_url: "https://github.com/Saint-Cyr/commit"
