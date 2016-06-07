@@ -84,7 +84,7 @@ class ApiHandlerTest extends WebTestCase
                           'pr_votes' => array('NPP' => 0, 'NDC' => 0, 'UFP' => 0));
        
        $outPut = $apiHandler->process($inputData);
-       $this->assertEquals($outPut->getData(), array('presidential vote cast sent.', 'verifier_token' => 'ABCD1'));
+       $this->assertEquals($outPut->getData(), array('info' => 'presidential vote cast sent.', 'verifier_token' => 'ABCD1'));
        
        //Case where sending votes does not succed
        $inputData = array('transaction_type' => 'presidential', 'verifier_token' => 'ABCD####', 'action' => 702,
@@ -221,10 +221,10 @@ class ApiHandlerTest extends WebTestCase
                                             ["id" => 13,"vote_cast" => 98,"name" => "Sondra","candidacy_number" => 2],
                                             ["id" => 19,"vote_cast" => 0,"name" => "Fadde","candidacy_number" => 2]
                                         ],
-                    'verifier_token' => 'ABCD1'
+                    'verifier_token' => 'ABCD2'
                     ];
        
-       $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'parliamentary', 'action' => 801);
+       $inputData = array('verifier_token' => 'ABCD2', 'transaction_type' => 'parliamentary', 'action' => 801);
        $output = $apiHandler->process($inputData);
        $this->assertEquals($output->getData(), $candidates);
    }

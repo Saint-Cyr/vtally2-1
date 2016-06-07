@@ -181,7 +181,7 @@ class ApiHandler
         
         //See the API doc for more information 
         if(($this->validatorFactory2($inputData))&&($this->validatorFactory3($inputData))
-                &&($this->isPresidentialVoteCastValid($inputData['pr_votes']))){
+                &&($this->isPresidentialVoteCastValid($inputData['pr_votes']))&&($user->isFirstVerifier())){
             //Make sure the pollingStation doesn't yet recieve presidential vote cast
             if(($pollingStation->isPresidential())){
                 return View::create(array('Error: presidential vote cast allready sent.'), 401);
@@ -210,7 +210,7 @@ class ApiHandler
             //$this->em->flush();
             //Send SMS to second verifier to inform him
             $notificationHandler->sendSMS($pollingStation->getSecondVerifier()->getPhoneNumber(), 'Presidential vote cast sent.');
-            return View::create(array('presidential vote cast sent.', 'verifier_token' => $user->getUserToken()), 200);
+            return View::create(array('info' => 'presidential vote cast sent.', 'verifier_token' => $user->getUserToken()), 200);
             
         }
         
@@ -328,6 +328,12 @@ class ApiHandler
                     if($pollingStation->isPresidentialPinkSheet()){
                         return View::create(array('Error: presidential pinkSheet allready sent.'), 401);
                     }
+                    
+                    //Make sure it's the First verifier
+                    if(!$user->isFirstVerifier()){
+                        return View::create(array('Error: only first verifier can send pink sheet.'), 401);
+                    }
+                    
                     return $this->sendPresidentialPinkSheet($request, $inputData);
                     break;
                 //Edit presidential pinkSheet
@@ -509,6 +515,10 @@ class ApiHandler
         //Make sure $pollingStation exist
         if(!$pollingStation){
             return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' is not linked to a polling station'), 404);
+        }
+        //Make sure the request have been made by the First Verifier
+        if(!$user->isFirstVerifier()){
+            return View::create(array('info' => 'Error: only first verifier can send a pink sheet.'), 401);
         }
         //Get the uploaded file
         $uploadedFile = $request->files->get('file');
@@ -849,7 +859,7 @@ class ApiHandler
         $notificationHandler = $this->notificationHandler;
         //Check the validations rules and the data structure
         if($this->validatorFactory2($inputData) && ($this->validatorFactory3($inputData)) &&
-          ($this->isParliamentaryVoteCastValid($inputData['pa_votes']) && 
+          ($this->isParliamentaryVoteCastValid($inputData['pa_votes']) && ($user->isFirstVerifier()) &&
           (!($pollingStation->isParliamentary())))){
             
             $depCandidates = $inputData['pa_votes']['dependent'];
