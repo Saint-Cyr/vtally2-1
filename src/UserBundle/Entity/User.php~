@@ -48,6 +48,13 @@ class User extends BaseUser
     /**
      * @var string
      *
+     * @ORM\Column(name="active", type="boolean", nullable=true)
+     */
+    private $active;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="userToken", type="string", length=255, nullable=true)
      */
     private $userToken;
@@ -147,7 +154,15 @@ class User extends BaseUser
     
     public function isFirstVerifier()
     {
-        if($this->getRoles() === array('ROLE_FIRST_VERIFIER')){
+        if($this->getVerifierType()){
+            return true;
+        }
+        return false;
+    }
+    
+    public function isSecondVerifier()
+    {
+        if(!$this->getVerifierType()){
             return true;
         }
         
@@ -355,13 +370,7 @@ class User extends BaseUser
         }
         return $this->getUserToken();
         /**** to be removed in production **********/
-        
-        $p = new OAuthProvider();
-
-        $t = $p->generateToken(4);
-        //$token = rand(1, 99999);
-        //Update 
-        $this->setUserToken($this->getId().$token.$this->getLastName());
+        $this->setUserToken(base_convert(sha1(uniqid(mt_rand(), true)), 16, 36));
         //Issue it.
         return $this->getUserToken();
     }
@@ -424,5 +433,29 @@ class User extends BaseUser
     public function getVerifierType()
     {
         return $this->verifierType;
+    }
+
+    /**
+     * Set phoneNumber
+     *
+     * @param integer $phoneNumber
+     *
+     * @return User
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get phoneNumber
+     *
+     * @return integer
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
     }
 }

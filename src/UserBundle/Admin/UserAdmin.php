@@ -41,14 +41,11 @@ class UserAdmin extends Admin
         
         $listMapper
             ->add('id')
-            ->add('username')
-            ->add('email')
             ->add('firstName')
-            ->add('type')
             ->add('lastName')
-            ->add('phoneNumber')
             ->add('userToken')
-            ->add('isActive')
+            ->add('lastLogin')
+            ->add('active')
         ;
         
         if ($this->isGranted('EDIT')) {

@@ -48,6 +48,13 @@ class User extends BaseUser
     /**
      * @var string
      *
+     * @ORM\Column(name="active", type="boolean", nullable=true)
+     */
+    private $active;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="userToken", type="string", length=255, nullable=true)
      */
     private $userToken;
@@ -363,13 +370,7 @@ class User extends BaseUser
         }
         return $this->getUserToken();
         /**** to be removed in production **********/
-        
-        $p = new OAuthProvider();
-
-        $t = $p->generateToken(4);
-        //$token = rand(1, 99999);
-        //Update 
-        $this->setUserToken($this->getId().$token.$this->getLastName());
+        $this->setUserToken(base_convert(sha1(uniqid(mt_rand(), true)), 16, 36));
         //Issue it.
         return $this->getUserToken();
     }
@@ -456,5 +457,30 @@ class User extends BaseUser
     public function getPhoneNumber()
     {
         return $this->phoneNumber;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return User
+     */
+    public function setActive($active)
+    {
+        //Make sure to set lastLogin
+        $this->setLastLogin(new \DateTime("now"));
+        $this->active = $active;
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
     }
 }

@@ -53,6 +53,8 @@ class ApiHandler
             $user->refreshTokenTime();
             //generate new token to identify the session
             $user->generateUserToken();
+            //set user to be online
+            $user->setActive(true);
             //persist change in DB.
             $this->em->flush();
             
@@ -63,6 +65,24 @@ class ApiHandler
         }
         
         return View::create(array('Bad credentials.'), 401);
+    }
+    
+    public function logout($inputData)
+    {
+        if(array_key_exists('verifier_token', $inputData)){
+            //Collect the user in order to log him out
+            $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('userToken' => $inputData['verifier_token']));
+            //Make sure $user is in the DB.
+            if(!$user){
+                return View::create(array('user of verifier_token: '.$inputData['verifier_token'].' not found in the DB'), 404);
+            }
+            //logout
+            $user->setActive(false);
+            $this->em->flush();
+            return View::create(array('info' => 'user of verifier_token: '.$inputData['verifier_token'].' has been logged out successfully.'), 200);
+        }
+        
+        return View::create(array('info' => 'Error: wrong data structure ---- API Doc. Data structure:#DS10.'), 401);
     }
     
     /**
@@ -231,6 +251,10 @@ class ApiHandler
                 //login
                 case 600: 
                     return $this->login($inputData);
+                    break;
+                //login
+                case 601: 
+                    return $this->logout($inputData);
                     break;
                 //Get the presidential parties (1st verifier)
                 case 700:

@@ -229,9 +229,22 @@ class StatisticHandlerTest extends WebTestCase
     {
         $NPP = $this->em->getRepository('PrBundle:PrParty')->find(1);
         $parties = $this->statisticHandler->getPresidentialNation();
-        
+        //Make sure to know the contain of $parties
         $this->assertEquals($parties[0]->getName(), 'CPP');
-        //$this->assertEquals($parties[0]->getVoteCast(), 10971);
+        $this->assertEquals($parties[1]->getName(), 'GFP');
+        $this->assertEquals($parties[2]->getName(), 'NCP');
+        $this->assertEquals($parties[3]->getName(), 'NDC');
+        $this->assertEquals($parties[4]->getName(), 'NPP');
+        $this->assertEquals($parties[5]->getName(), 'PCP');
+        $this->assertEquals($parties[6]->getName(), 'PPP');
+        $this->assertEquals($parties[7]->getName(), 'UFP');
+        //Test the vote cast value vs the fixture one (see test_scenario doc)
+        $this->assertEquals($parties[0]->getVoteCast(), 10971);
+        $this->assertEquals($parties[1]->getVoteCast(), 0);
+        $this->assertEquals($parties[2]->getVoteCast(), 0);
+        $this->assertEquals($parties[3]->getVoteCast(), 19657);
+        $this->assertEquals($parties[4]->getVoteCast(), 19168);
+        $this->assertEquals($parties[7]->getVoteCast(), 15963);
     }
 
 

@@ -195,15 +195,15 @@ class StatisticHandler
      */
     public function getPresidentialNation()
     {
-        //Get all the regions
-        $regions = $this->em->getRepository('VtallyBundle:Region')->findAll();
-        $prParties1 = $this->em->getRepository('PrBundle:PrParty')->findAll();
-        //For each region, increase the value of each prParty
-        foreach ($regions as $reg){
-            //Get the vote cast for this region
-            $prParties2 = $this->getPresidentialRegion($reg);
-            $merged = $this->presidentialMerge($prParties1, $prParties2);
+        //Get all the polling stations
+        $pollingStations = $this->em->getRepository('VtallyBundle:PollingStation')->findAll();
+        //Get all the presidential parties
+        $prParties = $this->em->getRepository('PrBundle:PrParty')->findAll();
+        //Set the vote cast for each prParty
+        foreach ($prParties as $prParty){
+            $this->setPresidentialVoteCast($prParty, $pollingStations);
         }
-        return $merged;
+        
+        return $prParties;
     }
 }
