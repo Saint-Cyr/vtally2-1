@@ -15,10 +15,44 @@ use Ddeboer\DataImport\Reader\CsvReader;
 use Ddeboer\DataImport\Source\StreamSource;
 use Ddeboer\DataImport\Workflow;
 use Ddeboer\DataImport\Writer\DoctrineWriter;
+use ZipArchive;
 
 
 class DefaultController extends Controller
 {
+    public function zipAndDownloadAction()
+    {
+        $files = array();
+        $em = $this->getDoctrine()->getManager();
+        $doc = $em->getRepository('PrBundle:PrPinkSheet')->findAll();
+        //foreach ($_POST as $p) {
+            foreach ($doc as $d) {
+                array_push($files, getcwd()."/pinkSheet/presidential/".$d->getName());
+            }
+        //}
+        $zip = new \ZipArchive();
+        //$zipName = 'Documents-'.time().".zip";
+        $zipName = 'Documents.zip';
+        $zip->open(getcwd()."/pinkSheet/presidential/".$zipName,  \ZipArchive::CREATE);
+        foreach ($files as $f) {
+            $zip->addFromString(basename($f),  file_get_contents($f)); 
+        }
+        $zip->close();
+        $response = new Response();
+        
+        $response->headers->set('Cache-Control', 'private');
+        //$response->headers->set('Content-type', mime_content_type($zipName));
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . basename($zipName) . '"');
+        $response->headers->set('Content-length', filesize(getcwd()."/pinkSheet/presidential/".$zipName));
+        $response->sendHeaders();
+        $response->setContent(readfile(getcwd()."/pinkSheet/presidential/".$zipName));
+        //header('Content-Type', 'application/zip');
+        //header('Content-disposition: attachment; filename="' . $zipName . '"');
+        //header('Content-Length: ' . filesize($zipName));
+        //readfile($zipName);
+        return $response;
+    }
+    
     public function dashboardAction()
     {
         $statisticHandler = $this->get('vtally.statistic_handler');

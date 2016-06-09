@@ -28,7 +28,6 @@ class PrPinkSheetAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
             ->add('name')
             ->add('edited')
             ->add('pollingStation')
@@ -49,7 +48,6 @@ class PrPinkSheetAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
             ->add('name')
             ->add('edited')
             

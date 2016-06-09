@@ -14,3 +14,7 @@ votes:
 vtally_importCSV:
     path:  /admin/import/file
     defaults: { _controller: VtallyBundle:Default:importCSV }
+    
+vtally_download_pinkSheet:
+    path:  /download-pinkSheet
+    defaults: { _controller: VtallyBundle:Default:zipAndDownload }
