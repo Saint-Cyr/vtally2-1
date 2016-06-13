@@ -18,7 +18,6 @@ class NotificationHandlerTest extends WebTestCase
     private $em;
     private $application;
 
-
     public function setUp()
     {
         static::$kernel = static::createKernel();
@@ -39,4 +38,3 @@ class NotificationHandlerTest extends WebTestCase
         $this->assertEquals(null, $outPut);
     }
 }
-  

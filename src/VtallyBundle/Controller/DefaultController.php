@@ -132,10 +132,9 @@ class DefaultController extends Controller
                          . 'exists in the Data Base');
             return $this->redirect($this->generateUrl('sonata_admin_dashboard'));
         }
-
+    
         
-        /** End @Saint-Cyr **/
-
+        /** End if code by S@int-Cyr **/
         $this->get('session')->getFlashBag()
              ->add('sonata_flash_success', CSVTypes::getNameOfType($curType)." CSV file uploaded successfully !");
             
