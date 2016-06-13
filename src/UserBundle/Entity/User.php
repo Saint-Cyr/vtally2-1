@@ -354,7 +354,9 @@ class User extends BaseUser
      */
     public function setImage($image)
     {
-        $this->image = $this->getFile()->guessExtension();
+        if($this->getFile() !== null){
+            $this->image = $this->getFile()->guessExtension();
+        }
         
         return $this;
     }
