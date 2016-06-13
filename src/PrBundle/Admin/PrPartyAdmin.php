@@ -28,6 +28,7 @@ class PrPartyAdmin extends Admin
         $listMapper
             ->add('id')
             ->add('name')
+            ->add('image')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -45,6 +46,7 @@ class PrPartyAdmin extends Admin
     {
         $formMapper
             ->add('name')
+            ->add('file', 'file', array('required' => true))
             
         ;
     }
@@ -60,4 +62,22 @@ class PrPartyAdmin extends Admin
             ->add('prVoteCasts')
         ;
     }
+    
+    public function prePersist($image)
+    {
+        $this->manageFileUpload($image);
+    }
+
+    public function preUpdate($image)
+    {
+        $this->manageFileUpload($image);
+    }
+
+    private function manageFileUpload($image)
+    {
+        if ($image->getFile()) {
+            $image->refreshUpdated();
+        }
+    }
+
 }

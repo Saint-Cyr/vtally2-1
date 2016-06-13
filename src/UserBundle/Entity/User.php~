@@ -24,6 +24,18 @@ class User extends BaseUser
     protected $id;
     
     private $type;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
+    
+    /**
+     * Unmapped property to handle file uploads
+     */
+    private $file;
 
     /**
      * @var string
@@ -457,5 +469,30 @@ class User extends BaseUser
     public function getPhoneNumber()
     {
         return $this->phoneNumber;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return User
+     */
+    public function setActive($active)
+    {
+        //Make sure to set lastLogin
+        $this->setLastLogin(new \DateTime("now"));
+        $this->active = $active;
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
     }
 }

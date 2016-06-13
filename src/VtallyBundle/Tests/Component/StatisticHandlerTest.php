@@ -200,29 +200,29 @@ class StatisticHandlerTest extends WebTestCase
         $const1 = $this->em->getRepository('VtallyBundle:Constituency')->find(1);
         
         $parties2 = $this->statisticHandler->getPresidentialConstituency($const1);
-        $this->assertEquals($parties2[4]->getName(), 'NPP');
-        $this->assertEquals($parties2[3]->getName(), 'NDC');
-        $this->assertEquals($parties2[7]->getName(), 'UFP');
-        $this->assertEquals($parties2[0]->getName(), 'CPP');
+        $this->assertEquals($parties2[0]->getName(), 'NPP');
+        $this->assertEquals($parties2[1]->getName(), 'NDC');
+        $this->assertEquals($parties2[2]->getName(), 'UFP');
+        $this->assertEquals($parties2[3]->getName(), 'CPP');
         
-        $this->assertEquals($parties2[4]->getVoteCast(), 1000);
-        $this->assertEquals($parties2[3]->getVoteCast(), 800);
-        $this->assertEquals($parties2[7]->getVoteCast(), 500);
-        $this->assertEquals($parties2[0]->getVoteCast(), 450);
+        $this->assertEquals($parties2[0]->getVoteCast(), 1000);
+        $this->assertEquals($parties2[1]->getVoteCast(), 800);
+        $this->assertEquals($parties2[2]->getVoteCast(), 500);
+        $this->assertEquals($parties2[3]->getVoteCast(), 450);
         
         //test for constituency 2
         $const1 = $this->em->getRepository('VtallyBundle:Constituency')->find(2);
         
         $parties2 = $this->statisticHandler->getPresidentialConstituency($const1);
-        $this->assertEquals($parties2[4]->getName(), 'NPP');
-        $this->assertEquals($parties2[3]->getName(), 'NDC');
-        $this->assertEquals($parties2[7]->getName(), 'UFP');
-        $this->assertEquals($parties2[0]->getName(), 'CPP');
+        $this->assertEquals($parties2[0]->getName(), 'NPP');
+        $this->assertEquals($parties2[1]->getName(), 'NDC');
+        $this->assertEquals($parties2[2]->getName(), 'UFP');
+        $this->assertEquals($parties2[3]->getName(), 'CPP');
         
-        $this->assertEquals($parties2[4]->getVoteCast(), 900);
-        $this->assertEquals($parties2[3]->getVoteCast(), 950);
-        $this->assertEquals($parties2[7]->getVoteCast(), 100);
-        $this->assertEquals($parties2[0]->getVoteCast(), 70);
+        $this->assertEquals($parties2[0]->getVoteCast(), 900);
+        $this->assertEquals($parties2[1]->getVoteCast(), 950);
+        $this->assertEquals($parties2[2]->getVoteCast(), 100);
+        $this->assertEquals($parties2[3]->getVoteCast(), 70);
     }
     
     public function testGetPresidentialNational()
@@ -230,21 +230,21 @@ class StatisticHandlerTest extends WebTestCase
         $NPP = $this->em->getRepository('PrBundle:PrParty')->find(1);
         $parties = $this->statisticHandler->getPresidentialNation();
         //Make sure to know the contain of $parties
-        $this->assertEquals($parties[0]->getName(), 'CPP');
-        $this->assertEquals($parties[1]->getName(), 'GFP');
-        $this->assertEquals($parties[2]->getName(), 'NCP');
-        $this->assertEquals($parties[3]->getName(), 'NDC');
-        $this->assertEquals($parties[4]->getName(), 'NPP');
-        $this->assertEquals($parties[5]->getName(), 'PCP');
-        $this->assertEquals($parties[6]->getName(), 'PPP');
-        $this->assertEquals($parties[7]->getName(), 'UFP');
+        $this->assertEquals($parties[0]->getName(), 'NPP');
+        $this->assertEquals($parties[1]->getName(), 'NDC');
+        $this->assertEquals($parties[2]->getName(), 'UFP');
+        $this->assertEquals($parties[3]->getName(), 'CPP');
+        $this->assertEquals($parties[4]->getName(), 'PPP');
+        $this->assertEquals($parties[5]->getName(), 'NCP');
+        $this->assertEquals($parties[6]->getName(), 'PCP');
+        $this->assertEquals($parties[7]->getName(), 'GFP');
         //Test the vote cast value vs the fixture one (see test_scenario doc)
-        $this->assertEquals($parties[0]->getVoteCast(), 10971);
-        $this->assertEquals($parties[1]->getVoteCast(), 0);
-        $this->assertEquals($parties[2]->getVoteCast(), 0);
-        $this->assertEquals($parties[3]->getVoteCast(), 19657);
-        $this->assertEquals($parties[4]->getVoteCast(), 19168);
-        $this->assertEquals($parties[7]->getVoteCast(), 15963);
+        $this->assertEquals($parties[0]->getVoteCast(), 19168);
+        $this->assertEquals($parties[1]->getVoteCast(), 19657);
+        $this->assertEquals($parties[2]->getVoteCast(), 15963);
+        $this->assertEquals($parties[3]->getVoteCast(), 10971);
+        $this->assertEquals($parties[4]->getVoteCast(), 0);
+        $this->assertEquals($parties[5]->getVoteCast(), 0);
     }
 
 
@@ -254,43 +254,43 @@ class StatisticHandlerTest extends WebTestCase
         $region1 = $this->em->getRepository('VtallyBundle:Region')->find(1);
         
         $parties2 = $this->statisticHandler->getPresidentialRegion($region1);
-        $this->assertEquals($parties2[4]->getName(), 'NPP');
-        $this->assertEquals($parties2[3]->getName(), 'NDC');
-        $this->assertEquals($parties2[7]->getName(), 'UFP');
-        $this->assertEquals($parties2[0]->getName(), 'CPP');
+        $this->assertEquals($parties2[0]->getName(), 'NPP');
+        $this->assertEquals($parties2[1]->getName(), 'NDC');
+        $this->assertEquals($parties2[2]->getName(), 'UFP');
+        $this->assertEquals($parties2[3]->getName(), 'CPP');
         
-        $this->assertEquals($parties2[4]->getVoteCast(), 2500);
-        $this->assertEquals($parties2[3]->getVoteCast(), 2750);
-        $this->assertEquals($parties2[7]->getVoteCast(), 2100);
-        $this->assertEquals($parties2[0]->getVoteCast(), 1220);
+        $this->assertEquals($parties2[0]->getVoteCast(), 2500);
+        $this->assertEquals($parties2[1]->getVoteCast(), 2750);
+        $this->assertEquals($parties2[2]->getVoteCast(), 2100);
+        $this->assertEquals($parties2[3]->getVoteCast(), 1220);
         
         //Test for region 2
         $region2 = $this->em->getRepository('VtallyBundle:Region')->find(2);
         
         $parties2 = $this->statisticHandler->getPresidentialRegion($region2);
-        $this->assertEquals($parties2[4]->getName(), 'NPP');
-        $this->assertEquals($parties2[3]->getName(), 'NDC');
-        $this->assertEquals($parties2[7]->getName(), 'UFP');
-        $this->assertEquals($parties2[0]->getName(), 'CPP');
+        $this->assertEquals($parties2[0]->getName(), 'NPP');
+        $this->assertEquals($parties2[1]->getName(), 'NDC');
+        $this->assertEquals($parties2[2]->getName(), 'UFP');
+        $this->assertEquals($parties2[3]->getName(), 'CPP');
         
-        $this->assertEquals($parties2[4]->getVoteCast(), 4620);
-        $this->assertEquals($parties2[3]->getVoteCast(), 5375);
-        $this->assertEquals($parties2[7]->getVoteCast(), 7020);
-        $this->assertEquals($parties2[0]->getVoteCast(), 4150);
+        $this->assertEquals($parties2[0]->getVoteCast(), 4620);
+        $this->assertEquals($parties2[1]->getVoteCast(), 5375);
+        $this->assertEquals($parties2[2]->getVoteCast(), 7020);
+        $this->assertEquals($parties2[3]->getVoteCast(), 4150);
         
         //Test for region 3
         $region3 = $this->em->getRepository('VtallyBundle:Region')->find(3);
         
         $parties2 = $this->statisticHandler->getPresidentialRegion($region3);
-        $this->assertEquals($parties2[4]->getName(), 'NPP');
-        $this->assertEquals($parties2[3]->getName(), 'NDC');
-        $this->assertEquals($parties2[7]->getName(), 'UFP');
-        $this->assertEquals($parties2[0]->getName(), 'CPP');
+        $this->assertEquals($parties2[0]->getName(), 'NPP');
+        $this->assertEquals($parties2[1]->getName(), 'NDC');
+        $this->assertEquals($parties2[2]->getName(), 'UFP');
+        $this->assertEquals($parties2[3]->getName(), 'CPP');
         
-        $this->assertEquals($parties2[4]->getVoteCast(), 12048);
-        $this->assertEquals($parties2[3]->getVoteCast(), 11532);
-        $this->assertEquals($parties2[7]->getVoteCast(), 6843);
-        $this->assertEquals($parties2[0]->getVoteCast(), 5601);
+        $this->assertEquals($parties2[0]->getVoteCast(), 12048);
+        $this->assertEquals($parties2[1]->getVoteCast(), 11532);
+        $this->assertEquals($parties2[2]->getVoteCast(), 6843);
+        $this->assertEquals($parties2[3]->getVoteCast(), 5601);
     }
     
     public function testSetPresidentialVoteCast()

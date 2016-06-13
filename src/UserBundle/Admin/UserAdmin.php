@@ -42,6 +42,7 @@ class UserAdmin extends Admin
         $listMapper
             ->add('id')
             ->add('firstName')
+            ->add('image')
             ->add('lastName')
             ->add('userToken')
             ->add('lastLogin')
@@ -90,6 +91,10 @@ class UserAdmin extends Admin
                         'first_options'  => array('label' => 'Password'),
                         'second_options' => array('label' => 'Repeat Password'),
                     ))
+                ->add('pollingStation', 'sonata_type_model_autocomplete', 
+                  array('required' => false,
+                        'property' => 'name',
+                        'to_string_callback' => function($entity, $property){return $entity->getName();}))
             ->end()
                 
         ->with('Personal information', array('class' => 'col-md-4'))
@@ -97,21 +102,9 @@ class UserAdmin extends Admin
             ->add('firstName')
             ->add('lastName')
             ->add('phoneNumber')
-            ->add('address');
+            ->add('address')
+            ->add('file', 'file', array('required' => true));
         
-                
-        
-        
-        if($this->isGranted('ROLE_ADMIN')){
-            
-            $formMapper
-                 ->add('pollingStation', 'sonata_type_model_autocomplete', 
-                  array('required' => false,
-                        'property' => 'name',
-                        'to_string_callback' => function($entity, $property){return $entity->getName();}))
-                ->end();
-            
-        }
         
         if ($this->isGranted('EDIT')) {
             $formMapper->end()
@@ -138,11 +131,6 @@ class UserAdmin extends Admin
             ->add('firstName')
             ->add('lastName')
         ;
-    }
-    
-    public function preUpdate($user) {
-        $this->userManager->updateCanonicalFields($user);
-        $this->userManager->updatePassword($user);
     }
     
     public function preValidate($user) {
@@ -174,5 +162,22 @@ class UserAdmin extends Admin
     public function __construct($code, $class, $baseControllerName, $manager = null) {
         parent::__construct($code, $class, $baseControllerName);
         $this->userManager = $manager;
+    }
+    
+    public function prePersist($user)
+    {
+        $this->manageFileUpload($user);
+    }
+    
+    public function preUpdate($user) {
+        $this->userManager->updateCanonicalFields($user);
+        $this->userManager->updatePassword($user);
+    }
+
+    private function manageFileUpload($image)
+    {
+        if ($image->getFile()) {
+            $image->refreshUpdated();
+        }
     }
 }

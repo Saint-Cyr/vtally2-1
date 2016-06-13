@@ -5,11 +5,13 @@ namespace UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * User
  *
  * @ORM\Table(name="user")
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UserRepository")
  */
 class User extends BaseUser
@@ -24,6 +26,18 @@ class User extends BaseUser
     protected $id;
     
     private $type;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
+    
+    /**
+     * Unmapped property to handle file uploads
+     */
+    private $file;
 
     /**
      * @var string
@@ -114,6 +128,26 @@ class User extends BaseUser
      */
     private $tokenTime;
     
+    /**
+    * Sets file.
+    *
+    * @param UploadedFile $file
+    */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+    }
+
+    /**
+    * Get file.
+    *
+    * @return UploadedFile
+    */
+    public function getFile()
+    {
+        return $this->file;
+    }
+    
     public function isUserTokenValid($configuredTime)
     {
         //Get the last minute
@@ -167,6 +201,48 @@ class User extends BaseUser
         }
         
         return false;
+    }
+    
+    /**
+    * @ORM\PostPersist()
+    */
+    public function lifecycleFileUpload()
+    {
+        $this->upload();
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function refreshUpdated()
+    {
+        $this->setUpdated(new \DateTime());
+    }
+    
+    /**
+     * @ORM\PreRemove()
+     */
+    public function removeUPdate()
+    {
+        //Check whether the file exists first
+        if (file_exists(getcwd().'/upload/images/'.$this->getImage())){
+            //Remove it
+            @unlink(getcwd().'/upload/images/'.$this->getImage());
+        }
+        
+        return;
+    }
+    
+    public function upload()
+    {
+        // the file property can be empty if the field is not required
+        if (null === $this->getFile()) {
+            return;
+        }
+        // move takes the target directory and target filename as params
+        $this->getFile()->move(getcwd().'/upload/images', $this->getId().'.'.$this->getFile()->guessExtension());
+        // clean up the file property as you won't need it anymore
+        $this->setFile(null);
     }
     
     public function __construct() 
@@ -272,16 +348,14 @@ class User extends BaseUser
     }
 
     /**
-     * Set image
-     *
-     * @param string $image
+     * @ORM\PrePersist()
      *
      * @return User
      */
     public function setImage($image)
     {
-        $this->image = $image;
-
+        $this->image = $this->getFile()->guessExtension();
+        
         return $this;
     }
 
@@ -292,7 +366,7 @@ class User extends BaseUser
      */
     public function getImage()
     {
-        return $this->image;
+        return $this->getId().'.'.$this->image;
     }
 
     /**
@@ -480,6 +554,40 @@ class User extends BaseUser
      * @return boolean
      */
     public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return User
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
     {
         return $this->active;
     }
