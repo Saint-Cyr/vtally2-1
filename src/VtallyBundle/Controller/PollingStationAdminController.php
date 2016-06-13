@@ -21,9 +21,9 @@ class PollingStationAdminController extends CRUDController
         
         $modelManager = $this->admin->getModelManager();
 
-        $target = $modelManager->find($this->admin->getClass(), $request->get('targetId'));
+        /*$target = $modelManager->find($this->admin->getClass(), $request->get('targetId'));
 
-        /*if ($target === null){
+        if ($target === null){
             $this->addFlash('sonata_flash_info', 'flash_batch_merge_no_target');
 
             return new RedirectResponse(
