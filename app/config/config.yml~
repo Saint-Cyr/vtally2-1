@@ -29,6 +29,8 @@ sonata_block:
         vtally.block_import_csv: ~
 
 sonata_admin:
+  templates:
+      layout: VtallyBundle::standard_layout.html.twig
   title_logo: images/logo.png
   title: VTALLY2
   dashboard:
@@ -90,6 +92,9 @@ framework:
 
 # Twig Configuration
 twig:
+    form:
+        resources:
+            - 'SonataCoreBundle:Form:datepicker.html.twig'
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
 
@@ -122,6 +127,3 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-
-symfony_debug_toolbar_git:
-    repository_commit_url: "https://github.com/Saint-Cyr/vtally2/commit"

@@ -205,6 +205,7 @@ class User extends BaseUser
     
     /**
     * @ORM\PostPersist()
+    * @ORM\PostUpdate()
     */
     public function lifecycleFileUpload()
     {
@@ -349,6 +350,7 @@ class User extends BaseUser
 
     /**
      * @ORM\PrePersist()
+     * @ORM\PreUpdate()
      *
      * @return User
      */

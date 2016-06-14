@@ -40,9 +40,8 @@ class UserAdmin extends Admin
         }
         
         $listMapper
-            ->add('id')
+            ->add('image', null, array('template' => 'UserBundle:User:list.html.twig'))
             ->add('firstName')
-            ->add('image')
             ->add('lastName')
             ->add('userToken')
             ->add('lastLogin')
@@ -130,6 +129,7 @@ class UserAdmin extends Admin
             ->add('roles')
             ->add('firstName')
             ->add('lastName')
+            ->add('image')
         ;
     }
     
@@ -172,6 +172,7 @@ class UserAdmin extends Admin
     public function preUpdate($user) {
         $this->userManager->updateCanonicalFields($user);
         $this->userManager->updatePassword($user);
+        $this->manageFileUpload($user);
     }
 
     private function manageFileUpload($image)

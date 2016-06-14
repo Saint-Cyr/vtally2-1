@@ -1,0 +1,7 @@
+<td>
+    {% if object.image == "" %}
+        <img src="{{ asset('upload/images/profile2.png') }}" alt="{{ object.firstName }}" width="80px"/>
+    {% else %}
+        <img src="{{ asset('upload/images/'~object.image) }}" alt="{{ object.firstName }}" width="80px"/>
+    {% endif %}
+</td>

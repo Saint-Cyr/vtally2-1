@@ -39,3 +39,9 @@ services:
         arguments: [~, PrBundle\Entity\PrEditedVoteCast, SonataAdminBundle:CRUD]
         tags:
             - { name: sonata.admin, manager_type: orm, group: Presidential, label: Edited Vote Cast }
+
+    pr.admin.pr_dependent_candidate:
+        class: PrBundle\Admin\PrDependentCandidateAdmin
+        arguments: [~, PrBundle\Entity\PrDependentCandidate, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Presidential, label: Presidential Candidate }

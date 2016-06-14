@@ -29,6 +29,8 @@ sonata_block:
         vtally.block_import_csv: ~
 
 sonata_admin:
+  templates:
+      layout: VtallyBundle::standard_layout.html.twig
   title_logo: images/logo.png
   title: VTALLY2
   dashboard:
