@@ -30,7 +30,6 @@ class PrDependentCandidateAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('image', null, array('template' => 'VtallyBundle:Default:list.html.twig'))
-            //->add('image')
             ->add('firstName')
             ->add('lastName')
             ->add('dob')

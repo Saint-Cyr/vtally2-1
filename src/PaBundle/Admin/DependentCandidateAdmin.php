@@ -28,11 +28,11 @@ class DependentCandidateAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
+            ->add('image', null, array('template' => 'PaBundle:DepCandidate:list.html.twig'))
             ->add('firstName')
             ->add('lastName')
             ->add('dob')
-            ->add('candidacyNumber')
+            ->add('paParty')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -49,12 +49,14 @@ class DependentCandidateAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('firstName')
-            ->add('lastName')
-            ->add('dob')
-            ->add('paParty')
-            ->add('constituency')
-            ->add('candidacyNumber')
+            ->with('Personal details', array('class' => 'col-md-6'))      
+                ->add('firstName')
+                ->add('lastName')
+                ->add('paParty')
+                ->add('constituency')
+                ->add('file', 'file')
+                ->add('dob', 'date')
+            ->end()
         ;
     }
 
@@ -69,5 +71,22 @@ class DependentCandidateAdmin extends Admin
             ->add('dob')
             ->add('candidacyNumber')
         ;
+    }
+    
+    public function prePersist($image)
+    {
+        $this->manageFileUpload($image);
+    }
+
+    public function preUpdate($image)
+    {
+        $this->manageFileUpload($image);
+    }
+
+    private function manageFileUpload($image)
+    {
+        if ($image->getFile()) {
+            $image->refreshUpdated();
+        }
     }
 }

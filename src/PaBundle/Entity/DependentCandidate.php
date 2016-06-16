@@ -3,10 +3,11 @@
 namespace PaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * DependentCandidate
- *
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="dependent_candidate")
  * @ORM\Entity(repositoryClass="PaBundle\Repository\DependentCandidateRepository")
  */
@@ -30,7 +31,12 @@ class DependentCandidate
      */
     private $firstName;
     
-    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="image", type="string", length=255, unique=false, nullable=true)
+     */
+    private $image;
 
     /**
      * @var string
@@ -38,6 +44,18 @@ class DependentCandidate
      * @ORM\Column(name="lastName", type="string", length=255)
      */
     private $lastName;
+    
+    /**
+     * Unmapped property to handle file uploads
+     */
+    private $file;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
 
     /**
      * @var \DateTime
@@ -49,7 +67,7 @@ class DependentCandidate
     /**
      * @var int
      *
-     * @ORM\Column(name="candidacyNumber", type="integer")
+     * @ORM\Column(name="candidacyNumber", type="integer", nullable=true)
      */
     private $candidacyNumber;
 
@@ -69,6 +87,70 @@ class DependentCandidate
      * @ORM\JoinColumn(nullable=false)
      */
     private $constituency;
+    
+    /**
+    * @ORM\PostPersist()
+    * @ORM\PostUpdate()
+    */
+    public function lifecycleFileUpload()
+    {
+        $this->upload();
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function refreshUpdated()
+    {
+        $this->setUpdated(new \DateTime());
+    }
+    
+    /**
+     * @ORM\PreRemove()
+     */
+    public function removeUPdate()
+    {
+        //Check whether the file exists first
+        if (file_exists(getcwd().'/upload/images/parDepCandidate/'.$this->getImage())){
+            //Remove it
+            @unlink(getcwd().'/upload/images/parDepCandidate/'.$this->getImage());
+            
+        }
+        
+        return;
+    }
+    
+    public function upload()
+    {
+        // the file property can be empty if the field is not required
+        if (null === $this->getFile()) {
+            return;
+        }
+        // move takes the target directory and target filename as params
+        $this->getFile()->move(getcwd().'/upload/images/parDepCandidate', $this->getId().'.'.$this->getFile()->guessExtension());
+        // clean up the file property as you won't need it anymore
+        $this->setFile(null);
+    }
+    
+    /**
+    * Sets file.
+    *
+    * @param UploadedFile $file
+    */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+    }
+
+    /**
+    * Get file.
+    *
+    * @return UploadedFile
+    */
+    public function getFile()
+    {
+        return $this->file;
+    }
     
     public function isIndependentCandidate()
     {
@@ -103,6 +185,57 @@ class DependentCandidate
     public function getId()
     {
         return $this->id;
+    }
+    
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return PrDependentCandidate
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set image
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     * @param string $image
+     *
+     * @return PrDependentCandidate
+     */
+    public function setImage($image)
+    {
+        if($this->getFile() !== null){
+            $this->image = $this->getFile()->guessExtension();
+        }
+        
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->getId().'.'.$this->image;
     }
 
     /**

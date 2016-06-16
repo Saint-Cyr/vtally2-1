@@ -101,9 +101,9 @@ class PrDependentCandidate
     public function removeUPdate()
     {
         //Check whether the file exists first
-        if (file_exists(getcwd().'/upload/images/presidentialCandidate/'.$this->getImage())){
+        if (file_exists(getcwd().'/upload/images/parDepCandidate/'.$this->getImage())){
             //Remove it
-            @unlink(getcwd().'/upload/images/presidentialCandidate/'.$this->getImage());
+            @unlink(getcwd().'/upload/images/parDepCandidate/'.$this->getImage());
             
         }
         
@@ -117,7 +117,7 @@ class PrDependentCandidate
             return;
         }
         // move takes the target directory and target filename as params
-        $this->getFile()->move(getcwd().'/upload/images/presidentialCandidate', $this->getId().'.'.$this->getFile()->guessExtension());
+        $this->getFile()->move(getcwd().'/upload/images/parDepCandidate', $this->getId().'.'.$this->getFile()->guessExtension());
         // clean up the file property as you won't need it anymore
         $this->setFile(null);
     }
