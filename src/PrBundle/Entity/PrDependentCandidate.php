@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * PrDependentCandidate
- *
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="pr_dependent_candidate")
  * @ORM\Entity(repositoryClass="PrBundle\Repository\PrDependentCandidateRepository")
  */
@@ -44,7 +44,7 @@ class PrDependentCandidate
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="string", length=255, unique=true, nullable=true)
+     * @ORM\Column(name="image", type="string", length=255, unique=false, nullable=true)
      */
     private $image;
 
@@ -79,8 +79,8 @@ class PrDependentCandidate
     }
     
     /**
-    * @ORM\PrePersist()
-    * @ORM\PreUpdate()
+    * @ORM\PostPersist()
+    * @ORM\PostUpdate()
     */
     public function lifecycleFileUpload()
     {
@@ -101,9 +101,9 @@ class PrDependentCandidate
     public function removeUPdate()
     {
         //Check whether the file exists first
-        if (file_exists(getcwd().'/upload/images/'.$this->getImage())){
+        if (file_exists(getcwd().'/upload/images/presidentialCandidate/'.$this->getImage())){
             //Remove it
-            @unlink(getcwd().'/upload/images/'.$this->getImage());
+            @unlink(getcwd().'/upload/images/presidentialCandidate/'.$this->getImage());
             
         }
         
@@ -117,8 +117,7 @@ class PrDependentCandidate
             return;
         }
         // move takes the target directory and target filename as params
-        $this->image = $this->getName().'.'.$this->getFile()->guessExtension();
-        $this->getFile()->move(getcwd().'/upload/images', $this->getName().'.'.$this->getFile()->guessExtension());
+        $this->getFile()->move(getcwd().'/upload/images/presidentialCandidate', $this->getId().'.'.$this->getFile()->guessExtension());
         // clean up the file property as you won't need it anymore
         $this->setFile(null);
     }
@@ -265,15 +264,18 @@ class PrDependentCandidate
 
     /**
      * Set image
-     *
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
      * @param string $image
      *
      * @return PrDependentCandidate
      */
     public function setImage($image)
     {
-        $this->image = $image;
-
+        if($this->getFile() !== null){
+            $this->image = $this->getFile()->guessExtension();
+        }
+        
         return $this;
     }
 
@@ -284,6 +286,6 @@ class PrDependentCandidate
      */
     public function getImage()
     {
-        return $this->image;
+        return $this->getId().'.'.$this->image;
     }
 }

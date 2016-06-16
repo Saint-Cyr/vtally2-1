@@ -51,6 +51,7 @@ class NotificationHandler
     */
     public function processNotification($transactionType, $notificationType, $votes = null, User $user)
     {
+        $this->sendSMS(1223, 'sldfj');
         //Get the pollingStation
         $pollingStation = $user->getPollingStation();
         //Get the firstVerifier
@@ -83,9 +84,15 @@ class NotificationHandler
     public function sendSMS($phoneNumber, $message)
     {
         //comment to prevent automated test to execute it
-        /*$phone = '+233'.$phoneNumber;
+        //$phone = '+233'.$phoneNumber;
+        /*$message = 'Ma tresore ne te gene pas pr les pti blems d examen, machins...soit confiante et ds la joie: lexamen marche ou pas on est
+                   sur la bne vw crw-mw ma tresore. Il est bon pr ns ke lentrepriz swt en difficulte tu vas comprdre kan on va coser
+                   apres alrs relax cherie et surtout ne confond pas ton sors a celle dautres tu es trop loin au dessu dells bipe moi si tu as recu ce msg !';
+        
+        $phone = '+237676020807';
         //load it from configuration (DB or file)
-        $sender_id = 'VTALLY';
+        //$sender_id = 'VTALLY';
+        $sender_id = 'S@int-Cyr';
         $key = "b448874f4b8bd19b9eff"; //your unique API key;
         $message = urlencode($message); //encode url;
         $url = "http://bulk.mnotify.net/smsapi?key=$key&to=$phone&msg=$message&sender_id=$sender_id";
