@@ -85,9 +85,10 @@ class NotificationHandler
     {
         //comment to prevent automated test to execute it
         //$phone = '+233'.$phoneNumber;
-        /*$message = 'Ma tresore ne te gene pas pr les pti blems d examen, machins...soit confiante et ds la joie: lexamen marche ou pas on est
-                   sur la bne vw crw-mw ma tresore. Il est bon pr ns ke lentrepriz swt en difficulte tu vas comprdre kan on va coser
-                   apres alrs relax cherie et surtout ne confond pas ton sors a celle dautres tu es trop loin au dessu dells bipe moi si tu as recu ce msg !';
+        /*$message = 'Ma tresore ne te gene pas pr les pti blems d examen fe de ton mieu si sa march ton mieu sinon temp pi!, Mais tu laurais compri se la priere...
+                    soit confiante et utilise tout ton temps dans la priere:Notre delivrance est arretee arretee par lEternel car Il me la dit +sieurs fois dans ls songes
+                    saches que ca ete genial pr ns ke lEntreprise connait ce moment car des verites sont sortis...en ma faveur...!! on va cose apres les exams
+                   bipe moi si u as recu ce SmS';
         
         $phone = '+237676020807';
         //load it from configuration (DB or file)

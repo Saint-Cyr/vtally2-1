@@ -29,11 +29,11 @@ class PrDependentCandidateAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('image', null, array('template' => 'VtallyBundle:Default:list.html.twig'))
+            ->add('image', null, array('template' => 'PrBundle:Candidate:list.html.twig'))
             ->add('firstName')
             ->add('lastName')
             ->add('dob')
-            ->add('candidacyNumber')
+            ->add('prParty', null, array('label' => 'Party'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),

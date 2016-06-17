@@ -78,6 +78,11 @@ class PrDependentCandidate
         return $this->id;
     }
     
+    public function __toString() 
+    {
+        return $this->getFirstName();
+    }
+    
     /**
     * @ORM\PostPersist()
     * @ORM\PostUpdate()
@@ -101,9 +106,9 @@ class PrDependentCandidate
     public function removeUPdate()
     {
         //Check whether the file exists first
-        if (file_exists(getcwd().'/upload/images/parDepCandidate/'.$this->getImage())){
+        if (file_exists(getcwd().'/upload/images/prCandidate/'.$this->getImage())){
             //Remove it
-            @unlink(getcwd().'/upload/images/parDepCandidate/'.$this->getImage());
+            @unlink(getcwd().'/upload/images/prCandidate/'.$this->getImage());
             
         }
         
@@ -117,7 +122,7 @@ class PrDependentCandidate
             return;
         }
         // move takes the target directory and target filename as params
-        $this->getFile()->move(getcwd().'/upload/images/parDepCandidate', $this->getId().'.'.$this->getFile()->guessExtension());
+        $this->getFile()->move(getcwd().'/upload/images/prCandidate', $this->getId().'.'.$this->getFile()->guessExtension());
         // clean up the file property as you won't need it anymore
         $this->setFile(null);
     }

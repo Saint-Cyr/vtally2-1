@@ -48,7 +48,7 @@ class PrParty
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="string", length=255, unique=true, nullable=true)
+     * @ORM\Column(name="image", type="string", length=255, unique=false, nullable=true)
      */
     private $image;
     
@@ -124,8 +124,8 @@ class PrParty
     }
     
     /**
-    * @ORM\PrePersist()
-    * @ORM\PreUpdate()
+    * @ORM\PostPersist()
+    * @ORM\PostUpdate()
     */
     public function lifecycleFileUpload()
     {
@@ -146,15 +146,14 @@ class PrParty
     public function removeUPdate()
     {
         //Check whether the file exists first
-        if (file_exists(getcwd().'/upload/images/'.$this->getImage())){
+        if (file_exists(getcwd().'/upload/images/prParty/'.$this->getImage())){
             //Remove it
-            @unlink(getcwd().'/upload/images/'.$this->getImage());
+            @unlink(getcwd().'/upload/images/prParty/'.$this->getImage());
             
         }
         
         return;
     }
-    
     
     public function upload()
     {
@@ -163,8 +162,7 @@ class PrParty
             return;
         }
         // move takes the target directory and target filename as params
-        $this->image = $this->getName().'.'.$this->getFile()->guessExtension();
-        $this->getFile()->move(getcwd().'/upload/images', $this->getName().'.'.$this->getFile()->guessExtension());
+        $this->getFile()->move(getcwd().'/upload/images/prParty', $this->getId().'.'.$this->getFile()->guessExtension());
         // clean up the file property as you won't need it anymore
         $this->setFile(null);
     }
@@ -260,15 +258,18 @@ class PrParty
 
     /**
      * Set image
-     *
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
      * @param string $image
      *
-     * @return PrParty
+     * @return PrDependentCandidate
      */
     public function setImage($image)
     {
-        $this->image = $image;
-
+        if($this->getFile() !== null){
+            $this->image = $this->getFile()->guessExtension();
+        }
+        
         return $this;
     }
 
@@ -279,7 +280,7 @@ class PrParty
      */
     public function getImage()
     {
-        return $this->image;
+        return $this->getId().'.'.$this->image;
     }
 
     /**

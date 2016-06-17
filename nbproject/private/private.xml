@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/PaBundle/Admin/DependentCandidateAdmin.php</file>
             <file>file:/opt/lampp/htdocs/VTALLY/src/PrBundle/Admin/PrDependentCandidateAdmin.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/UserBundle/</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/UserBundle/Admin/UserAdmin.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/PrBundle/Entity/PrParty.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/PrBundle/Admin/PrPartyAdmin.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/PaBundle/Resources/views/DepCandidate/list.html.twig</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/PaBundle/Entity/DependentCandidate.php</file>
             <file>file:/opt/lampp/htdocs/VTALLY/src/PrBundle/Entity/PrDependentCandidate.php</file>
         </group>
     </open-files>

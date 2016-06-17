@@ -29,11 +29,10 @@ class IndependentCandidateAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
+            ->add('image', null, array('template' => 'PaBundle:IndCandidate:list.html.twig'))
             ->add('firstName')
             ->add('lastName')
             ->add('dob')
-            ->add('candidacyNumber')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -43,18 +42,20 @@ class IndependentCandidateAdmin extends Admin
             ))
         ;
     }
-
+    
     /**
      * @param FormMapper $formMapper
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('firstName')
-            ->add('constituency')
-            ->add('lastName')
-            ->add('dob')
-            ->add('candidacyNumber')
+            ->with('Personal details', array('class' => 'col-md-6'))      
+                ->add('firstName')
+                ->add('lastName')
+                ->add('constituency')
+                ->add('file', 'file')
+                ->add('dob', 'date')
+            ->end()
         ;
     }
 
@@ -69,5 +70,22 @@ class IndependentCandidateAdmin extends Admin
             ->add('dob')
             ->add('candidacyNumber')
         ;
+    }
+    
+    public function prePersist($image)
+    {
+        $this->manageFileUpload($image);
+    }
+
+    public function preUpdate($image)
+    {
+        $this->manageFileUpload($image);
+    }
+
+    private function manageFileUpload($image)
+    {
+        if ($image->getFile()) {
+            $image->refreshUpdated();
+        }
     }
 }
