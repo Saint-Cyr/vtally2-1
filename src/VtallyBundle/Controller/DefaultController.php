@@ -140,4 +140,17 @@ class DefaultController extends Controller
             
         return $this->redirect($this->generateUrl($route));
     }
+    
+    public function notificationAction()
+    {
+        $data = array('key1' => 10, 'key2' => 12, 'key3' => 18);
+        $data = json_encode($data);
+        return new Response($data);
+        //Get the em
+        $em = $this->get('doctrine')->getManager();
+        //Get the all the nofication or the contexted one depending on the connected user role
+        $notifications = $em->getRepository('VtallyBundle:Notification')->findAll();
+        return $this->render('VtallyBundle:Default:notification.html.twig', array('notifications' => $notifications));
+        
+    }
 }

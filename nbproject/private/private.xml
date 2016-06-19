@@ -3,11 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/PaBundle/Admin/DependentCandidateAdmin.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/PrBundle/Admin/PrDependentCandidateAdmin.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/PaBundle/Resources/views/DepCandidate/list.html.twig</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/PaBundle/Entity/DependentCandidate.php</file>
-            <file>file:/opt/lampp/htdocs/VTALLY/src/PrBundle/Entity/PrDependentCandidate.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Repository/NotificationRepository.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Controller/DefaultController.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Resources/config/routing.yml</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Resources/views/vote/charts.html.twig</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Tests/Component/NotificationHandlerTest.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Tests/Entity/ConstituencyTest.php</file>
+            <file>file:/opt/lampp/htdocs/VTALLY/src/VtallyBundle/Resources/views/Default/notification.html.twig</file>
         </group>
     </open-files>
 </project-private>

@@ -10,4 +10,8 @@ namespace VtallyBundle\Repository;
  */
 class NotificationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getPrPinkSheet()
+    {
+        
+    }
 }
