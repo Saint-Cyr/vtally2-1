@@ -2,6 +2,10 @@ vtally_dashboard:
     path:     /
     defaults: { _controller: VtallyBundle:Default:dashboard }
     
+vtally_national:
+    path:     /national
+    defaults: { _controller: VtallyBundle:Default:national }
+    
 vtally_notification:
     path:     /notification
     defaults: { _controller: VtallyBundle:Default:notification }

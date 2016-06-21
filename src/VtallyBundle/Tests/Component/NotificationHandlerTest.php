@@ -37,4 +37,12 @@ class NotificationHandlerTest extends WebTestCase
         $outPut = $notificationHandler->processNotification('default', 'Matching-vote', 777, $user);
         $this->assertEquals(null, $outPut);
     }
+    
+    public function testGetComplitedCollationCenter()
+    {
+        //Get the notification handler
+        $notificationHandler = $this->application->getKernel()->getContainer()->get('vtally.notification_handler');
+        $collationCenter = $notificationHandler->getComplitedCollationCenter();
+        $this->assertEquals($collationCenter->getName(),  'Collation Center1');
+    }
 }

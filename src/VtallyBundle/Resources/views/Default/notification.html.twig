@@ -1,6 +1,20 @@
-<li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-file-text"></i><span id="notification-number" class="badge badge-red">3</span></a>
+<ul class="nav navbar navbar-top-links navbar-right mbn" id="notification">
+                    <li class="dropdown">
+                        <a data-hover="dropdown" href="#" class="dropdown-toggle">
+                            <i class="fa fa-file-text"></i>
+                            {% if notifications.prPinkSheet %}
+                            <span id="notification-number" class="badge badge-red">
+                                {{ notifications.prPinkSheetNumber }}
+                            </span>
+                            {% else %}
+                                <span id="notification-number" class="badge badge-violet">
+                                    Pr
+                                </span>
+                            {% endif %}
+                        </a>
+                        {% if notifications.prPinkSheet %}
                         <ul class="dropdown-menu dropdown-alerts">
-                            <li><p>Pr. Pink Sheet mismatch (2999999999)</p></li>
+                            <li><p>Pr. Pink Sheet mismatch (2)</p></li>
                             <li>
                                 <div class="dropdown-slimscroll">
                                     <ul>
@@ -16,6 +30,7 @@
                             </li>
                             <li class="last"><a href="#" class="text-right">See all alerts</a></li>
                         </ul>
+                        {% endif %}
                     </li>
                     <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-file-text"></i><span class="badge badge-red">3</span></a>
                         <ul class="dropdown-menu dropdown-alerts">
@@ -148,3 +163,4 @@
                             <li class="last"><a href="#">Read all messages</a></li>
                         </ul>
                     </li>
+    </ul>

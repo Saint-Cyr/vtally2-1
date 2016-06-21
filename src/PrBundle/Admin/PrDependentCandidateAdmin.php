@@ -54,8 +54,8 @@ class PrDependentCandidateAdmin extends AbstractAdmin
                 ->add('firstName')
                 ->add('lastName')
                 ->add('prParty')
-                ->add('dob', 'date')
-                ->add('file', 'file')
+                ->add('dob', 'sonata_type_date_picker', array('label' => 'Date of birth'))
+                ->add('file', 'file', array('label' => 'Passport picture'))
                 //->add('dob', 'sonata_type_date_picker', array('label'=>'Date de prise de fonction','dp_language'=>'fr','format'=>'dd/MM/yyyy'))
             ->end()
         ;

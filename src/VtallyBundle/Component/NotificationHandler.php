@@ -99,4 +99,10 @@ class NotificationHandler
         $url = "http://bulk.mnotify.net/smsapi?key=$key&to=$phone&msg=$message&sender_id=$sender_id";
         $result = file_get_contents($url);*/
     }
+    
+    public function getComplitedCollationCenter()
+    {
+        $collationCenter = $this->em->getRepository('VtallyBundle:CollationCenter')->find(1);
+        return $collationCenter;
+    }
 }

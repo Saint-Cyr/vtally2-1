@@ -53,12 +53,22 @@ class DefaultController extends Controller
         return $response;
     }
     
-    public function dashboardAction()
+    public function nationalAction()
     {
+        //Get the statisticHandler service
         $statisticHandler = $this->get('vtally.statistic_handler');
         //Get presidential vote cast for national level
         $presidentialVoteCast = $statisticHandler->getPresidentialNation();
         return $this->render('VtallyBundle:vote:charts.html.twig', array('presidentialVoteCast' => $presidentialVoteCast));
+    }
+
+    public function dashboardAction()
+    {
+        //Get the statisticHandler service
+        $statisticHandler = $this->get('vtally.statistic_handler');
+        //Get presidential vote cast for national level
+        $presidentialVoteCast = $statisticHandler->getPresidentialNation();
+        return $this->render('VtallyBundle:vote:dashboard.html.twig', array('presidentialVoteCast' => $presidentialVoteCast));
     }
     
     public function importCSVAction(Request $request) 
@@ -143,14 +153,27 @@ class DefaultController extends Controller
     
     public function notificationAction()
     {
-        $data = array('key1' => 10, 'key2' => 12, 'key3' => 18);
-        $data = json_encode($data);
-        return new Response($data);
-        //Get the em
+        //Get the notification handler
+        $notificationHandler = $this->get('vtally.notification_handler');
         $em = $this->get('doctrine')->getManager();
-        //Get the all the nofication or the contexted one depending on the connected user role
-        $notifications = $em->getRepository('VtallyBundle:Notification')->findAll();
-        return $this->render('VtallyBundle:Default:notification.html.twig', array('notifications' => $notifications));
-        
+        //Online users
+        $onlineUsers = $em->getRepository('UserBundle:User')->findByActive(true);
+        //Over-voting
+        $overVotings = $em->getRepository('VtallyBundle:Notification')->findByType(array('type' => 'over-voting'));
+        //Matching votes
+        $matchingVotes = $em->getRepository('VtallyBundle:Notification')->findByType(array('type' => 'matching-votes'));
+        //Complited collation centers
+        $collationCenters = $notificationHandler->getComplitedCollationCenter();
+        //Parliamentary vote-cast mismatch
+        $parVoteMismatchs = $em->getRepository('PaBundle:PaNotification')->findByType(array('type' => 'mismatching-vote'));
+        //Presidential vote cast mismatch
+        $prVoteMismatchs = $em->getRepository('PrBundle:PrNotification')->findByType(array('type' => 'mismatching-vote'));
+        //Parliamentary pink sheet mismatch
+        $parPinkSheet = $em->getRepository('PaBundle:PaNotification')->findByType(array('type' => 'pink-sheet mismatch'));
+        //Presidential pink sheet mismatch
+        $prPinkSheet = $em->getRepository('PrBundle:PrNotification')->findByType(array('type' => 'pink-sheet mismatch'));
+        //Gether all the notifications in an array
+        $notifications = array('prPinkSheet' => $prPinkSheet, 'paPinkSheet' => $parPinkSheet, 'prPinkSheetNumber' => 2);
+        return $this->render('VtallyBundle:Default:notification.html.twig', array('notifications' => $notifications)); 
     }
 }
