@@ -50,7 +50,7 @@ class NotificationAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
+            ->add('type')
             ->add('firstVerifier')
             ->add('secondVerifier')
             ->add('pollingStation')

@@ -226,9 +226,9 @@ class User extends BaseUser
     public function removeUPdate()
     {
         //Check whether the file exists first
-        if (file_exists(getcwd().'/upload/images/'.$this->getImage())){
+        if (file_exists(getcwd().'/upload/images/user/'.$this->getImage())){
             //Remove it
-            @unlink(getcwd().'/upload/images/'.$this->getImage());
+            @unlink(getcwd().'/upload/images/user/'.$this->getImage());
         }
         
         return;
@@ -241,7 +241,7 @@ class User extends BaseUser
             return;
         }
         // move takes the target directory and target filename as params
-        $this->getFile()->move(getcwd().'/upload/images', $this->getId().'.'.$this->getFile()->guessExtension());
+        $this->getFile()->move(getcwd().'/upload/images/user', $this->getId().'.'.$this->getFile()->guessExtension());
         // clean up the file property as you won't need it anymore
         $this->setFile(null);
     }

@@ -73,7 +73,7 @@ class NotificationHandler
         $notification->setSecondVerifier($secondVerifier->getPhoneNumber());
         //Persist $notification in DB
         $this->em->persist($notification);
-        //$this->em->flush();
+        $this->em->flush();
     }
     
     /**

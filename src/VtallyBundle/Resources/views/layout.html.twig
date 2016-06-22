@@ -38,10 +38,10 @@
         <nav id="topbar" role="navigation" style="margin-bottom: 0;" data-step="3" data-intro="&lt;b&gt;Topbar&lt;/b&gt; has other styles with live demo. Go to &lt;b&gt;Layouts-&gt;Header&amp;Topbar&lt;/b&gt; and check it out." class="navbar navbar-default navbar-static-top">
             <div class="navbar-header logo-collapsed">
                 <button type="button" data-toggle="collapse" data-target=".sidebar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-                <a id="logo" href="index.php" class="navbar-brand"><span class="fa fa-rocket"></span><span class="logo-text">VTALLY2</span><span style="display: none" class="logo-text-icon">µ</span></a></div>
+                <a id="logo" href="{{ path('vtally_dashboard') }}" class="navbar-brand"><span class="fa fa-rocket"></span><span class="logo-text">VTALLY2</span><span style="display: none" class="logo-text-icon">µ</span></a></div>
             <div class="topbar-main"><a id="menu-toggle" href="#" class="hidden-xs hidden"><i class="fa fa-bars"></i></a>
                 <ul class="nav navbar-nav    ">
-                    <li class="active"><a href="index.php">Dashboard</a></li>
+                    <li class="active"><a href="#">Dashboard</a></li>
                     <li><a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle">Layouts
                         &nbsp;<i class="fa fa-angle-down"></i></a>
                         <ul class="dropdown-menu">
@@ -123,12 +123,12 @@
                     </li>
                 </ul>
                 
-                <div class="news-update-box hidden-xs"><span class="text-uppercase mrm pull-left">News:</span>
+                <!--<div class="news-update-box hidden-xs"><span class="text-uppercase mrm pull-left">News:</span>
                     <ul id="news-update" class="ticker list-unstyled">
                         <li>Presidential: <span style="font-size: 15px;">NPP is leading NDC by 12 representing 0.1% of total vote cast</span></li>
                         <li>Parliamentary: Indenpent Candiates are getting majority by the diffence of 3 sites (0.3%)</li>
                     </ul>
-                </div>
+                </div>-->
                 {{ render(controller('VtallyBundle:Default:notification')) }}
             </div>
         </nav>
@@ -152,7 +152,6 @@
     <!--END TOPBAR-->
     <div id="wrapper"><!--BEGIN SIDEBAR MENU-->
         {% include 'VtallyBundle::menu.html.twig' %}
-        <?php include 'sideBarMenu.php'; ?>
         <div id="chat-form" class="fixed">
             <div class="chat-inner"><h2 class="chat-header"><a href="javascript:;" class="chat-form-close pull-right"><i class="glyphicon glyphicon-remove"></i></a><i class="fa fa-user"></i>&nbsp;
                 Chat
@@ -271,11 +270,11 @@ function startRefresh() {
     setTimeout(startRefresh,10000);
     /*$.get('http://localhost/VTALLY/web/app_dev.php/notification', function(data){
         $('#notification-number').html(data('key1'));   
-    });*/
+    });
     
     $.get('http://localhost/VTALLY/web/app_dev.php/national', function(data) {
         $('#vtallyChart').html(data);    
-    });
+    });*/
 }
 </script>
 </body>

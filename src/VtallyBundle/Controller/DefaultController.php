@@ -64,6 +64,12 @@ class DefaultController extends Controller
 
     public function dashboardAction()
     {
+        //when logout, goes to the login page
+        //Get the authorization checker
+        $authChecker = $this->get('security.authorization_checker');
+        if(!$authChecker->isGranted("ROLE_SUPER_ADMIN")){
+            return $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
         //Get the statisticHandler service
         $statisticHandler = $this->get('vtally.statistic_handler');
         //Get presidential vote cast for national level
@@ -157,23 +163,39 @@ class DefaultController extends Controller
         $notificationHandler = $this->get('vtally.notification_handler');
         $em = $this->get('doctrine')->getManager();
         //Online users
-        $onlineUsers = $em->getRepository('UserBundle:User')->findByActive(true);
+        $onlineUserObjects = $em->getRepository('UserBundle:User')->findByActive(true);
+        $onlineUsers = array('number' => count($onlineUserObjects), 'onlineUserObjects' => $onlineUserObjects);
         //Over-voting
-        $overVotings = $em->getRepository('VtallyBundle:Notification')->findByType(array('type' => 'over-voting'));
+        $overVotingObjects = $em->getRepository('VtallyBundle:Notification')->findByType(array('type' => 'over-voting'));
+        $overVotings = array('number' => count($overVotingObjects), 'overVotingObjects' => $overVotingObjects);
         //Matching votes
-        $matchingVotes = $em->getRepository('VtallyBundle:Notification')->findByType(array('type' => 'matching-votes'));
-        //Complited collation centers
-        $collationCenters = $notificationHandler->getComplitedCollationCenter();
+        $matchingVoteObjects = $em->getRepository('VtallyBundle:Notification')->findByType(array('type' => 'matching-vote'));
+        $matchingVotes = array('number' => count($matchingVoteObjects), 'matchingVoteObjects' => $matchingVoteObjects);
+        //Complited collation centers NB: to be called on the initializer server.
+        //$collationCentersObjects = $notificationHandler->getComplitedCollationCenter();
         //Parliamentary vote-cast mismatch
-        $parVoteMismatchs = $em->getRepository('PaBundle:PaNotification')->findByType(array('type' => 'mismatching-vote'));
+        $paMismatchingVoteObjects = $em->getRepository('PaBundle:PaNotification')->findByType(array('type' => 'mismatching-vote'));
+        $paMismatchingVote = array('number' => count($paMismatchingVoteObjects), 'paMismatchingVoteObjects' => $paMismatchingVoteObjects);
         //Presidential vote cast mismatch
-        $prVoteMismatchs = $em->getRepository('PrBundle:PrNotification')->findByType(array('type' => 'mismatching-vote'));
+        $prMismatchVoteObjects = $em->getRepository('PrBundle:PrNotification')->findByType(array('type' => 'mismatching-vote'));
+        $prMismatchVote = array('number' => count($prMismatchVoteObjects), 'prMismatchVoteObjects' => $prMismatchVoteObjects);
         //Parliamentary pink sheet mismatch
-        $parPinkSheet = $em->getRepository('PaBundle:PaNotification')->findByType(array('type' => 'pink-sheet mismatch'));
+        $paPinkSheetObjects = $em->getRepository('PaBundle:PaNotification')->findByType(array('type' => 'pink-sheet mismatch'));
+        $paPinkSheet = array('number' => count($paPinkSheetObjects), 'paPinkSheetObjects' => $paPinkSheetObjects);
         //Presidential pink sheet mismatch
-        $prPinkSheet = $em->getRepository('PrBundle:PrNotification')->findByType(array('type' => 'pink-sheet mismatch'));
+        $prPinkSheetObjects = $em->getRepository('PrBundle:PrNotification')->findByType(array('type' => 'pink-sheet mismatch'));
+        $prPinkSheet = array('number' => count($prPinkSheetObjects), 'prPinkSheetObjects' => $prPinkSheetObjects);
+        //Gether all the default data here
+        $default = array('overVotings' => $overVotings, 'matchingVotes' => $matchingVotes,
+                         'onlineUsers' => $onlineUsers);
+        //Gether all the presidential here
+        $prData = array('prPinkSheet' => $prPinkSheet, 'prMismatchVote' => $prMismatchVote);
+        //Gether all the parliamentary here
+        $paData = array('paPinkSheet' => $paPinkSheet, 'paMismatchVote' => $paMismatchingVote);       
         //Gether all the notifications in an array
-        $notifications = array('prPinkSheet' => $prPinkSheet, 'paPinkSheet' => $parPinkSheet, 'prPinkSheetNumber' => 2);
+        $notifications = array('presidential' => $prData, 'parliamentary' => $paData, 'default' => $default);
+        
+        //$notifications = array('prPinkSheet' => $prPinkSheet, 'paPinkSheet' => $parPinkSheet, 'prPinkSheetNumber' => count($prPinkSheet));
         return $this->render('VtallyBundle:Default:notification.html.twig', array('notifications' => $notifications)); 
     }
 }

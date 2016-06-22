@@ -1,166 +1,216 @@
 <ul class="nav navbar navbar-top-links navbar-right mbn" id="notification">
-                    <li class="dropdown">
-                        <a data-hover="dropdown" href="#" class="dropdown-toggle">
-                            <i class="fa fa-file-text"></i>
-                            {% if notifications.prPinkSheet %}
-                            <span id="notification-number" class="badge badge-red">
-                                {{ notifications.prPinkSheetNumber }}
-                            </span>
-                            {% else %}
-                                <span id="notification-number" class="badge badge-violet">
-                                    Pr
-                                </span>
-                            {% endif %}
-                        </a>
-                        {% if notifications.prPinkSheet %}
-                        <ul class="dropdown-menu dropdown-alerts">
-                            <li><p>Pr. Pink Sheet mismatch (2)</p></li>
+    <li class="dropdown">
+        <a data-hover="dropdown" href="#" class="dropdown-toggle">
+            <i class="fa fa-file-text"></i>
+            {% if notifications.presidential.prPinkSheet.number %}
+                <span id="notification-number" class="badge badge-red">
+                    {{ notifications.presidential.prPinkSheet.number }}
+                </span>
+            {% else %}
+                <span id="notification-number" class="badge badge-violet">
+                    Pr
+                </span>
+            {% endif %}
+        </a>
+        {% if notifications.presidential.prPinkSheet.number %}
+        <ul class="dropdown-menu dropdown-alerts">
+            <li><p>Pr. Pink Sheet mismatch ({{ notifications.presidential.prPinkSheet.number }})</p></li>
+                <li>
+                    <div class="dropdown-slimscroll">
+                        <ul>
+                        {% for object in notifications.presidential.prPinkSheet.prPinkSheetObjects %}
                             <li>
-                                <div class="dropdown-slimscroll">
-                                    <ul>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>New Comment<span class="pull-right text-muted small">4 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>3 New Followers<span class="pull-right text-muted small">12 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>Message Sent<span class="pull-right text-muted small">15 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>New Task<span class="pull-right text-muted small">18 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>Server Rebooted<span class="pull-right text-muted small">19 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>New Task<span class="pull-right text-muted small">2 days ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>Message Sent<span class="pull-right text-muted small">5 days ago</span></a></li>
-                                    </ul>
-                                </div>
+                                <a href="#">
+                                    <span class="label label-red"><i class="fa fa-file-text-o"></i></span>
+                                        {{ object.pollingStation }}
+                                    <span class="label label-orange pull-right">4 mins ago</span>
+                                </a>
                             </li>
-                            <li class="last"><a href="#" class="text-right">See all alerts</a></li>
+                        {% endfor %}
                         </ul>
-                        {% endif %}
-                    </li>
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-file-text"></i><span class="badge badge-red">3</span></a>
-                        <ul class="dropdown-menu dropdown-alerts">
-                            <li><p>Pa. Pink Sheet mismatch (2)</p></li>
+                    </div>
+                </li>
+            <li class="last"><a href="#" class="text-right">See all alerts</a></li>
+        </ul>
+        {% endif %}
+    </li>
+    
+    <li class="dropdown">
+        <a data-hover="dropdown" href="#" class="dropdown-toggle">
+            <i class="fa fa-file-text"></i>
+            {% if notifications.parliamentary.paPinkSheet.number %}
+            <span id="notification-number" class="badge badge-red">
+                {{ notifications.parliamentary.paPinkSheet.number }}
+            </span>
+            {% else %}
+                <span id="notification-number" class="badge badge-violet">
+                    Pa
+                </span>
+            {% endif %}
+        </a>
+        {% if notifications.parliamentary.paPinkSheet.number %}
+        <ul class="dropdown-menu dropdown-alerts">
+            <li><p>Pr. Pink Sheet mismatch ({{ notifications.parliamentary.paPinkSheet.number }})</p></li>
+                <li>
+                    <div class="dropdown-slimscroll">
+                        <ul>
+                        {% for object in notifications.parliamentary.paPinkSheet.paPinkSheetObjects %}
                             <li>
-                                <div class="dropdown-slimscroll">
-                                    <ul>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>New Comment<span class="pull-right text-muted small">4 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>3 New Followers<span class="pull-right text-muted small">12 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>Message Sent<span class="pull-right text-muted small">15 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>New Task<span class="pull-right text-muted small">18 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>Server Rebooted<span class="pull-right text-muted small">19 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>New Task<span class="pull-right text-muted small">2 days ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-file-text-o"></i></span>Message Sent<span class="pull-right text-muted small">5 days ago</span></a></li>
-                                    </ul>
-                                </div>
+                                <a href="#">
+                                    <span class="label label-red"><i class="fa fa-file-text-o"></i></span>
+                                        {{ object.pollingStation }}
+                                    <span class="label label-orange pull-right">4 mins ago</span>
+                                </a>
                             </li>
-                            <li class="last"><a href="#" class="text-right">See all alerts</a></li>
+                        {% endfor %}
                         </ul>
-                    </li>
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i><span class="badge badge-green">3</span></a>
-                        <ul class="dropdown-menu dropdown-alerts">
-                            <li><p>Collation Center (13)</p></li>
+                    </div>
+                </li>
+            <li class="last"><a href="#" class="text-right">See all alerts</a></li>
+        </ul>
+        {% endif %}
+    </li>
+    
+    <li class="dropdown">    
+        <a data-hover="dropdown" href="#" class="dropdown-toggle">
+                <i class="fa fa-bell fa-fw"></i>
+            {% if notifications.default.overVotings.number %}
+                <span class="badge badge-red">{{ notifications.default.overVotings.number }}</span>
+            {% endif %}
+        </a>
+        <ul class="dropdown-menu dropdown-alerts">
+        {% if notifications.default.overVotings.number %}
+            <li><p>Over-voting ({{ notifications.default.overVotings.number }})</p></li>
+            <li>
+                <div class="dropdown-slimscroll">
+                    <ul>
+                        {% for object in notifications.default.overVotings.overVotingObjects %}
                             <li>
-                                <div class="dropdown-slimscroll">
-                                    <ul>
-                                        <li><a href="#"><span class="label label-green"><i class="fa fa-bell"></i></span>New Comment<span class="pull-right text-muted small">4 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-green"><i class="fa fa-bell"></i></span>3 New Followers<span class="pull-right text-muted small">12 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-green"><i class="fa fa-bell"></i></span>Message Sent<span class="pull-right text-muted small">15 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-green"><i class="fa fa-bell"></i></span>New Task<span class="pull-right text-muted small">18 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-green"><i class="fa fa-bell"></i></span>Server Rebooted<span class="pull-right text-muted small">19 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-green"><i class="fa fa-bell"></i></span>New Task<span class="pull-right text-muted small">2 days ago</span></a></li>
-                                        <li><a href="#"><span class="label label-green"><i class="fa fa-bell"></i></span>Message Sent<span class="pull-right text-muted small">5 days ago</span></a></li>
-                                    </ul>
-                                </div>
+                                <a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i>
+                                    </span>{{ object.pollingStation }}<span class="pull-right text-muted small">4 mins ago</span>
+                                </a>
                             </li>
-                            <li class="last"><a href="#" class="text-right">See all alerts</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i><span class="badge badge-red">3</span></a>
-                        <ul class="dropdown-menu dropdown-alerts">
-                            <li><p>Over-voting (2)</p></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </li>
+            <li class="last"><a href="#" class="text-right">See all alerts</a></li>
+        {% endif %}
+        </ul>
+    </li>
+    
+    <li class="dropdown">    
+        <a data-hover="dropdown" href="#" class="dropdown-toggle">
+                <i class="fa fa-bell fa-fw"></i>
+            {% if notifications.presidential.prMismatchVote.number %}
+                <span class="badge badge-yellow">{{ notifications.presidential.prMismatchVote.number }}</span>
+            {% endif %}
+        </a>
+        <ul class="dropdown-menu dropdown-alerts">
+        {% if notifications.presidential.prMismatchVote.number %}
+            <li><p>Pr. Vote mismatch ({{ notifications.presidential.prMismatchVote.number }})</p></li>
+            <li>
+                <div class="dropdown-slimscroll">
+                    <ul>
+                        {% for object in notifications.presidential.prMismatchVote.prMismatchVoteObjects %}
                             <li>
-                                <div class="dropdown-slimscroll">
-                                    <ul>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-bell"></i></span>New Comment<span class="pull-right text-muted small">4 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-bell"></i></span>3 New Followers<span class="pull-right text-muted small">12 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-bell"></i></span>Message Sent<span class="pull-right text-muted small">15 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-bell"></i></span>New Task<span class="pull-right text-muted small">18 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-bell"></i></span>Server Rebooted<span class="pull-right text-muted small">19 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-bell"></i></span>New Task<span class="pull-right text-muted small">2 days ago</span></a></li>
-                                        <li><a href="#"><span class="label label-red"><i class="fa fa-bell"></i></span>Message Sent<span class="pull-right text-muted small">5 days ago</span></a></li>
-                                    </ul>
-                                </div>
+                                <a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i>
+                                    </span>{{ object.pollingStation }}<span class="pull-right text-muted small">4 mins ago</span>
+                                </a>
                             </li>
-                            <li class="last"><a href="#" class="text-right">See all alerts</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i><span class="badge badge-yellow">3</span></a>
-                        <ul class="dropdown-menu dropdown-alerts">
-                            <li><p>Pre. Vote mismatch (23)</p></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </li>
+            <li class="last"><a href="#" class="text-right">See all alerts</a></li>
+        {% endif %}
+        </ul>
+    </li>
+    
+    <li class="dropdown">    
+        <a data-hover="dropdown" href="#" class="dropdown-toggle">
+                <i class="fa fa-bell fa-fw"></i>
+            {% if notifications.presidential.prMismatchVote.number %}
+                <span class="badge badge-yellow">{{ notifications.presidential.prMismatchVote.number }}</span>
+            {% endif %}
+        </a>
+        <ul class="dropdown-menu dropdown-alerts">
+        {% if notifications.presidential.prMismatchVote.number %}
+            <li><p>Par. Vote mismatch ({{ notifications.presidential.prMismatchVote.number }})</p></li>
+            <li>
+                <div class="dropdown-slimscroll">
+                    <ul>
+                        {% for object in notifications.presidential.prMismatchVote.prMismatchVoteObjects %}
                             <li>
-                                <div class="dropdown-slimscroll">
-                                    <ul>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>New Comment<span class="pull-right text-muted small">4 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>3 New Followers<span class="pull-right text-muted small">12 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>Message Sent<span class="pull-right text-muted small">15 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>New Task<span class="pull-right text-muted small">18 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>Server Rebooted<span class="pull-right text-muted small">19 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>New Task<span class="pull-right text-muted small">2 days ago</span></a></li>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>Message Sent<span class="pull-right text-muted small">5 days ago</span></a></li>
-                                    </ul>
-                                </div>
+                                <a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i>
+                                    </span>{{ object.pollingStation }}<span class="pull-right text-muted small">4 mins ago</span>
+                                </a>
                             </li>
-                            <li class="last"><a href="#" class="text-right">See all alerts</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i><span class="badge badge-yellow">3</span></a>
-                        <ul class="dropdown-menu dropdown-alerts">
-                            <li><p>Par. Vote mismatch (23)</p></li>
-                            <li>
-                                <div class="dropdown-slimscroll">
-                                    <ul>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>New Comment<span class="pull-right text-muted small">4 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>3 New Followers<span class="pull-right text-muted small">12 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>Message Sent<span class="pull-right text-muted small">15 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>New Task<span class="pull-right text-muted small">18 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>Server Rebooted<span class="pull-right text-muted small">19 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>New Task<span class="pull-right text-muted small">2 days ago</span></a></li>
-                                        <li><a href="#"><span class="label label-yellow"><i class="fa fa-bell"></i></span>Message Sent<span class="pull-right text-muted small">5 days ago</span></a></li>
-                                    </ul>
-                                </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </li>
+            <li class="last"><a href="#" class="text-right">See all alerts</a></li>
+        {% endif %}
+        </ul>
+    </li>
+    
+    <li class="dropdown">
+        <a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i>
+            {% if notifications.default.matchingVotes.number %}
+                <span class="badge badge-blue">{{ notifications.default.matchingVotes.number }}</span>
+            {% endif %}
+        </a>
+        <ul class="dropdown-menu dropdown-alerts">
+            {% if notifications.default.matchingVotes.number %}
+                <li><p>Matching Vote ({{ notifications.default.matchingVotes.number }})</p></li>
+                <li>
+                    <div class="dropdown-slimscroll">
+                        <ul>
+                        {% for object in notifications.default.matchingVotes.matchingVoteObjects %}
+                            <li><a href="#"><span class="label label-blue"><i class="fa fa-bell"></i>
+                                </span>{{ object.pollingStation }}<span class="label label-blue pull-right">4 mins ago</span></a>
                             </li>
-                            <li class="last"><a href="#" class="text-right">See all alerts</a></li>
+                        {% endfor %}
                         </ul>
-                    </li>
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i><span class="badge badge-blue">3</span></a>
-                        <ul class="dropdown-menu dropdown-alerts">
-                            <li><p>Matching Vote (7)</p></li>
-                            <li>
-                                <div class="dropdown-slimscroll">
-                                    <ul>
-                                        <li><a href="#"><span class="label label-blue"><i class="fa fa-bell"></i></span>New Comment<span class="pull-right text-muted small">4 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-blue"><i class="fa fa-bell"></i></span>3 New Followers<span class="pull-right text-muted small">12 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-blue"><i class="fa fa-bell"></i></span>Message Sent<span class="pull-right text-muted small">15 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-blue"><i class="fa fa-bell"></i></span>New Task<span class="pull-right text-muted small">18 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-blue"><i class="fa fa-bell"></i></span>Server Rebooted<span class="pull-right text-muted small">19 mins ago</span></a></li>
-                                        <li><a href="#"><span class="label label-blue"><i class="fa fa-bell"></i></span>New Task<span class="pull-right text-muted small">2 days ago</span></a></li>
-                                        <li><a href="#"><span class="label label-blue"><i class="fa fa-bell"></i></span>Message Sent<span class="pull-right text-muted small">5 days ago</span></a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="last"><a href="#" class="text-right">See all alerts</a></li>
+                    </div>
+                </li>
+                <li class="last"><a href="#" class="text-right">See all alerts</a></li>
+            {% endif %}
+        </ul>
+    </li>
+    
+    
+    <li class="dropdown">
+        <a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-users"></i>
+            {% if notifications.default.onlineUsers.number %}
+                <span class="badge badge-orange">{{ notifications.default.onlineUsers.number }}</span>
+            {% endif %}
+        </a>
+        {% if notifications.default.onlineUsers.number %}
+            <ul class="dropdown-menu dropdown-messages">
+                <li><p>{{ notifications.default.onlineUsers.number }} new verifier(s) connected</p></li>
+                <li>
+                    <div class="dropdown-slimscroll">
+                        <ul>
+                            {% for object in notifications.default.onlineUsers.onlineUserObjects %}
+                                <li>
+                                    <a href="#">
+                                        <span class="avatar">
+                                            <img src="{{ asset('upload/images/user/')~object.image }}" alt="" class="img-responsive img-circle"/>
+                                        </span>
+                                        <span class="info"><span class="name">{{ object.firstName }}</span>
+                                            {{ object.pollingStation }}
+                                            <span class="label label-orange pull-right">{% if object.firstVerifier %}1st{% else %}2nd{% endif %}</span>  
+                                        </span>
+                                    </a>
+                                </li>
+                            {% endfor %}
                         </ul>
-                    </li>
-                    <li class="dropdown"><a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-users"></i><span class="badge badge-orange">7</span></a>
-                        <ul class="dropdown-menu dropdown-messages">
-                            <li><p>14 new verifiers connected</p></li>
-                            <li>
-                                <div class="dropdown-slimscroll">
-                                    <ul>
-                                        <li><a href="#"><span class="avatar"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/48.jpg" alt="" class="img-responsive img-circle"/></span><span class="info"><span class="name">Jessica Spencer</span><span class="desc">Lorem ipsum dolor sit amet...</span></span></a></li>
-                                        <li><a href="#"><span class="avatar"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/48.jpg" alt="" class="img-responsive img-circle"/></span><span class="info"><span class="name">John Smith<span class="label label-blue pull-right">New</span></span><span class="desc">Lorem ipsum dolor sit amet...</span></span></a></li>
-                                        <li><a href="#"><span class="avatar"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/48.jpg" alt="" class="img-responsive img-circle"/></span><span class="info"><span class="name">John Doe<span class="label label-orange pull-right">10 min</span></span><span class="desc">Lorem ipsum dolor sit amet...</span></span></a></li>
-                                        <li><a href="#"><span class="avatar"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/48.jpg" alt="" class="img-responsive img-circle"/></span><span class="info"><span class="name">John Smith</span><span class="desc">Lorem ipsum dolor sit amet...</span></span></a></li>
-                                        <li><a href="#"><span class="avatar"><img src="https://s3.amazonaws.com/uifaces/faces/twitter/kolage/48.jpg" alt="" class="img-responsive img-circle"/></span><span class="info"><span class="name">John Smith</span><span class="desc">Lorem ipsum dolor sit amet...</span></span></a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="last"><a href="#">Read all messages</a></li>
-                        </ul>
-                    </li>
-    </ul>
+                    </div>
+                </li>
+                <li class="last"><a href="#">Read all messages</a></li>
+            </ul>
+        {% endif %}
+    </li>
+</ul>

@@ -48,7 +48,7 @@ class DefaultControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/');
         
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 302);
     }
     
     public function testGetTotalVoteCast()
