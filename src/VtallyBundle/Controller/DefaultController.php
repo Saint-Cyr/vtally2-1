@@ -82,12 +82,36 @@ class DefaultController extends Controller
         return $this->render('VtallyBundle:vote:constituencies.html.twig');
     }
     
-    public function regionListAction()
+    public function prRegionListAction()
     {
         //Get all the regions
         $regions = $this->get('doctrine')->getManager()->getRepository('VtallyBundle:Region')->findAll();
         //Passe regions to the view
-        return $this->render('VtallyBundle:Default:region_list.html.twig', array('regions' => $regions));
+        return $this->render('VtallyBundle:Default:pr_region_list.html.twig', array('regions' => $regions));
+    }
+    
+    public function prPinkSheetRegionListAction()
+    {
+        //Get all the regions
+        $regions = $this->get('doctrine')->getManager()->getRepository('VtallyBundle:Region')->findAll();
+        //Passe regions to the view
+        return $this->render('VtallyBundle:Default:pr_pink_sheet_region_list.html.twig', array('regions' => $regions));
+    }
+    
+    public function paRegionListAction()
+    {
+        //Get all the regions
+        $regions = $this->get('doctrine')->getManager()->getRepository('VtallyBundle:Region')->findAll();
+        //Passe regions to the view
+        return $this->render('VtallyBundle:Default:pa_region_list.html.twig', array('regions' => $regions));
+    }
+    
+    public function paPinkSheetRegionListAction()
+    {
+        //Get all the regions
+        $regions = $this->get('doctrine')->getManager()->getRepository('VtallyBundle:Region')->findAll();
+        //Passe regions to the view
+        return $this->render('VtallyBundle:Default:pa_pink_sheet_region_list.html.twig', array('regions' => $regions));
     }
     
     public function pollingStationAction()

@@ -1,0 +1,7 @@
+{% for object in regions %}
+    <li>
+        <a href="{{ path('region', {'id': object.id}) }}"><i class="fa fa-angle-double-right"></i>
+            <span class="submenu-title">{{ object.name }}</span>
+        </a>
+    </li>
+{% endfor %}

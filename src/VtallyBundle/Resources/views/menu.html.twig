@@ -27,7 +27,7 @@
                         <ul class="nav nav-second-level">
                             <li><a href="ui-generals.html"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a>
                                 <ul class="nav nav-third-level">
-                                    {{ render(controller('VtallyBundle:Default:regionList')) }}
+                                    {{ render(controller('VtallyBundle:Default:prRegionList')) }}
                                 </ul>
                             </li>
                             <li><a href="{{ path('constituency', {'id':1}) }}"><i class="fa fa-filter"></i><span class="submenu-title">By Constituency</span></a></li>
@@ -40,11 +40,11 @@
                         <ul class="nav nav-second-level">
                             <li><a href="ui-generals.html"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a>
                                 <ul class="nav nav-third-level">
-                                    {{ render(controller('VtallyBundle:Default:regionList')) }}
+                                    {{ render(controller('VtallyBundle:Default:prPinkSheetRegionList')) }}
                                 </ul>
                             </li>
                             <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">By Consituency</span></a></li>
-                            <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">All</span></a></li>
+                            <li><a href="{{ path('pr_national_pink_sheet') }}"><i class="fa fa-archive"></i><span class="submenu-title">All</span></a></li>
                         </ul>
                     </li>
                     
@@ -52,13 +52,13 @@
                         <div class="icon-bg bg-dark"></div>
                     </i><span class="menu-title">Parliamentary Vote Cast</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a href="#"><i class="fa fa-bar-chart-o"></i><span class="submenu-title">National</span></a></li>
+                            <li><a href="{{ path('vtally_dashboard') }}"><i class="fa fa-bar-chart-o"></i><span class="submenu-title">National</span></a></li>
                             <li><a href="ui-generals.html"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a>
                                 <ul class="nav nav-third-level">
-                                    {{ render(controller('VtallyBundle:Default:regionList')) }}
+                                    {{ render(controller('VtallyBundle:Default:paRegionList')) }}
                                 </ul>
                             </li>
-                            <li><a href="#"><i class="fa fa-filter"></i><span class="submenu-title">By Constituency</span></a></li>
+                            <li><a href="{{ path('vtally_constituencies') }}"><i class="fa fa-filter"></i><span class="submenu-title">By Constituency</span></a></li>
                         </ul>
                     </li>
                     <li><a href="#"><i class="fa fa-file-text">
@@ -67,7 +67,7 @@
                         <ul class="nav nav-second-level">
                             <li><a href="ui-generals.html"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a>
                                 <ul class="nav nav-third-level">
-                                    {{ render(controller('VtallyBundle:Default:regionList')) }}
+                                    {{ render(controller('VtallyBundle:Default:paPinkSheetRegionList')) }}
                                 </ul>
                             </li>
                             <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">By Consituency (site)</span></a></li>

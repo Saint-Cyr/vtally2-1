@@ -40,6 +40,11 @@ class PresidentialController extends Controller
         ));
     }
     
+    public function nationalPinkSheetAction()
+    {
+        return $this->render('PrBundle:PinkSheet:pr_national_pink_sheet.html.twig');
+    }
+    
     public function consituenciesPrModalAction($id = null)
     {
         if($id == 1){
