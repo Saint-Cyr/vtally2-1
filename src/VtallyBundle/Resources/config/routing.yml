@@ -1,6 +1,22 @@
 vtally_dashboard:
     path:     /
     defaults: { _controller: VtallyBundle:Default:dashboard }
+
+vtally_constituencies_modal:
+    path:     /constituencies-modal/{id}
+    defaults: { _controller: PrBundle:Presidential:consituenciesPrModal }
+    
+vtally_polling_stations_modal:
+    path:   /polling-stations-modal/{id}
+    defaults: { _controller: PrBundle:Presidential:pollingStationsPrModal }
+    
+vtally_constituencies:
+    path:     /constituencies
+    defaults: { _controller: VtallyBundle:Default:constituency }
+    
+vtally_polling_stations:
+    path:     /polling-stations
+    defaults: { _controller: VtallyBundle:Default:pollingStation }
     
 vtally_national:
     path:     /national

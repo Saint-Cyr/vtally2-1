@@ -1,4 +1,15 @@
 <ul class="nav navbar navbar-top-links navbar-right mbn" id="notification">
+    
+    <li class="dropdown">
+        <a data-hover="dropdown" href="#" class="dropdown-toggle">
+            <i class="fa fa-bar-chart-o"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-user pull-right">
+                            <li><a href="{{ path('vtally_constituencies') }}"><i class="fa fa-table"></i>Constituencies</a></li>
+                            <li><a href="{{ path('vtally_polling_stations') }}"><i class="fa fa-table"></i>Polling Station</a></li>
+                        </ul>
+    </li>
+    
     <li class="dropdown">
         <a data-hover="dropdown" href="#" class="dropdown-toggle">
             <i class="fa fa-file-text"></i>

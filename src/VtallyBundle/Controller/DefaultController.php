@@ -77,6 +77,24 @@ class DefaultController extends Controller
         return $this->render('VtallyBundle:vote:dashboard.html.twig', array('presidentialVoteCast' => $presidentialVoteCast));
     }
     
+    public function constituencyAction()
+    {
+        return $this->render('VtallyBundle:vote:constituencies.html.twig');
+    }
+    
+    public function regionListAction()
+    {
+        //Get all the regions
+        $regions = $this->get('doctrine')->getManager()->getRepository('VtallyBundle:Region')->findAll();
+        //Passe regions to the view
+        return $this->render('VtallyBundle:Default:region_list.html.twig', array('regions' => $regions));
+    }
+    
+    public function pollingStationAction()
+    {
+        return $this->render('VtallyBundle:vote:polling_stations.html.twig');
+    }
+    
     public function importCSVAction(Request $request) 
     {
         // Get FileId to "import"

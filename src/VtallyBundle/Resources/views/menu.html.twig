@@ -7,12 +7,14 @@
                                 <img src="{{ asset('upload/images/user/')~app.user.image }}" alt="{{ app.user.firstName }}" class="img-circle"/>
                             {% endif %}
                         </div>
-                        <div class="info"><p>{{ app.user.firstName }}</p><p>Manager</p>
-                            <ul class="list-inline list-unstyled">
-                                <!--<li><a href="#" data-hover="tooltip" title="Profile"><i class="fa fa-user"></i></a></li>-->
-                                <li><a href="{{ path('fos_user_security_logout') }}" data-hover="tooltip" title="Logout"><i class="fa fa-sign-out"></i></a></li>
-                            </ul>
-                        </div>
+                        {% if is_granted("ROLE_SUPER_ADMIN") %}
+                            <div class="info"><p>{{ app.user.firstName }}</p><p>Manager</p>
+                                <ul class="list-inline list-unstyled">
+                                    <!--<li><a href="#" data-hover="tooltip" title="Profile"><i class="fa fa-user"></i></a></li>-->
+                                    <li><a href="{{ path('fos_user_security_logout') }}" data-hover="tooltip" title="Logout"><i class="fa fa-sign-out"></i></a></li>
+                                </ul>
+                            </div>
+                        {% endif %}
                         <div class="clearfix"></div>
                     </li>
                     <li><a href="{{ path('vtally_dashboard') }}"><i class="fa fa-tachometer fa-fw">
@@ -25,14 +27,11 @@
                         <ul class="nav nav-second-level">
                             <li><a href="ui-generals.html"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a>
                                 <ul class="nav nav-third-level">
-                                    <li><a href="#"><i class="fa fa-angle-double-right"></i><span class="submenu-title">Greater Accra</span></a></li>
-                                    <li><a href="#"><i class="fa fa-angle-double-right"></i><span class="submenu-title">Branga Ahafo</span></a></li>
-                                    <li><a href="#"><i class="fa fa-angle-double-right"></i><span class="submenu-title"> Volta Region</span></a></li>
-                                    <li><a href="#"><i class="fa fa-angle-double-right"></i><span class="submenu-title">East Region</span></a></li>
+                                    {{ render(controller('VtallyBundle:Default:regionList')) }}
                                 </ul>
                             </li>
-                            <li><a href="#"><i class="fa fa-filter"></i><span class="submenu-title">By Constituency</span></a></li>
-                            <li><a href="#"><i class="fa fa-filter"></i><span class="submenu-title">By Polling Station</span></a></li>
+                            <li><a href="{{ path('constituency', {'id':1}) }}"><i class="fa fa-filter"></i><span class="submenu-title">By Constituency</span></a></li>
+                            
                         </ul>
                     </li>
                     <li><a href="#"><i class="fa fa-file-text">
@@ -41,14 +40,10 @@
                         <ul class="nav nav-second-level">
                             <li><a href="ui-generals.html"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a>
                                 <ul class="nav nav-third-level">
-                                    <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">Greater Accra</span></a></li>
-                                    <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">Branga Ahafo</span></a></li>
-                                    <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title"> Volta Region</span></a></li>
-                                    <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">East Region</span></a></li>
+                                    {{ render(controller('VtallyBundle:Default:regionList')) }}
                                 </ul>
                             </li>
                             <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">By Consituency</span></a></li>
-                            <li><a href="#"><i class="fa fa-file-text"></i><span class="submenu-title">By Polling Station</span></a></li>
                             <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">All</span></a></li>
                         </ul>
                     </li>
@@ -60,14 +55,10 @@
                             <li><a href="#"><i class="fa fa-bar-chart-o"></i><span class="submenu-title">National</span></a></li>
                             <li><a href="ui-generals.html"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a>
                                 <ul class="nav nav-third-level">
-                                    <li><a href="#"><i class="fa fa-angle-double-right"></i><span class="submenu-title">Greater Accra</span></a></li>
-                                    <li><a href="#"><i class="fa fa-angle-double-right"></i><span class="submenu-title">Branga Ahafo</span></a></li>
-                                    <li><a href="#"><i class="fa fa-angle-double-right"></i><span class="submenu-title"> Volta Region</span></a></li>
-                                    <li><a href="#"><i class="fa fa-angle-double-right"></i><span class="submenu-title">East Region</span></a></li>
+                                    {{ render(controller('VtallyBundle:Default:regionList')) }}
                                 </ul>
                             </li>
                             <li><a href="#"><i class="fa fa-filter"></i><span class="submenu-title">By Constituency</span></a></li>
-                            <li><a href="#"><i class="fa fa-filter"></i><span class="submenu-title">By Polling Station</span></a></li>
                         </ul>
                     </li>
                     <li><a href="#"><i class="fa fa-file-text">
@@ -76,14 +67,10 @@
                         <ul class="nav nav-second-level">
                             <li><a href="ui-generals.html"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a>
                                 <ul class="nav nav-third-level">
-                                    <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">Greater Accra</span></a></li>
-                                    <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">Branga Ahafo</span></a></li>
-                                    <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title"> Volta Region</span></a></li>
-                                    <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">East Region</span></a></li>
+                                    {{ render(controller('VtallyBundle:Default:regionList')) }}
                                 </ul>
                             </li>
                             <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">By Consituency (site)</span></a></li>
-                            <li><a href="#"><i class="fa fa-file-text"></i><span class="submenu-title">By Polling Station</span></a></li>
                             <li><a href="#"><i class="fa fa-archive"></i><span class="submenu-title">All</span></a></li>
                         </ul>
                     </li>

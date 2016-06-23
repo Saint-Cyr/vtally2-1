@@ -39,5 +39,28 @@ class PresidentialController extends Controller
             // ...
         ));
     }
-
+    
+    public function consituenciesPrModalAction($id = null)
+    {
+        if($id == 1){
+            return $this->render('PrBundle:VoteCast:constituencies_pr_modal.html.twig', array(
+            // ...
+            ));
+        }elseif($id == 2){
+            return $this->render('PaBundle:VoteCast:constituencies_pa_modal.html.twig', array(
+            // ...
+            ));
+        }
+    }
+    
+    public function pollingStationsPrModalAction($id = null)
+    {
+        if($id == 1){
+            return $this->render('PrBundle:VoteCast:polling_stations_pr_modal.html.twig');
+        }elseif($id == 2){
+            return $this->render('PaBundle:VoteCast:polling_stations_pa_modal.html.twig');
+        }elseif ($id == 3) {
+            return $this->render('PaBundle:Default:polling_stations_pr_pink_sheet.html.twig');
+        }
+    }
 }
