@@ -1,6 +1,6 @@
 {% for object in regions %}
     <li>
-        <a href="{{ path('region', {'id': object.id}) }}"><i class="fa fa-angle-double-right"></i>
+        <a href="{{ path('region', {'id': object.id}) }}"><img src="{{ asset('images/zip.png') }}" width="20px" /><i class="fa fa-download"></i>
             <span class="submenu-title">{{ object.name }}</span>
         </a>
     </li>

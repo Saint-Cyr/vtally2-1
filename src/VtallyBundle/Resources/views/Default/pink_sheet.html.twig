@@ -1,0 +1,40 @@
+{% extends "VtallyBundle::layout.html.twig" %}
+{% block content %}
+    <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+        <div class="clearfix">
+            <div class="panel-heading" style="font-weight: bold; font-size: 23px;">
+                Presidential - Polling Station:<span style="color: violet;"> Addrabraka</span>
+            </div>
+        </div>
+    </div>
+    <div class="page-content">
+        <div class="col-lg-6">
+            <div class="clearfix">
+                <div class="panel-heading" style="font-weight: bold; font-size: 23px;">
+                    <span style="color: green;"> ORIGINAL </span>
+                    <a href="{{ asset('images/2.jpg') }}" download ><i class="fa fa-download" ></i></a>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="profile">
+                        <a href="{{ asset('images/2.jpg') }}"><img src="{{ asset('images/2.jpg') }}" width="450px" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel-heading" style="font-weight: bold; font-size: 23px;">
+                <span style="color: red;"> EDITED</span>
+                <a href="{{ asset('images/2.jpg') }}" download ><i class="fa fa-download" ></i></a>
+            </div>
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="profile">
+                        <a href="{{ asset('images/2.jpg') }}"><img src="{{ asset('images/no.png') }}" width="450px" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

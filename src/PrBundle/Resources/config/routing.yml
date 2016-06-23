@@ -1,6 +1,3 @@
-pr_national_pink_sheet:
-    path:   /pr-national-pink-sheet
-    defaults: { _controller: PrBundle:Presidential:nationalPinkSheet }
 
 national:
     path:     pr/national

@@ -53,6 +53,11 @@ class DefaultController extends Controller
         return $response;
     }
     
+    public function pinkSheetAction($id)
+    {
+        return $this->render('VtallyBundle:Default:pink_sheet.html.twig');
+    }
+    
     public function nationalAction()
     {
         //Get the statisticHandler service
