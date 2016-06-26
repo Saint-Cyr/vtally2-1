@@ -119,6 +119,11 @@ class DefaultController extends Controller
         return $this->render('VtallyBundle:Default:pa_pink_sheet_region_list.html.twig', array('regions' => $regions));
     }
     
+    public function settingGeneralAction()
+    {
+        return $this->render('VtallyBundle:Default:setting_general.html.twig');
+    }
+    
     public function pollingStationAction()
     {
         return $this->render('VtallyBundle:vote:polling_stations.html.twig');

@@ -36,10 +36,10 @@
     <!--END THEME SETTING--><!--BEGIN BACK TO TOP--><a id="totop" href="#"><i class="fa fa-angle-up"></i></a><!--END BACK TO TOP--><!--BEGIN TOPBAR-->
     <div id="header-topbar-option-demo" class="page-header-topbar">
         <nav id="topbar" role="navigation" style="margin-bottom: 0;" data-step="3" data-intro="&lt;b&gt;Topbar&lt;/b&gt; has other styles with live demo. Go to &lt;b&gt;Layouts-&gt;Header&amp;Topbar&lt;/b&gt; and check it out." class="navbar navbar-default navbar-static-top">
-            <div class="navbar-header logo-collapsed">
+            <div class="navbar-header">
                 <button type="button" data-toggle="collapse" data-target=".sidebar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
                 <a id="logo" href="{{ path('vtally_dashboard') }}" class="navbar-brand"><span class="fa fa-rocket"></span><span class="logo-text">VTALLY2</span><span class="badge badge-red">Alpha 1.0</span><span style="display: none" class="logo-text-icon">µ</span></a></div>
-            <div class="topbar-main"><a id="menu-toggle" href="#" class="hidden-xs hidden"><i class="fa fa-bars"></i></a>
+            <div class="topbar-main"><a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>
                 <ul class="nav navbar-nav    ">
                     <li class="active"><a href="#">Dashboard</a></li>
                     <li><a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle">Layouts
@@ -123,12 +123,12 @@
                     </li>
                 </ul>
                 
-                <!--<div class="news-update-box hidden-xs"><span class="text-uppercase mrm pull-left">News:</span>
+                <div class="news-update-box hidden-xs"><span class="text-uppercase mrm pull-left">News:</span>
                     <ul id="news-update" class="ticker list-unstyled">
-                        <li>Presidential: <span style="font-size: 15px;">NPP is leading NDC by 12 representing 0.1% of total vote cast</span></li>
-                        <li>Parliamentary: Indenpent Candiates are getting majority by the diffence of 3 sites (0.3%)</li>
+                        <li>Pr: <span style="font-size: 15px;">NPP is leading NDC by 12 representing 0.1% of total vote cast</span></li>
+                        <li>Pa: Indenpent Candiates are getting majority by the diffence of 3 sites (0.3%)</li>
                     </ul>
-                </div>-->
+                </div>
                 {{ render(controller('VtallyBundle:Default:notification')) }}
             </div>
         </nav>

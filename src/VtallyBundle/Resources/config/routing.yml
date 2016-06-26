@@ -1,8 +1,11 @@
+vtally_setting_general:
+    path:   /panel-setting
+    defaults: { _controller: VtallyBundle:Default:settingGeneral }
+
 vtally_pink_sheet:
     path:  /pink-sheet/{id}
     defaults: { _controller: VtallyBundle:Default:pinkSheet }
     
-
 vtally_dashboard:
     path:     /
     defaults: { _controller: VtallyBundle:Default:dashboard }
