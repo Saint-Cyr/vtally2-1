@@ -21,20 +21,36 @@ class PresidentialController extends Controller
 
     public function regionAction($id)
     {
+        //Get statisticHandler
+        $statisticHandler = $this->get('vtally.statistic_handler');
+        $region = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:Region')->find($id);
+        
+        $prVoteCasts = $statisticHandler->getPresidentialRegion($region);
+        
         return $this->render('PrBundle:VoteCast:region.html.twig', array(
+            'prVoteCasts' => $prVoteCasts,
+            'region' => $region,
             // ...
         ));
     }
 
     public function constituencyAction($id)
     {
+        //Get statisticHandler
+        $statisticHandler = $this->get('vtally.statistic_handler');
+        $constituency = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:Constituency')->find($id);
+        
+        $prVoteCasts = $statisticHandler->getPresidentialConstituency($constituency);
+        
         return $this->render('PrBundle:VoteCast:constituency.html.twig', array(
+            'prVoteCasts' => $prVoteCasts,
+            'consitutency' => $constituency,
             // ...
         ));
     }
 
     public function pollingStationAction($id)
-    {
+    {   
         return $this->render('PrBundle:VoteCast:polling_station.html.twig', array(
             // ...
         ));
@@ -42,24 +58,35 @@ class PresidentialController extends Controller
     
     public function consituenciesPrModalAction($id = null)
     {
-        if($id == 1){
+        //Get statisticHandler
+        $statisticHandler = $this->get('vtally.statistic_handler');
+        $constituency = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:Constituency')->find($id);
+        
+        $prVoteCasts = $statisticHandler->getPresidentialConstituency($constituency);
+        
             return $this->render('PrBundle:VoteCast:constituencies_pr_modal.html.twig', array(
+                'prVoteCasts' => $prVoteCasts,
+                'constituency' => $constituency,
             // ...
             ));
-        }elseif($id == 2){
-            return $this->render('PaBundle:VoteCast:constituencies_pa_modal.html.twig', array(
-            // ...
-            ));
-        }
     }
     
-    public function pollingStationsPrModalAction($id = null)
+    public function pollingStationsPrModalAction($id, $type)
     {
-        if($id == 1){
-            return $this->render('PrBundle:VoteCast:polling_stations_pr_modal.html.twig');
-        }elseif($id == 2){
+        if($type == 'presidential'){
+            //Get statisticHandler
+            $statisticHandler = $this->get('vtally.statistic_handler');
+            $pollingStation = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:PollingStation')->find($id);
+
+            $prVoteCasts = $statisticHandler->getPresidentialPollingStation($pollingStation);
+            
+            return $this->render('PrBundle:VoteCast:polling_stations_pr_modal.html.twig', array(
+                'prVoteCasts' => $prVoteCasts,
+                'pollingStation' => $pollingStation,
+            ));
+        }elseif($type == 'parliamentary'){
             return $this->render('PaBundle:VoteCast:polling_stations_pa_modal.html.twig');
-        }elseif ($id == 3) {
+        }else {
             return $this->render('PaBundle:Default:polling_stations_pr_pink_sheet.html.twig');
         }
     }

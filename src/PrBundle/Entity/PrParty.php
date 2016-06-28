@@ -30,6 +30,10 @@ class PrParty
     private $file;
     
     private $voteCast;
+    
+    private $order;
+    
+    private $passed;
 
     /**
      * @var string
@@ -91,6 +95,26 @@ class PrParty
     public function getVoteCast()
     {
         return $this->voteCast;
+    }
+    
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
+    
+    public function getOrder()
+    {
+        return $this->order;
+    }
+    
+    public function setPassed($value)
+    {
+        $this->passed = $value;
+    }
+    
+    public function isPassed()
+    {
+        return $this->passed;
     }
     
     /**

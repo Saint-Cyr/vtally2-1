@@ -15,7 +15,13 @@ class ParliamentaryController extends Controller
 
     public function regionAction($id)
     {
+        $region = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:Region')->find($id);
+        $statisticHandler = $this->get('vtally.statistic_handler');
+        //$paVoteCasts = $statisticHandler->getParliamentaryRegion($region);
+        
         return $this->render('PaBundle:VoteCast:region.html.twig', array(
+            'region' => $region,
+            ''
             // ...
         ));
     }

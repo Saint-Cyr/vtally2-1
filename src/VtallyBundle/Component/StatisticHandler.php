@@ -129,7 +129,7 @@ class StatisticHandler
      * @param PollingStation $pollingStation
      * @return array of PrParty
      */
-    public function getPresidentialPollingStation(PollingStation$pollingStation)
+    public function getPresidentialPollingStation(PollingStation $pollingStation)
     {
         $prVoteCasts = $pollingStation->getPrVoteCasts();
         
@@ -138,7 +138,12 @@ class StatisticHandler
             $party = $vote->getPrParty();
             $party->initializeVoteCast($vote->getFigureValue());
             $parties[] = $party;
-            
+        }
+        
+        $parties = $this->sortByVoteCast($parties);
+        
+        foreach ($parties as $key => $item){
+            $item->setOrder($key + 1);
         }
         
         return $parties;
@@ -159,7 +164,13 @@ class StatisticHandler
             $this->setPresidentialVoteCast($p, $pollingStations);
         }
         
-        return $parties;
+        $objects = $this->sortByVoteCast($parties);
+        
+        foreach ($objects as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $objects;
     }
     
     /**
@@ -187,7 +198,13 @@ class StatisticHandler
             $this->setPresidentialVoteCast($p, $pollingStations);
         }
         
-        return $parties;
+        $objects = $this->sortByVoteCast($parties);
+        
+        foreach ($objects as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $objects;
     }
     
     /**
@@ -204,6 +221,54 @@ class StatisticHandler
             $this->setPresidentialVoteCast($prParty, $pollingStations);
         }
         
-        return $prParties;
+        foreach ($prParties as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $this->sortByVoteCast($prParties);
     }
+    
+    
+    /**
+     * @return array items can be prParties|paParty|any objects
+     * that have property voteCast and isPassed. Notice that
+     * all items are sorted based on the values of voteCast
+     * @param array $objects
+     */
+    public function classify(array $objects)
+    {
+        
+        usort($objects, function($a, $b)
+        {
+            return strcmp($a->getVoteCast(), $b->getVoteCast());
+            
+        });
+        
+        $objects = array_reverse($objects);
+        
+        foreach ($objects as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $objects;
+    }
+    
+    public function sortByVoteCast(array $objects)
+    {
+        //Get the total number of the items in the array
+        $n = count($objects);
+        for($i = 1; $i < $n; $i++){
+            for($j = 0; $j < $n - 1; $j++){
+                if($objects[$j]->getVoteCast() > $objects[$j + 1]->getVoteCast()){
+                    $temp = $objects[$j];
+                    $objects[$j] = $objects[$j + 1];
+                    $objects[$j+1] = $temp;
+                }
+            }
+        }
+        
+        return array_reverse($objects);
+    }
+    
+    
 }
