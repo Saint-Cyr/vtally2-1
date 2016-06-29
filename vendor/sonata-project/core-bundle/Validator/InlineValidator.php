@@ -34,23 +34,8 @@ class InlineValidator extends ConstraintValidator
      */
     public function __construct(ContainerInterface $container, ConstraintValidatorFactoryInterface $constraintValidatorFactory)
     {
-        $this->container                  = $container;
+        $this->container = $container;
         $this->constraintValidatorFactory = $constraintValidatorFactory;
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return ErrorElement
-     */
-    protected function getErrorElement($value)
-    {
-        return new ErrorElement(
-            $value,
-            $this->constraintValidatorFactory,
-            $this->context,
-            $this->context->getGroup()
-        );
     }
 
     /**
@@ -71,5 +56,20 @@ class InlineValidator extends ConstraintValidator
         }
 
         call_user_func($function, $this->getErrorElement($value), $value);
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return ErrorElement
+     */
+    protected function getErrorElement($value)
+    {
+        return new ErrorElement(
+            $value,
+            $this->constraintValidatorFactory,
+            $this->context,
+            $this->context->getGroup()
+        );
     }
 }

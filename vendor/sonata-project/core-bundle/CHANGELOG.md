@@ -1,40 +1,19 @@
-CHANGELOG
-=========
+# Change Log
+All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](http://semver.org/).
 
-A [BC BREAK] means the update will break the project for many reasons :
+## [3.0.3](https://github.com/sonata-project/SonataCoreBundle/compare/3.0.2...3.0.3) - 2016-06-17
+### Fixed
+- Add missing exporter service
 
-* new mandatory configuration
-* new dependencies
-* class refactoring
+## [3.0.2](https://github.com/sonata-project/SonataCoreBundle/compare/3.0.1...3.0.2) - 2016-06-06
+### Fixed
+- Fixed `EntityManagerMockFactory` calling protected methods. This class is used by other bundles for testing.
 
-### 2015-12-12
+## [3.0.1](https://github.com/sonata-project/SonataCoreBundle/compare/3.0.0...3.0.1) - 2016-06-01
+### Changed
+- Updated Bootstrap from version 3.3.5 to version 3.3.6
+- Updated Font-awesome from version 4.5.0 to version 4.6.3
 
-* The services `sonata.core.slugify.cocur` and `sonata.core.slugify.native` are deprecated.
-* The Twig filter `sonata_slugify` is deprecated. Install `cocur/slugify` and enable `CocurSlugifyBundle` https://github.com/cocur/slugify#symfony2 for using `slugify` filter.
-
-### [BC BREAK] 2013-12-30
-
-* Configuration structure for flashmessage has changed to be more generic, this is what is expected now:
-
-```
-sonata_core:
-    flashmessage:
-        error:
-            # You may now override the css class used for rendering the message
-            css_class: danger
-            types:
-                error:
-                    domain: SonataCoreBundle
-                sonata_error:
-                    domain: SonataCoreBundle
-        # This is templated, you may add as many flash messages type you want
-        warn:
-            # You may now override the css class used for rendering the message, optional in the configuration
-            css_class: warning
-            types:
-                warn:
-                    domain: SonataCoreBundle
-                sonata_warn:
-                    domain: SonataCoreBundle
-        # ...
-```
+### Fixed
+- Typo on `choices_as_values` option for `EqualType`

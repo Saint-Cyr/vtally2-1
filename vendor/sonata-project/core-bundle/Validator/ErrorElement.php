@@ -76,12 +76,12 @@ class ErrorElement
         if (!($context instanceof LegacyExecutionContextInterface) && !($context instanceof ExecutionContextInterface)) {
             throw new \InvalidArgumentException(sprintf('Argument 3 passed to %s::__construct() must be an instance of Symfony\Component\Validator\ExecutionContextInterface or Symfony\Component\Validator\Context\ExecutionContextInterface.', get_class($this)));
         }
-        $this->subject                    = $subject;
-        $this->context                    = $context;
-        $this->group                      = $group;
+        $this->subject = $subject;
+        $this->context = $context;
+        $this->group = $group;
         $this->constraintValidatorFactory = $constraintValidatorFactory;
 
-        $this->current          = '';
+        $this->current = '';
         $this->basePropertyPath = $this->context->getPropertyPath();
     }
 
@@ -124,7 +124,7 @@ class ErrorElement
      */
     public function with($name, $key = false)
     {
-        $key           = $key ? $name.'.'.$key : $name;
+        $key = $key ? $name.'.'.$key : $name;
         $this->stack[] = $key;
 
         $this->current = implode('.', $this->stack);
@@ -149,6 +149,66 @@ class ErrorElement
     }
 
     /**
+     * @return string
+     */
+    public function getFullPropertyPath()
+    {
+        if ($this->getCurrentPropertyPath()) {
+            return sprintf('%s.%s', $this->basePropertyPath, $this->getCurrentPropertyPath());
+        }
+
+        return $this->basePropertyPath;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @param string|array $message
+     * @param array        $parameters
+     * @param null         $value
+     *
+     * @return ErrorElement
+     */
+    public function addViolation($message, $parameters = array(), $value = null)
+    {
+        if (is_array($message)) {
+            $value = isset($message[2]) ? $message[2] : $value;
+            $parameters = isset($message[1]) ? (array) $message[1] : array();
+            $message = isset($message[0]) ? $message[0] : 'error';
+        }
+
+        $subPath = (string) $this->getCurrentPropertyPath();
+
+        if ($this->context instanceof LegacyExecutionContextInterface) {
+            $this->context->addViolationAt($subPath, $message, $parameters, $value);
+        } else {
+            $this->context->buildViolation($message)
+               ->atPath($subPath)
+               ->setParameters($parameters)
+               ->setInvalidValue($value)
+               ->addViolation();
+        }
+
+        $this->errors[] = array($message, $parameters, $value);
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
      * @param \Symfony\Component\Validator\Constraint $constraint
      */
     protected function validate(Constraint $constraint)
@@ -161,18 +221,6 @@ class ErrorElement
                 ->inContext($this->context)
                 ->atPath($subPath)
                 ->validate($this->getValue(), $constraint, array($this->group));
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getFullPropertyPath()
-    {
-        if ($this->getCurrentPropertyPath()) {
-            return sprintf('%s.%s', $this->basePropertyPath, $this->getCurrentPropertyPath());
-        } else {
-            return $this->basePropertyPath;
         }
     }
 
@@ -190,14 +238,6 @@ class ErrorElement
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
         return $propertyAccessor->getValue($this->subject, $this->getCurrentPropertyPath());
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSubject()
-    {
-        return $this->subject;
     }
 
     /**
@@ -227,45 +267,5 @@ class ErrorElement
         }
 
         return $this->propertyPaths[$this->current];
-    }
-
-    /**
-     * @param string|array $message
-     * @param array        $parameters
-     * @param null         $value
-     *
-     * @return ErrorElement
-     */
-    public function addViolation($message, $parameters = array(), $value = null)
-    {
-        if (is_array($message)) {
-            $value      = isset($message[2]) ? $message[2] : $value;
-            $parameters = isset($message[1]) ? (array) $message[1] : array();
-            $message    = isset($message[0]) ? $message[0] : 'error';
-        }
-
-        $subPath = (string) $this->getCurrentPropertyPath();
-
-        if ($this->context instanceof LegacyExecutionContextInterface) {
-            $this->context->addViolationAt($subPath, $message, $parameters, $value);
-        } else {
-            $this->context->buildViolation($message)
-               ->atPath($subPath)
-               ->setParameters($parameters)
-               ->setInvalidValue($value)
-               ->addViolation();
-        }
-
-        $this->errors[] = array($message, $parameters, $value);
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getErrors()
-    {
-        return $this->errors;
     }
 }
