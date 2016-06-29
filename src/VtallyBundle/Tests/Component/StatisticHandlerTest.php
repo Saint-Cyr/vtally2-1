@@ -31,6 +31,55 @@ class StatisticHandlerTest extends WebTestCase
         $this->statisticHandler = $this->application->getKernel()->getContainer()->get('vtally.statistic_handler');
     }
     
+    public function testGetParliamentaryRegion()
+    {
+        //Test the parliamentary result for region 1
+        $region = $this->em->getRepository('VtallyBundle:Region')->find(1);
+        
+        $paVoteCasts = $this->statisticHandler->getParliamentaryRegion($region);
+        $parties = $paVoteCasts['parties'];
+        $IC = $paVoteCasts['IC'];
+        $this->assertEquals($parties[0]->getName(), 'NPP');
+        $this->assertEquals($parties[1]->getName(), 'CPP');
+        $this->assertEquals($parties[2]->getName(), 'UFP');
+        $this->assertEquals($parties[3]->getName(), 'NDC');
+        $this->assertEquals($parties[0]->getSiteNumber(), 2);
+        $this->assertEquals($parties[1]->getSiteNumber(), 0);
+        $this->assertEquals($parties[2]->getSiteNumber(), 0);
+        $this->assertEquals($parties[3]->getSiteNumber(), 0);
+        $this->assertEquals($IC, 1);
+    }
+    
+    public function testGetParliamentaryPollingStation()
+    {
+        //Get the pollingStation1
+        $pollingStation1 = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+        $candidates = $this->statisticHandler->getParliamentaryPollingStation($pollingStation1);
+        $this->assertEquals($candidates[0]->getFirstName(), 'Jannette');
+        $this->assertEquals($candidates[0]->getVoteCast(), 280);
+        $this->assertEquals($candidates[1]->getFirstName(), 'Vivien');
+        $this->assertEquals($candidates[1]->getVoteCast(), 100);
+        $this->assertEquals($candidates[2]->getFirstName(), 'Jhon');
+        $this->assertEquals($candidates[2]->getVoteCast(), 100);
+        $this->assertEquals($candidates[3]->getFirstName(), 'Sondra');
+        $this->assertEquals($candidates[3]->getVoteCast(), 98);
+        $this->assertEquals($candidates[4]->getFirstName(), 'Joella');
+        $this->assertEquals($candidates[4]->getVoteCast(), 7);
+        $this->assertEquals($candidates[5]->getFirstName(), 'Adde');
+        $this->assertEquals($candidates[5]->getVoteCast(), 2);
+        $this->assertEquals($candidates[6]->getFirstName(), 'Fadde');
+        $this->assertEquals($candidates[6]->getVoteCast(), 0);
+    }
+    
+    public function testGetParliamentaryConstituency()
+    {
+        //Test the parliamentary result for constituency 1
+        $constituency1 = $this->em->getRepository('VtallyBundle:Constituency')->find(1);
+        $candidates = $this->statisticHandler->getParliamentaryConstituency($constituency1);
+        //Get the list of PaParties with vote cast
+        $this->assertEquals($candidates[0]->getFirstName(), 'Jhon');
+    }
+    
     /**
      * Test scenario for Parliamentary
      * Contributor: Saint-Cyr MAPOUKA

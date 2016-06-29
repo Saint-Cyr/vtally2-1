@@ -85,7 +85,14 @@ class PresidentialController extends Controller
                 'pollingStation' => $pollingStation,
             ));
         }elseif($type == 'parliamentary'){
-            return $this->render('PaBundle:VoteCast:polling_stations_pa_modal.html.twig');
+            //Get the Polling Station from the DB.
+            $pollingStation = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:PollingStation')->find($id);
+            //Get the statistic_handler service
+            $statisticsHandler = $this->get('vtally.statistic_handler');
+            $candidates = $statisticsHandler->getParliamentaryPollingStation($pollingStation);
+            
+            return $this->render('PaBundle:VoteCast:polling_stations_pa_modal.html.twig',
+                    array('pollingStation' => $pollingStation, 'candidates' => $candidates,));
         }else {
             return $this->render('PaBundle:Default:polling_stations_pr_pink_sheet.html.twig');
         }

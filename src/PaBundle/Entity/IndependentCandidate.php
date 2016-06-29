@@ -24,6 +24,11 @@ class IndependentCandidate
      */
     private $id;
     
+    private $order;
+    
+    private $voteCast;
+
+
     /**
      * @var string
      *
@@ -166,6 +171,26 @@ class IndependentCandidate
     public function isIndependentCandidate()
     {
         return true;
+    }
+    
+    public function getOrder()
+    {
+       return $this->order;
+    }
+    
+    public function setOrder($value)
+    {
+        $this->order = $value;
+    }
+    
+    public function setVoteCast($value)
+    {
+        $this->voteCast = $value;
+    }
+    
+    public function getVoteCast()
+    {
+        return $this->voteCast;
     }
     
     /**

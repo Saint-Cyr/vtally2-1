@@ -386,7 +386,7 @@ PaBundle\Entity\PaVoteCast:
         edited: false
         
     pa_vote_cast10:
-        figureValue: 29
+        figureValue: 20
         wordValue: One Thousand three hundred twenty two
         dependentCandidate: "@dependent_candidate7"
         pollingStation: "@polling_station2"
@@ -395,7 +395,7 @@ PaBundle\Entity\PaVoteCast:
     pa_vote_cast11:
         figureValue: 400
         wordValue: One Thousand three hundred twenty two
-        independentCandidate: "@independent_candidate7"
+        dependentCandidate: "@dependent_candidate7"
         pollingStation: "@polling_station3"
         edited: false
         

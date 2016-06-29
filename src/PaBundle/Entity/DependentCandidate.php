@@ -23,6 +23,10 @@ class DependentCandidate
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    private $order;
+    
+    private $voteCast;
 
     /**
      * @var string
@@ -177,6 +181,16 @@ class DependentCandidate
             
     }
     
+    public function getOrder()
+    {
+        return $this->order;
+    }
+    
+    public function setOrder($value)
+    {
+        $this->order = $value;
+    }
+    
     /**
      * Get id
      *
@@ -185,6 +199,16 @@ class DependentCandidate
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function getVoteCast()
+    {
+        return $this->voteCast;
+    }
+    
+    public function setVoteCast($value)
+    {
+        $this->voteCast = $value;
     }
     
     /**

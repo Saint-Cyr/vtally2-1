@@ -24,6 +24,60 @@ class StatisticHandler
     
     /**
      * 
+     * @param Constituency $constituency
+     */
+    public function getParliamentaryConstituency(Constituency $constituency)
+    {
+        $candidates = $constituency->getCandidatesWithVoteCasts();
+        return $candidates;
+    }
+    
+    /**
+     * 
+     * @param PollingStation $pollingStation
+     */
+    public function getParliamentaryPollingStation(PollingStation $pollingStation)
+    {
+        $candidates = $pollingStation->getParliamentaryCandidateWithVoteCast();
+        
+        $objects = $this->sortByVoteCast($candidates);
+        
+        foreach ($objects as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $objects;
+    }
+    
+    /**
+     * 
+     * @param array $constituencies
+     * @param array $paParties
+     * @param array $indCandidates
+     * @return paParty instances hydrated with voteCast, order...
+     */
+    public function getParliamentaryRegion(Region $region)
+    {
+        //Get the constituencies
+        $constituencies = $region->getConstituenciesSimpleArray();
+        //Get paParties
+        $paParties = $this->em->getRepository('PaBundle:PaParty')->findAll();
+        //Get paIndependentCandidate
+        $indCandidates = $this->em->getRepository('PaBundle:IndependentCandidate')->findAll();
+        
+        $paVoteCasts = $this->getSiteNumber($constituencies, $paParties, $indCandidates);
+        $parties = $this->sortBySiteNumber($paVoteCasts['parties']);
+        $paVoteCasts['parties'] = $parties;
+        
+        foreach ($paVoteCasts['parties'] as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $paVoteCasts;
+    }
+    
+    /**
+     * 
      * @param array $constituencies
      * @param array $parties
      * @param array $indCandidates
@@ -221,11 +275,13 @@ class StatisticHandler
             $this->setPresidentialVoteCast($prParty, $pollingStations);
         }
         
+        $prParties = $this->sortByVoteCast($prParties);
+        
         foreach ($prParties as $key => $item){
             $item->setOrder($key + 1);
         }
         
-        return $this->sortByVoteCast($prParties);
+        return $prParties;
     }
     
     
@@ -234,6 +290,7 @@ class StatisticHandler
      * that have property voteCast and isPassed. Notice that
      * all items are sorted based on the values of voteCast
      * @param array $objects
+     * @deprecated since version 2.1
      */
     public function classify(array $objects)
     {
@@ -260,6 +317,23 @@ class StatisticHandler
         for($i = 1; $i < $n; $i++){
             for($j = 0; $j < $n - 1; $j++){
                 if($objects[$j]->getVoteCast() > $objects[$j + 1]->getVoteCast()){
+                    $temp = $objects[$j];
+                    $objects[$j] = $objects[$j + 1];
+                    $objects[$j+1] = $temp;
+                }
+            }
+        }
+        
+        return array_reverse($objects);
+    }
+    
+    public function sortBySiteNumber(array $objects)
+    {
+        //Get the total number of the items in the array
+        $n = count($objects);
+        for($i = 1; $i < $n; $i++){
+            for($j = 0; $j < $n - 1; $j++){
+                if($objects[$j]->getSiteNumber() > $objects[$j + 1]->getSiteNumber()){
                     $temp = $objects[$j];
                     $objects[$j] = $objects[$j + 1];
                     $objects[$j+1] = $temp;

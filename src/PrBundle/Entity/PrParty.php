@@ -107,11 +107,19 @@ class PrParty
         return $this->order;
     }
     
+    /**
+     * 
+     * @deprecated since version number
+     */
     public function setPassed($value)
     {
         $this->passed = $value;
     }
     
+    /**
+     * 
+     * @deprecated since version 2.1
+     */
     public function isPassed()
     {
         return $this->passed;

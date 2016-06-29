@@ -41,6 +41,27 @@ class PollingStationTest extends WebTestCase
             ->getManager();
     }
     
+    public function testGetParliamentaryCandidateWithVoteCast()
+    {
+        //Get the polling Station
+        $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+        $candidates = $pollingStation->getParliamentaryCandidateWithVoteCast();
+        $this->assertEquals($candidates[0]->getFirstName(), 'Jhon');
+        $this->assertEquals($candidates[0]->getVoteCast(), 100);
+        $this->assertEquals($candidates[1]->getFirstName(), 'Jannette');
+        $this->assertEquals($candidates[1]->getVoteCast(), 280);
+        $this->assertEquals($candidates[2]->getFirstName(), 'Sondra');
+        $this->assertEquals($candidates[2]->getVoteCast(), 98);
+        $this->assertEquals($candidates[3]->getFirstName(), 'Fadde');
+        $this->assertEquals($candidates[3]->getVoteCast(), 0);
+        $this->assertEquals($candidates[4]->getFirstName(), 'Vivien');
+        $this->assertEquals($candidates[4]->getVoteCast(), 100);
+        $this->assertEquals($candidates[5]->getFirstName(), 'Joella');
+        $this->assertEquals($candidates[5]->getVoteCast(), 7);
+        $this->assertEquals($candidates[6]->getFirstName(), 'Adde');
+        $this->assertEquals($candidates[6]->getVoteCast(), 2);
+    }
+    
     public function testGetPresidentialVoteCast()
     {
         //Get the pollingStation 

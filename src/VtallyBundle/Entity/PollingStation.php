@@ -912,6 +912,28 @@ class PollingStation
     {
         return $this->parliamentary;
     }
+    
+    public function getParliamentaryCandidateWithVoteCast()
+    {
+        $candidates = array();
+        $voteCasts = $this->getPaVoteCasts();
+        //Populate candidate with voteCast
+        foreach ($voteCasts as $v){
+            $depCandidate = $v->getDependentCandidate();
+            $indCandidate = $v->getIndependentCandidate();
+            //Remember a paVoteCast can have only on candidate type at a time
+            //means IndCandidate | DepCandidate
+            if($depCandidate){
+                $depCandidate->setVoteCast($v->getFigureValue());
+                $candidates[] = $depCandidate;
+            }else{
+                $indCandidate->setVoteCast($v->getFigureValue());
+                $candidates[] = $indCandidate;
+            }
+        }
+        
+        return $candidates;
+    }
 
     /**
      * Set parliamentaryEdited

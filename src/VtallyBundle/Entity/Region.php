@@ -119,6 +119,17 @@ class Region
     {
         return $this->constituencies;
     }
+    
+    public function getConstituenciesSimpleArray()
+    {
+        $tab = array();
+        
+        foreach ($this->getConstituencies() as $const){
+            $tab[] = $const;
+        }
+        
+        return $tab;
+    }
 
     /**
      * Set code

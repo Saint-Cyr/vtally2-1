@@ -84,6 +84,8 @@ class DefaultController extends Controller
     
     public function constituencyAction()
     {
+        //Get the list of all the constituencies
+        $constituencies = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:Constituency')->findAll();
         return $this->render('VtallyBundle:vote:constituencies.html.twig');
     }
     
@@ -209,6 +211,25 @@ class DefaultController extends Controller
         return $this->redirect($this->generateUrl($route));
     }
     
+    public function singleNotificationAction($type, $id)
+    {
+        //Get the entity manager
+        $em = $this->getDoctrine()->getManager();
+        //Case of default notification
+        if($type == 'vtally'){
+            $notification = $em->getRepository('VtallyBundle:Notification')->find($id);
+        }elseif($type == 'presidential'){
+            $notification = $em->getRepository('PrBundle:Notification')->find($id);
+        }elseif($type == 'parliamentary'){
+            $notification = $em->getRepository('PaBundle:Notification')->find($id);
+        }
+        
+        return $this->render('VtallyBundle:Default:notification.html',
+                             array('notification' => $notification,
+                                   'type' => $type,));
+        
+    }
+    
     public function notificationAction()
     {
         //Get the notification handler
@@ -246,6 +267,7 @@ class DefaultController extends Controller
         $paData = array('paPinkSheet' => $paPinkSheet, 'paMismatchVote' => $paMismatchingVote);       
         //Gether all the notifications in an array
         $notifications = array('presidential' => $prData, 'parliamentary' => $paData, 'default' => $default);
+        $notifications = array('presidential' => null, 'parliamentary' => null, 'default' => null);
         
         //$notifications = array('prPinkSheet' => $prPinkSheet, 'paPinkSheet' => $parPinkSheet, 'prPinkSheetNumber' => count($prPinkSheet));
         return $this->render('VtallyBundle:Default:notification.html.twig', array('notifications' => $notifications)); 

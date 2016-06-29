@@ -26,7 +26,7 @@ class PaPartyAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
+            ->add('Logo', null, array('template' => 'PaBundle:PaParty:list.html.twig'))
             ->add('name')
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -44,7 +44,11 @@ class PaPartyAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('name')
+            ->with('Details', array('class' => 'col-md-6'))      
+                ->add('name')
+                ->add('file', 'file', array('required' => true))
+            ->end()
+            
         ;
     }
 
@@ -57,5 +61,22 @@ class PaPartyAdmin extends Admin
             ->add('id')
             ->add('name')
         ;
+    }
+    
+    public function prePersist($image)
+    {
+        $this->manageFileUpload($image);
+    }
+
+    public function preUpdate($image)
+    {
+        $this->manageFileUpload($image);
+    }
+
+    private function manageFileUpload($image)
+    {
+        if ($image->getFile()) {
+            $image->refreshUpdated();
+        }
     }
 }
