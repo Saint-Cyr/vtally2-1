@@ -267,7 +267,7 @@ class DefaultController extends Controller
         $paData = array('paPinkSheet' => $paPinkSheet, 'paMismatchVote' => $paMismatchingVote);       
         //Gether all the notifications in an array
         $notifications = array('presidential' => $prData, 'parliamentary' => $paData, 'default' => $default);
-        $notifications = array('presidential' => null, 'parliamentary' => null, 'default' => null);
+        
         
         //$notifications = array('prPinkSheet' => $prPinkSheet, 'paPinkSheet' => $parPinkSheet, 'prPinkSheetNumber' => count($prPinkSheet));
         return $this->render('VtallyBundle:Default:notification.html.twig', array('notifications' => $notifications)); 
