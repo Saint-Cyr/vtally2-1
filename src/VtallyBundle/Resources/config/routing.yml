@@ -46,3 +46,7 @@ vtally_importCSV:
 vtally_download_pinkSheet:
     path:  /download-pinkSheet
     defaults: { _controller: VtallyBundle:Default:zipAndDownload }
+
+vtally_single_notification:
+    path:  /notification/{type}/{id}
+    defaults: { _controller: VtallyBundle:Default:singleNotification }

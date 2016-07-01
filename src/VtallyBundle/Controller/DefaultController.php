@@ -219,12 +219,12 @@ class DefaultController extends Controller
         if($type == 'vtally'){
             $notification = $em->getRepository('VtallyBundle:Notification')->find($id);
         }elseif($type == 'presidential'){
-            $notification = $em->getRepository('PrBundle:Notification')->find($id);
+            $notification = $em->getRepository('PrBundle:PrNotification')->find($id);
         }elseif($type == 'parliamentary'){
-            $notification = $em->getRepository('PaBundle:Notification')->find($id);
+            $notification = $em->getRepository('PaBundle:PaNotification')->find($id);
         }
         
-        return $this->render('VtallyBundle:Default:notification.html',
+        return $this->render('VtallyBundle:Default:single_notification.html.twig',
                              array('notification' => $notification,
                                    'type' => $type,));
         
