@@ -267,14 +267,14 @@ $(function() {
 });
 
 function startRefresh() {
-    setTimeout(startRefresh,10000);
+    setTimeout(startRefresh, 20000);
     /*$.get('http://localhost/VTALLY/web/app_dev.php/notification', function(data){
         $('#notification-number').html(data('key1'));   
-    });
+    });*/
     
     $.get('http://localhost/VTALLY/web/app_dev.php/national', function(data) {
         $('#vtallyChart').html(data);    
-    });*/
+    });
 }
 </script>
 </body>
