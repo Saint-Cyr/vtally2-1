@@ -81,21 +81,26 @@
                         </ul>
                     </li>
                     
-                    <li><a href="#"><i class="fa fa-database">
+                    <!--<li><a href="#"><i class="fa fa-database">
                         <div class="icon-bg bg-green"></div>
                     </i><span class="menu-title">Collation center</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li><a href="#"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a></li>
                             <li><a href="#"><i class="fa fa-table"></i><span class="submenu-title">All</span></a></li>
                         </ul>
-                    </li>
+                    </li>-->
                     <li><a href="#"><i class="fa fa-users">
                         <div class="icon-bg bg-green"></div>
                     </i><span class="menu-title">Verifiers</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a href="{{ path('online_users') }}"><span class="badge badge-green">3003</span><span class="submenu-title">Online</span></a></li>
-                            <li><a href="#"><span class="badge badge-red">36007</span><span class="submenu-title">Offline</span></a></li>
-                            <li><a href="#"><i class="fa fa-table"></i><span class="submenu-title">All</span></a></li>
+                            <li>
+                                <a href="{{ path('online_users') }}">
+                                    <span class="badge badge-green">
+                                        {{ render(controller('UserBundle:Default:onlineNumber')) }}
+                                    </span>
+                                    <span class="submenu-title">Online</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li>

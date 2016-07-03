@@ -10,8 +10,13 @@ namespace UserBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getOnline()
+    public function getOnlineUsers()
     {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $queryBuilder->where('u.active = :var')
+                     ->setParameter('var', true);
+        $result = $queryBuilder->getQuery()->getResult();
         
+        return $result;
     }
 }

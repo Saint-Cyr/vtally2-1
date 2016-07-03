@@ -70,18 +70,56 @@ class DefaultController extends Controller
         return $response;
     }
     
-    public function pinkSheetAction($id)
+    public function pinkSheetAction($transactionType, $id)
     {
-        return $this->render('VtallyBundle:Default:pink_sheet.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        
+        if($transactionType == 'presidential'){
+            //Get the pollingStation in order to get the related pinkSheet
+            $pollingStation = $em->getRepository('VtallyBundle:PollingStation')->find($id);
+            //Make sure pollingStation exists
+            if(!$pollingStation){
+                throw $this->createNotFoundException('Polling Station of ID: '.$id.' not found from the DB.');
+            }
+            $pinkSheet = $pollingStation->getPrPinkSheet();
+        }elseif($transactionType == 'parliamentary'){
+            //Get the pollingStation in order to get the related pinkSheet
+            $pollingStation = $em->getRepository('VtallyBundle:PollingStation')->find($id);
+            //Make sure pollingStation exists
+            if(!$pollingStation){
+                throw $this->createNotFoundException('Polling Station of ID: '.$id.' not found from the DB.');
+            }
+            $pinkSheet = $pollingStation->getPaPinkSheet();
+        }else{
+            throw $this->createNotFoundException('transactionType: '.$transactionType.' not found.');
+        }
+        
+        return $this->render('VtallyBundle:Default:pink_sheet.html.twig', array(
+            'transactionType' => $transactionType,
+            'pollingStation' => $pollingStation,
+            'pinkSheet' => $pinkSheet,
+        ));
     }
     
     public function nationalAction()
     {
         //Get the statisticHandler service
         $statisticHandler = $this->get('vtally.statistic_handler');
+        //Get entity manager
+        $em = $this->getDoctrine()->getManager();
+        //Get the set of parties
+        $parties = $em->getRepository('PaBundle:PaParty')->findAll();
+        //Get the set of independent
+        $indepentCandidates = $em->getRepository('PaBundle:IndependentCandidate')->findAll();
+        //Get all the constituencies
+        $constituencies = $em->getRepository('VtallyBundle:Constituency')->findAll();
+        $paVoteCast = $statisticHandler->getSiteNumber($constituencies, $parties, $indepentCandidates);
         //Get presidential vote cast for national level
         $presidentialVoteCast = $statisticHandler->getPresidentialNation();
-        return $this->render('VtallyBundle:vote:charts.html.twig', array('presidentialVoteCast' => $presidentialVoteCast));
+        return $this->render('VtallyBundle:vote:charts.html.twig', array(
+            'presidentialVoteCast' => $presidentialVoteCast,
+            'paVoteCast' => $paVoteCast,
+        ));
     }
 
     public function dashboardAction()
@@ -92,18 +130,32 @@ class DefaultController extends Controller
         if(!$authChecker->isGranted("ROLE_SUPER_ADMIN")){
             return $this->redirect($this->generateUrl('fos_user_security_login'));
         }
+        //Get the entity manager
+        $em = $this->getDoctrine()->getManager();
         //Get the statisticHandler service
         $statisticHandler = $this->get('vtally.statistic_handler');
         //Get presidential vote cast for national level
         $presidentialVoteCast = $statisticHandler->getPresidentialNation();
-        return $this->render('VtallyBundle:vote:dashboard.html.twig', array('presidentialVoteCast' => $presidentialVoteCast));
+        //Get the set of parties
+        $parties = $em->getRepository('PaBundle:PaParty')->findAll();
+        //Get the set of independent
+        $indepentCandidates = $em->getRepository('PaBundle:IndependentCandidate')->findAll();
+        //Get all the constituencies
+        $constituencies = $em->getRepository('VtallyBundle:Constituency')->findAll();
+        $paVoteCast = $statisticHandler->getSiteNumber($constituencies, $parties, $indepentCandidates);
+        return $this->render('VtallyBundle:vote:dashboard.html.twig', array(
+            'presidentialVoteCast' => $presidentialVoteCast,
+            'paVoteCast' => $paVoteCast,
+        ));
     }
     
     public function constituencyAction()
     {
         //Get the list of all the constituencies
         $constituencies = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:Constituency')->findAll();
-        return $this->render('VtallyBundle:vote:constituencies.html.twig');
+        return $this->render('VtallyBundle:vote:constituencies.html.twig', array(
+            'constituencies' => $constituencies
+        ));
     }
     
     public function prRegionListAction()
@@ -145,7 +197,10 @@ class DefaultController extends Controller
     
     public function pollingStationAction()
     {
-        return $this->render('VtallyBundle:vote:polling_stations.html.twig');
+        $pollingStations = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:PollingStation')->findAll();
+        return $this->render('VtallyBundle:vote:polling_stations.html.twig', array(
+            'pollingStations' => $pollingStations,
+        ));
     }
     
     public function importCSVAction(Request $request) 

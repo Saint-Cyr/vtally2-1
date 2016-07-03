@@ -3,7 +3,7 @@ vtally_setting_general:
     defaults: { _controller: VtallyBundle:Default:settingGeneral }
 
 vtally_pink_sheet:
-    path:  /pink-sheet/{id}
+    path:  /pink-sheet/{transactionType}/{id}
     defaults: { _controller: VtallyBundle:Default:pinkSheet }
     
 vtally_dashboard:

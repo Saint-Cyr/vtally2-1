@@ -26,125 +26,42 @@
                                 <th>Since</th>
                                 <th>Verifier Type</th>
                                 <th>Pol. Station</th>
-                                <th>Alert</th>
                                 <th>Collation center</th>
                             </tr>
                             </thead>
                             <tbody>
-                                
-                            <tr>
-                                <td style="color: green; font-weight: bold; font-size: 23px;">
-                                    <span id="notification-number" class="badge badge-green" class="open-blink">
-                                        online
-                                    </span>
-                                </td>
-                                <td style="color: green; font-weight: bold; font-size: 14px;">
-                                    <img src="{{ asset('images/101.jpeg') }}" class="img-circle" width="40px"/> 
-                                    Saint-Cyr MAPOUKA 
-                                </td>
-                                <td style="color: black; font-family: Italic;">
-                                    <i>10 sec ago</i> 
-                                </td>
-                                <td style="color: green; font-weight: bold; font-size: 14px;">
-                                    1<sup>st</sup>
-                                </td>
-                                <td style="color: green; font-weight: bold; font-size: 14px;">
-                                    Pol. Station 99
-                                </td>
-                                <td style="color: green; font-weight: bold; font-size: 14px;">
-                                    <span id="notification-number" class="badge badge-black">
-                                        Normal
-                                    </span>
-                                </td>
-                                <td style="color: green; font-weight: bold; font-size: 14px;">
-                                    Constituency 3
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="color: green; font-weight: bold; font-size: 23px;">
-                                    <span id="notification-number" class="badge badge-green">
-                                        online
-                                    </span>
-                                </td>
-                                <td style="color: green; font-weight: bold; font-size: 14px;">
-                                    <img src="{{ asset('images/100.jpg') }}" class="img-circle" width="40px"/>
-                                    Saint-Cyr MAPOUKA 
-                                </td>
-                                <td style="color: black; font-family: Italic;">
-                                    <i>17 min ago</i> 
-                                </td>
-                                <td style="color: green; font-weight: bold; font-size: 14px;">
-                                    2<sup>nd</sup>
-                                </td>
-                                <td style="color: green; font-weight: bold; font-size: 14px;">
-                                    Pol. Station 22
-                                </td>
-                                <td style="color: green; animation: blink; font-weight: bold; font-size: 14px;">
-                                    <span id="notification-number" class="badge badge-red">
-                                        Danger
-                                    </span>
-                                </td>
-                                <td style="color: green; font-weight: bold; font-size: 14px;">
-                                    Constituency 3
-                                </td>
-                            </tr>
+                            {% for object in users %}
+                                <tr>
+                                    <td style="color: green; font-weight: bold; font-size: 23px;">
+                                        <span id="notification-number" class="badge badge-green" class="open-blink">
+                                            online
+                                        </span>
+                                    </td>
+
+                                    <td style="color: green; font-weight: bold; font-size: 14px;">
+                                        <img src="{{ asset('upload/images/user'~object.image) }}" class="img-circle" width="40px"/> 
+                                        {{ object.firstName }} {{ object.lastName }} 
+                                    </td>
+                                    <td style="color: black; font-family: Italic;">
+                                        <i>10 sec ago</i> 
+                                    </td>
+                                    <td style="color: green; font-weight: bold; font-size: 14px;">
+                                        {% if object.isFirstVerifier %}
+                                            1<sup>st</sup>
+                                        {% else %}
+                                            2<sup>nd</sup>
+                                        {% endif %}
+                                    </td>
+                                    <td style="color: green; font-weight: bold; font-size: 14px;">
+                                        {{ object.pollingStation }}
+                                    </td>
+
+                                    <td style="color: green; font-weight: bold; font-size: 14px;">
+                                        {{ object.pollingStation.constituency }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
                             
-                            <tr>
-                                <td style="color: red; font-weight: bold; font-size: 14px;">
-                                    <span id="notification-number" class="badge badge-red">
-                                        locked
-                                    </span>
-                                </td>
-                                <td style="color: red; font-weight: bold; font-size: 14px;">
-                                    <img src="{{ asset('images/2.png') }}" class="img-circle" width="40px"/>
-                                    Saint-Cyr MAPOUKA 
-                                </td>
-                                <td style="color: black; font-family: Italic;">
-                                    <i>5 hours ago</i> 
-                                </td>
-                                <td style="color: red; font-weight: bold; font-size: 14px;">
-                                    2<sup>nd</sup>
-                                </td>
-                                <td style="color: red; font-weight: bold; font-size: 14px;">
-                                    Pol. Station 5
-                                </td>
-                                <td style="color: red; font-weight: bold; font-size: 14px;">
-                                    <span id="notification-number" class="badge badge-black">
-                                        Normal
-                                    </span>
-                                </td>
-                                <td style="color: red; font-weight: bold; font-size: 14px;">
-                                    Constituency 2
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="color: black; font-weight: bold; font-size: 14px;">
-                                    <span id="notification-number" class="badge badge-black">
-                                        Offline
-                                    </span>
-                                </td>
-                                <td style="color: black; font-weight: bold; font-size: 14px;">
-                                    <img src="{{ asset('images/3.jpg') }}" class="img-circle" width="40px"/>
-                                    Mexan MAPOUKA 
-                                </td>
-                                <td style="color: black; font-family: Italic;">
-                                    <i> </i> 
-                                </td>
-                                <td style="color: black; font-weight: bold; font-size: 14px;">
-                                    1<sup>st</sup>
-                                </td>
-                                <td style="color: black; font-weight: bold; font-size: 14px;">
-                                    Pol. Station 3
-                                </td>
-                                <td style="color: black; font-weight: bold; font-size: 14px;">
-                                    <span id="notification-number" class="badge badge-black">
-                                        Normal
-                                    </span>
-                                </td>
-                                <td style="color: black; font-weight: bold; font-size: 14px;">
-                                    Consituency 1
-                                </td>
-                            </tr>
                             
                             </tbody>
                         </table>

@@ -27,36 +27,37 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>
-                                                <a href="{{ path('vtally_constituencies_modal', {'id':1}) }}" data-toggle="modal" data-target="#myModal" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-search-plus"></i>
-                                                    Show
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="{{ path('pa_constituency', {'id':1}) }}" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-search-plus"></i>
-                                                    Show
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-download"></i>
-                                                    Download
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-download"></i>
-                                                    Download
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        
+                                        {% for object in constituencies %}
+                                            <tr>
+                                                <td>{{ object.id }}</td>
+                                                <td>{{ object.name }}</td>
+                                                <td>{{ object.collationCenter.name }}</td>
+                                                <td>
+                                                    <a href="{{ path('vtally_constituencies_modal', {'id':object.id}) }}" data-toggle="modal" data-target="#myModal" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-search-plus"></i>
+                                                        Show
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('pa_constituency', {'id':object.id}) }}" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-search-plus"></i>
+                                                        Show
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('vtally_download_pinkSheet', {'transactionType':'parliamentary_constituency', 'id':object.id}) }}" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-download"></i>
+                                                        Download
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('vtally_download_pinkSheet', {'transactionType':'presidential_constituency', 'id':object.id}) }}" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-download"></i>
+                                                        Download
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
                                         </tbody>
                                     </table>
                                     

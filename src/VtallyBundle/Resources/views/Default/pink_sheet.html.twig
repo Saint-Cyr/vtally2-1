@@ -3,38 +3,64 @@
     <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
         <div class="clearfix">
             <div class="panel-heading" style="font-weight: bold; font-size: 23px;">
-                Presidential - Polling Station:<span style="color: violet;"> Addrabraka</span>
+                {{ transactionType|upper }} - Polling Station:<span style="color: violet;"> {{ pollingStation.name }}</span>
             </div>
         </div>
     </div>
     <div class="page-content">
+    {% if pinkSheet is not null %}
         <div class="col-lg-6">
-            <div class="clearfix">
-                <div class="panel-heading" style="font-weight: bold; font-size: 23px;">
-                    <span style="color: green;"> ORIGINAL </span>
-                    <a href="{{ asset('images/2.jpg') }}" download ><i class="fa fa-download" ></i></a>
-                </div>
-            </div>
-            <div class="panel">
-                <div class="panel-body">
-                    <div class="profile">
-                        <a href="{{ asset('images/2.jpg') }}"><img src="{{ asset('images/2.jpg') }}" width="450px" /></a>
+                <div class="clearfix">
+                    <div class="panel-heading" style="font-weight: bold; font-size: 23px;">
+                        <span style="color: green;"> ORIGINAL </span>
+                        {% if transactionType == 'presidential' %}
+                            <a href="{{ asset('pinkSheet/presidential/'~pinkSheet.name) }}" download ><i class="fa fa-download" ></i></a>
+                        {% elseif transactionType == 'parliamentary' %}
+                            <a href="{{ asset('pinkSheet/parliamentary/'~pinkSheet.name) }}" download ><i class="fa fa-download" ></i></a>
+                        {% endif %}
                     </div>
                 </div>
-            </div>
+            
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="profile">
+                        {% if transactionType == 'presidential' %}
+                            <img src="{{ asset('pinkSheet/presidential/'~pinkSheet.name) }}" width="450px"/>
+                        {% elseif transactionType == 'parliamentary' %}
+                            <img src="{{ asset('pinkSheet/parliamentary/'~pinkSheet.name) }}" width="450px"/>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
         </div>
+        
         <div class="col-lg-6">
             <div class="panel-heading" style="font-weight: bold; font-size: 23px;">
                 <span style="color: red;"> EDITED</span>
-                <a href="{{ asset('images/2.jpg') }}" download ><i class="fa fa-download" ></i></a>
+                {% if pinkSheet.edited %}
+                    {% if transactionType == 'presidential' %}
+                        <a href="{{ asset('pinkSheet/presidentialEdited/~'~pinkSheet.name) }}" download ><i class="fa fa-download" ></i></a>
+                    {% elseif transactionType == 'parliamentary'  %}
+                        <a href="{{ asset('pinkSheet/parliamentaryEdited/~'~pinkSheet.name) }}" download ><i class="fa fa-download" ></i></a>
+                    {% endif %}
+                {% endif %}
             </div>
             <div class="panel">
                 <div class="panel-body">
                     <div class="profile">
-                        <a href="{{ asset('images/2.jpg') }}"><img src="{{ asset('images/no.png') }}" width="450px" /></a>
+                    {% if pinkSheet.edited %}
+                        {% if transactionType == 'presidential' %}
+                            <img src="{{ asset('pinkSheet/presidentialEdited/~'~pinkSheet.name) }}" width="450px"/>
+                        {% elseif transactionType == 'parliamentary' %}
+                            <img src="{{ asset('pinkSheet/parliamentaryEdited/~'~pinkSheet.name) }}" width="450px"/>
+                        {% endif %}
+                    {% else %}
+                        <img src="{{ asset('images/no.png') }}" width="450px"/>
+                    {% endif %}
                     </div>
                 </div>
             </div>
         </div>
+    {% endif %}
     </div>
 {% endblock %}

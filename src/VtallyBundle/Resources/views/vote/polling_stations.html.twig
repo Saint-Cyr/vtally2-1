@@ -28,81 +28,47 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>
-                                                <a href="{{ path('vtally_polling_stations_modal', {'id':1, 'type':'presidential'}) }}" data-toggle="modal" data-target="#myModal" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-search-plus"></i>
-                                                    Show
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="{{ path('vtally_polling_stations_modal', {'id':2, 'type':'parliamentary'}) }}" data-toggle="modal" data-target="#myModal" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-search-plus"></i>
-                                                    Show
-                                                </a>
-                                                
-                                            </td>
-                                            <td>
-                                                <a href="{{ path('vtally_pink_sheet', {'id':1}) }}" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-search-plus"></i>
-                                                    Show
-                                                </a>
-                                                <a href="#" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-download"></i>
-                                                </a>
-                                            </td>
-                                            
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-search-plus"></i>
-                                                    Show
-                                                </a>
-                                                <a href="#" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-download"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>Table cell</td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-search-plus"></i>
-                                                    Show
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-search-plus"></i>
-                                                    Show
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-search-plus"></i>
-                                                    Show
-                                                </a>
-                                                <a href="#" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-download"></i>
-                                                </a>
-                                            </td>
-                                            
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-search-plus"></i>
-                                                    Show
-                                                </a>
-                                                <a href="#" class="btn btn-sm btn-default view_link" title="Show">
-                                                    <i class="fa fa-download"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        {% for object in pollingStations %}
+                                            <tr>
+                                                <td>{{ object.id }}</td>
+                                                <td>{{ object.name }}</td>
+                                                <td>{{ object.constituency.collationCenter }}</td>
+                                                <td>{{ object.constituency }}</td>
+                                                <td>
+                                                    <a href="{{ path('vtally_polling_stations_modal', {'id':object.id, 'type':'presidential'}) }}" data-toggle="modal" data-target="#myModal" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-search-plus"></i>
+                                                        Show
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('vtally_polling_stations_modal', {'id':object.id, 'type':'parliamentary'}) }}" data-toggle="modal" data-target="#myModal" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-search-plus"></i>
+                                                        Show
+                                                    </a>
+
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('vtally_pink_sheet', {'id':object.id, 'transactionType':'presidential'}) }}" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-search-plus"></i>
+                                                        Show
+                                                    </a>
+                                                    <a href="#" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-download"></i>
+                                                    </a>
+                                                </td>
+
+                                                <td>
+                                                    <a href="{{ path('vtally_pink_sheet', {'id':object.id, 'transactionType':'parliamentary'}) }}" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-search-plus"></i>
+                                                        Show
+                                                    </a>
+                                                    <a href="#" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-download"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        
                                         </tbody>
                                     </table>
                                 </div>

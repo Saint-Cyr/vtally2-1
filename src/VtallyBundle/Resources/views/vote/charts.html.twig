@@ -112,19 +112,12 @@ $(function () {
             series: [{
                 name: 'Parliamentary',
                 colorByPoint: true,
-                data: [{
-                    name: 'NPP',
-                    y: 26.33
-                }, {
-                    name: 'NDC',
-                    y:21
-                }, {
-                    name: 'UFP',
-                    y: 33
-                }, {
-                    name: 'CPP',
-                    y: 35
-                }]
+                data: [{% for object in paVoteCast.parties %}{
+                    name: '{{ object.name }}',
+                    y: {{ object.siteNumber }}
+                },{% endfor %}
+                { name: 'IC',
+                  y: {{ paVoteCast.IC }}},]
             }]
         });
     });
