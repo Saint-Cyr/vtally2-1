@@ -68,7 +68,11 @@
                                     {% if object.order == 2  %}
                                         <td style="color: {% if object.totalVoteCast == 0 %}black;{% else %}orange;{% endif %} font-weight: bold; font-size: 23px;">{{ object.order }}<sup>nd</sup></td>
                                         <td style="color: {% if object.totalVoteCast == 0 %}black;{% else %}orange;{% endif %} font-weight: bold; font-size: 23px;">
-                                        <img src="{{ asset('upload/images/parDepCandidate/'~object.image) }}" width="50px"/> {{ object.firstName }}</td>
+                                        {% if object.isIndependentCandidate %}
+                                                <img src="{{ asset('upload/images/parIndCandidate/'~object.image) }}" width="50px"/> {{ object.firstName }}</td>
+                                            {% else %}
+                                                <img src="{{ asset('upload/images/parDepCandidate/'~object.image) }}" width="50px"/> {{ object.firstName }}</td>
+                                        {% endif %}
                                         <td style="color: {% if object.totalVoteCast == 0 %}black;{% else %}orange;{% endif %} font-weight: bold; font-size: 23px;">{{ object.totalVoteCast }}</td>
                                         <td style="color: {% if object.totalVoteCast == 0 %}black;{% else %}orange;{% endif %} font-weight: bold; font-size: 23px;">
                                             {% if object.isIndependentCandidate %}
@@ -80,7 +84,11 @@
                                     {% elseif object.order == 3  %}
                                         <td style="color: {% if object.totalVoteCast == 0 %}black;{% else %}red;{% endif %} font-weight: bold; font-size: 23px;">{{ object.order }}<sup>rd</sup></td>
                                         <td style="color: {% if object.totalVoteCast == 0 %}black;{% else %}red;{% endif %} font-weight: bold; font-size: 23px;">
-                                        <img src="{{ asset('upload/images/parDepCandidate/'~object.image) }}" width="50px"/> {{ object.firstName }}</td>
+                                        {% if object.isIndependentCandidate %}
+                                                <img src="{{ asset('upload/images/parIndCandidate/'~object.image) }}" width="50px"/> {{ object.firstName }}</td>
+                                            {% else %}
+                                                <img src="{{ asset('upload/images/parDepCandidate/'~object.image) }}" width="50px"/> {{ object.firstName }}</td>
+                                        {% endif %}
                                         <td style="color: {% if object.totalVoteCast == 0 %}black;{% else %}red;{% endif %} font-weight: bold; font-size: 23px;">{{ object.totalVoteCast }}</td>
                                         <td style="color: {% if object.totalVoteCast == 0 %}black;{% else %}red;{% endif %} font-weight: bold; font-size: 23px;">
                                             {% if object.isIndependentCandidate %}
@@ -92,7 +100,11 @@
                                     {% elseif object.order > 3 %}
                                         <td style="color: black; font-weight: bold; font-size: 23px;">{{ object.order }}<sup>th</sup></td>
                                         <td style="color: black; font-weight: bold; font-size: 23px;">
-                                        <img src="{{ asset('upload/images/parDepCandidate/'~object.image) }}" width="50px"/> {{ object.firstName }}</td>
+                                        {% if object.isIndependentCandidate %}
+                                                <img src="{{ asset('upload/images/parIndCandidate/'~object.image) }}" width="50px"/> {{ object.firstName }}</td>
+                                            {% else %}
+                                                <img src="{{ asset('upload/images/parDepCandidate/'~object.image) }}" width="50px"/> {{ object.firstName }}</td>
+                                        {% endif %}
                                         <td style="color: black; font-weight: bold; font-size: 23px;">{{ object.totalVoteCast }}</td>
                                         <td style="color: black; font-weight: bold; font-size: 23px;">
                                             {% if object.isIndependentCandidate %}

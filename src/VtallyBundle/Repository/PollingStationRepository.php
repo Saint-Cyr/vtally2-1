@@ -1,6 +1,7 @@
 <?php
 
 namespace VtallyBundle\Repository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * PollingStationRepository
@@ -10,6 +11,19 @@ namespace VtallyBundle\Repository;
  */
 class PollingStationRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getPollingStations($numberPerPage, $page)
+    {
+        $query = $this->createQueryBuilder('p');
+        if($page < 1){
+            throw new \InvalidArgumentException('The argument   $page cannot be negative. Value: '.$page);
+        }
+        
+        $query->setFirstResult(($page - 1)*$numberPerPage)
+              ->setMaxResults($numberPerPage);
+        
+        return new Paginator($query);
+    }
+    
     public function getLimitedList($max)
     {
         $qb = $this->createQueryBuilder('p');

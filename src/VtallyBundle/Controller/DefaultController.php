@@ -149,12 +149,17 @@ class DefaultController extends Controller
         ));
     }
     
-    public function constituencyAction()
+    public function constituencyAction($page)
     {
         //Get the list of all the constituencies
-        $constituencies = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:Constituency')->findAll();
+        $constituencies = $this->getDoctrine()->getManager()
+                               ->getRepository('VtallyBundle:Constituency')
+                               ->getConstituencies(10, $page);
+        
         return $this->render('VtallyBundle:vote:constituencies.html.twig', array(
-            'constituencies' => $constituencies
+            'constituencies' => $constituencies,
+            'page' => $page,
+            'numberPerPage' => ceil(count($constituencies)/10),
         ));
     }
     
@@ -195,11 +200,15 @@ class DefaultController extends Controller
         return $this->render('VtallyBundle:Default:setting_general.html.twig');
     }
     
-    public function pollingStationAction()
+    public function pollingStationAction($page)
     {
-        $pollingStations = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:PollingStation')->findAll();
+        $pollingStations = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:PollingStation')
+                                ->getPollingStations(10, $page);
+        
         return $this->render('VtallyBundle:vote:polling_stations.html.twig', array(
             'pollingStations' => $pollingStations,
+            'page' => $page,
+            'numberPerPage' => ceil(count($pollingStations)/10),
         ));
     }
     

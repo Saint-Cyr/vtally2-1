@@ -7,15 +7,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-    public function onlineUsersAction()
+    public function onlineUsersAction($page)
     {
         //Get the list of users from the DB.
         $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('UserBundle:User')->getOnlineUsers();
+        $users = $em->getRepository('UserBundle:User')->getOnlineUsers(10, $page);
+        
         
         return $this->render('UserBundle:User:online_users.html.twig', array(
             'users' => $users,
-            // ...
+            'page' => $page,
+            'numberPerPage' => ceil(count($users)/10),
         ));
     }
     
@@ -23,7 +25,7 @@ class DefaultController extends Controller
     {
         //Get the list of users from the DB.
         $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository('UserBundle:User')->getOnlineUsers();
+        $users = $em->getRepository('UserBundle:User')->getOnlineUsers(10, 1);
         $var = count($users);
         return new Response($var);
     }

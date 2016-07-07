@@ -21,7 +21,7 @@
                                             <th>Constituency</th>
                                             <th>Collation center</th>
                                             <th>Pr. Vote cast</th>
-                                            <th>Site winner</th>
+                                            <th>Seat winner</th>
                                             <th>Pa. Pink Sheet <img src="{{ asset('images/zip.png') }}" width="30px" /></th>
                                             <th>Pr. Pink Sheet <img src="{{ asset('images/zip.png') }}" width="30px" /></th>
                                         </tr>
@@ -75,21 +75,33 @@
                             <!-- /.modal-dialog -->
                         </div>
                         <!-- /.modal -->
-                        
-                        
                         </div>
                             <ul class="pagination mtm mbm">
-                                <li class="disabled"><a href="#">&laquo;</a></li>
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">&raquo;</a></li>
+                                <li {% if 1 == page %}class="active"{% endif %}>
+                                    <a href="{{ path('vtally_constituencies', {'page':1}) }}">&laquo;</a>
+                                </li>
+                                {% for p in range(1, numberPerPage) %}
+                                    {% if p == page and 1 != page%}
+                                        <li>
+                                            <a href="{{ path('vtally_constituencies', {'page':p-1}) }}"> < </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                    <li>
+                                        <a>...</a>
+                                    </li>
+                                {% for p in range(1, numberPerPage) %}
+                                    {% if p == page and numberPerPage != page %}
+                                        <li>
+                                            <a href="{{ path('vtally_constituencies', {'page':p+1}) }}"> > </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                    <li {% if numberPerPage == page %}class="active"{% endif %}>
+                                        <a href="{{ path('vtally_constituencies', {'page':numberPerPage}) }}">&raquo;</a>
+                                    </li>
                             </ul>
                     </div>
-                    </div>
-                    
+                    </div>    
                 </div>
-
 {% endblock %}

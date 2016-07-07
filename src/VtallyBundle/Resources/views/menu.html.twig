@@ -30,7 +30,7 @@
                                     {{ render(controller('VtallyBundle:Default:prRegionList')) }}
                                 </ul>
                             </li>
-                            <li><a href="{{ path('vtally_constituencies') }}"><i class="fa fa-filter"></i><span class="submenu-title">By Constituency</span></a></li>
+                            <li><a href="{{ path('vtally_constituencies', {'page':1}) }}"><i class="fa fa-filter"></i><span class="submenu-title">By Constituency</span></a></li>
                             
                         </ul>
                     </li>
@@ -43,7 +43,7 @@
                                     {{ render(controller('VtallyBundle:Default:prPinkSheetRegionList')) }}
                                 </ul>
                             </li>
-                            <li><a href="{{ path('vtally_constituencies') }}"><i class="fa fa-archive"></i><span class="submenu-title">By Consituency</span></a></li>
+                            <li><a href="{{ path('vtally_constituencies', {'page':1}) }}"><i class="fa fa-archive"></i><span class="submenu-title">By Consituency</span></a></li>
                             <li><a href="{{ path('vtally_download_pinkSheet',{'transactionType':'presidential_all', 'id':'all'}) }}"><img src="{{ asset('images/zip.png') }}" width="20px" /><i class="fa fa-download"></i></i>
                                     <span class="submenu-title">Download (All)</span></a></li>
                         </ul>
@@ -59,7 +59,7 @@
                                     {{ render(controller('VtallyBundle:Default:paRegionList')) }}
                                 </ul>
                             </li>
-                            <li><a href="{{ path('vtally_constituencies') }}"><i class="fa fa-filter"></i><span class="submenu-title">By Constituency</span></a></li>
+                            <li><a href="{{ path('vtally_constituencies', {'page':1}) }}"><i class="fa fa-filter"></i><span class="submenu-title">By Constituency</span></a></li>
                         </ul>
                     </li>
                     <li><a href="#"><i class="fa fa-file-text">
@@ -71,7 +71,7 @@
                                     {{ render(controller('VtallyBundle:Default:paPinkSheetRegionList')) }}
                                 </ul>
                             </li>
-                            <li><a href="{{ path('vtally_constituencies') }}"><i class="fa fa-archive"></i><span class="submenu-title">By Consituency (site)</span></a></li>
+                            <li><a href="{{ path('vtally_constituencies', {'page':1}) }}"><i class="fa fa-archive"></i><span class="submenu-title">By Consituency (seat)</span></a></li>
                             <li>
                                 <a href="{{ path('vtally_download_pinkSheet',{'transactionType':'parliamentary_all', 'id':'all'}) }}">
                                     <img src="{{ asset('images/zip.png') }}" width="20px" />
@@ -94,7 +94,7 @@
                     </i><span class="menu-title">Verifiers</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="{{ path('online_users') }}">
+                                <a href="{{ path('online_users', {'page':1}) }}">
                                     <span class="badge badge-green">
                                         {{ render(controller('UserBundle:Default:onlineNumber')) }}
                                     </span>

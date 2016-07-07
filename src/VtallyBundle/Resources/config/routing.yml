@@ -19,11 +19,11 @@ vtally_polling_stations_modal:
     defaults: { _controller: PrBundle:Presidential:pollingStationsPrModal }
     
 vtally_constituencies:
-    path:     /constituencies
+    path:     /constituencies/{page}
     defaults: { _controller: VtallyBundle:Default:constituency }
     
 vtally_polling_stations:
-    path:     /polling-stations
+    path:     /polling-stations/{page}
     defaults: { _controller: VtallyBundle:Default:pollingStation }
     
 vtally_national:

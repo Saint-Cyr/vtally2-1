@@ -5,8 +5,8 @@
             <i class="fa fa-bar-chart-o"></i>
         </a>
         <ul class="dropdown-menu dropdown-user pull-right">
-                            <li><a href="{{ path('vtally_constituencies') }}"><i class="fa fa-table"></i>Constituencies</a></li>
-                            <li><a href="{{ path('vtally_polling_stations') }}"><i class="fa fa-table"></i>Polling Station</a></li>
+                            <li><a href="{{ path('vtally_constituencies', {'page':1}) }}"><i class="fa fa-table"></i>Constituencies</a></li>
+                            <li><a href="{{ path('vtally_polling_stations', {'page':1}) }}"><i class="fa fa-table"></i>Polling Station</a></li>
                         </ul>
     </li>
     
@@ -85,8 +85,12 @@
     <li class="dropdown">    
         <a data-hover="dropdown" href="#" class="dropdown-toggle">
                 <i class="fa fa-bell fa-fw"></i>
-            {% if notifications.default.overVotings.number %}
+            {% if notifications.default.overVotings.number%}
                 <span class="badge badge-red">{{ notifications.default.overVotings.number }}</span>
+            {% else %}
+                <span id="notification-number" class="badge badge-violet">
+                    Ov
+                </span>
             {% endif %}
         </a>
         <ul class="dropdown-menu dropdown-alerts">
@@ -115,6 +119,10 @@
                 <i class="fa fa-bell fa-fw"></i>
             {% if notifications.presidential.prMismatchVote.number %}
                 <span class="badge badge-yellow">{{ notifications.presidential.prMismatchVote.number }}</span>
+            {% else %}
+                <span id="notification-number" class="badge badge-violet">
+                    PaV
+                </span>
             {% endif %}
         </a>
         <ul class="dropdown-menu dropdown-alerts">
@@ -143,6 +151,10 @@
                 <i class="fa fa-bell fa-fw"></i>
             {% if notifications.presidential.prMismatchVote.number %}
                 <span class="badge badge-yellow">{{ notifications.presidential.prMismatchVote.number }}</span>
+            {% else %}
+                <span id="notification-number" class="badge badge-violet">
+                    PrV
+                </span>
             {% endif %}
         </a>
         <ul class="dropdown-menu dropdown-alerts">
@@ -170,6 +182,10 @@
         <a data-hover="dropdown" href="#" class="dropdown-toggle"><i class="fa fa-bell fa-fw"></i>
             {% if notifications.default.matchingVotes.number %}
                 <span class="badge badge-blue">{{ notifications.default.matchingVotes.number }}</span>
+            {% else %}
+                <span id="notification-number" class="badge badge-violet">
+                    Mv
+                </span>
             {% endif %}
         </a>
         <ul class="dropdown-menu dropdown-alerts">
