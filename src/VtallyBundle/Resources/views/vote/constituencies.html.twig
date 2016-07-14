@@ -1,8 +1,11 @@
 {% extends "VtallyBundle::layout.html.twig" %}
 {% block content %}
 <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
-    <form id="topbar-search" action="" method="" class="hidden-sm hidden-xs">
-        <div class="input-icon right"><a href="#"><i class="fa fa-search"></i></a><input type="text" placeholder="Type any string in the constituency name here to search..." class="form-control"/></div>
+    
+    <form id="topbar-search" action="{{ path('vtally_constituencies', {'page':1}) }}" method="" class="hidden-sm hidden-xs">
+        <div class="input-icon right"><a href="#"><i class="fa fa-search"></i></a>
+            <input name="keyWord" type="text" placeholder="Type any string in the constituency name here to search..." class="form-control"/>
+        </div>
     </form>
     
     <div class="clearfix"></div>

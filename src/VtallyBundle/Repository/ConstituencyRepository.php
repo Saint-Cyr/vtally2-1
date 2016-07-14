@@ -23,4 +23,17 @@ class ConstituencyRepository extends \Doctrine\ORM\EntityRepository
         
         return new Paginator($query);
     }
+    
+    public function getForSearch($keyWord)
+    {
+        $query = $this->_em->createQueryBuilder();
+                 $query->select('c')
+                    ->from('VtallyBundle:Constituency', 'c')
+                    ->where($query->expr()->like('c.name', $query->expr()->literal('%' . $keyWord . '%')))
+                    ->orderBy('c.name', 'ASC')
+                    ->getQuery()
+                    ->setParameter('keyWord', '%'.$keyWord.'%');
+              
+        return $query->getQuery()->getResult();
+    }
 }

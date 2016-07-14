@@ -149,13 +149,25 @@ class DefaultController extends Controller
         ));
     }
     
-    public function constituencyAction($page)
+    public function constituencyAction(Request $request, $page)
     {
-        //Get the list of all the constituencies
-        $constituencies = $this->getDoctrine()->getManager()
-                               ->getRepository('VtallyBundle:Constituency')
-                               ->getConstituencies(10, $page);
+        //Get the entity manager
+        $em = $this->getDoctrine()->getManager();
         
+        //Get the keryWord in the case of search
+        $keyWord = $request->get('keyWord');
+        
+        //Process according the case whether it's search or not
+        if($keyWord){
+            //Get the list of all the constituencies
+            $constituencies = $em ->getRepository('VtallyBundle:Constituency')
+                               ->getForSearch($keyWord);
+        }else{
+            //Get the list of all the constituencies
+            $constituencies = $em ->getRepository('VtallyBundle:Constituency')
+                               ->getConstituencies(10, $page);
+        }
+                               
         return $this->render('VtallyBundle:vote:constituencies.html.twig', array(
             'constituencies' => $constituencies,
             'page' => $page,
@@ -200,10 +212,24 @@ class DefaultController extends Controller
         return $this->render('VtallyBundle:Default:setting_general.html.twig');
     }
     
-    public function pollingStationAction($page)
+    public function pollingStationAction(Request $request, $page)
     {
-        $pollingStations = $this->getDoctrine()->getManager()->getRepository('VtallyBundle:PollingStation')
-                                ->getPollingStations(10, $page);
+        //Get the entity manager
+        $em = $this->getDoctrine()->GetManager();
+        //Get the keryWord in the case of search
+        $keyWord = $request->get('keyWord');
+        
+        //Process according the case whether it's search or not
+        if($keyWord){
+            //Get the list of all the constituencies
+            $pollingStations = $em->getRepository('VtallyBundle:PollingStation')
+                                  ->getForSearch($keyWord);
+        }else{
+            //Get the list of all the pollingStations
+            $pollingStations = $this->getDoctrine()->getManager()
+                                    ->getRepository('VtallyBundle:PollingStation')
+                                    ->getPollingStations(10, $page);
+        }
         
         return $this->render('VtallyBundle:vote:polling_stations.html.twig', array(
             'pollingStations' => $pollingStations,

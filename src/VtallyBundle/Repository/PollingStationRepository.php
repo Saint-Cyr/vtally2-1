@@ -33,4 +33,17 @@ class PollingStationRepository extends \Doctrine\ORM\EntityRepository
         $qb->setMaxResults();
         return $qb;
     }
+    
+    public function getForSearch($keyWord)
+    {
+        $query = $this->_em->createQueryBuilder();
+                 $query->select('p')
+                    ->from('VtallyBundle:PollingStation', 'p')
+                    ->where($query->expr()->like('p.name', $query->expr()->literal('%' . $keyWord . '%')))
+                    ->orderBy('p.name', 'ASC')
+                    ->getQuery()
+                    ->setParameter('keyWord', '%'.$keyWord.'%');
+              
+        return $query->getQuery()->getResult();
+    }
 }
