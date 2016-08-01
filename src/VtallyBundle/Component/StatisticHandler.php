@@ -24,6 +24,60 @@ class StatisticHandler
     
     /**
      * 
+     * @param Constituency $constituency
+     */
+    public function getParliamentaryConstituency(Constituency $constituency)
+    {
+        $candidates = $constituency->getCandidatesWithVoteCasts();
+        return $candidates;
+    }
+    
+    /**
+     * 
+     * @param PollingStation $pollingStation
+     */
+    public function getParliamentaryPollingStation(PollingStation $pollingStation)
+    {
+        $candidates = $pollingStation->getParliamentaryCandidateWithVoteCast();
+        
+        $objects = $this->sortByVoteCast($candidates);
+        
+        foreach ($objects as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $objects;
+    }
+    
+    /**
+     * 
+     * @param array $constituencies
+     * @param array $paParties
+     * @param array $indCandidates
+     * @return paParty instances hydrated with voteCast, order...
+     */
+    public function getParliamentaryRegion(Region $region)
+    {
+        //Get the constituencies
+        $constituencies = $region->getConstituenciesSimpleArray();
+        //Get paParties
+        $paParties = $this->em->getRepository('PaBundle:PaParty')->findAll();
+        //Get paIndependentCandidate
+        $indCandidates = $this->em->getRepository('PaBundle:IndependentCandidate')->findAll();
+        
+        $paVoteCasts = $this->getSiteNumber($constituencies, $paParties, $indCandidates);
+        $parties = $this->sortBySiteNumber($paVoteCasts['parties']);
+        $paVoteCasts['parties'] = $parties;
+        
+        foreach ($paVoteCasts['parties'] as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $paVoteCasts;
+    }
+    
+    /**
+     * 
      * @param array $constituencies
      * @param array $parties
      * @param array $indCandidates
@@ -127,9 +181,9 @@ class StatisticHandler
     
     /**
      * @param PollingStation $pollingStation
-     * @return type
+     * @return array of PrParty
      */
-    public function getPresidentialPollingStation(PollingStation$pollingStation)
+    public function getPresidentialPollingStation(PollingStation $pollingStation)
     {
         $prVoteCasts = $pollingStation->getPrVoteCasts();
         
@@ -138,7 +192,12 @@ class StatisticHandler
             $party = $vote->getPrParty();
             $party->initializeVoteCast($vote->getFigureValue());
             $parties[] = $party;
-            
+        }
+        
+        $parties = $this->sortByVoteCast($parties);
+        
+        foreach ($parties as $key => $item){
+            $item->setOrder($key + 1);
         }
         
         return $parties;
@@ -147,7 +206,7 @@ class StatisticHandler
     /**
      * 
      * @param Constituency $constituency
-     * @return array
+     * @return array of PrParty
      */
     public function getPresidentialConstituency(Constituency $constituency)
     {
@@ -159,7 +218,13 @@ class StatisticHandler
             $this->setPresidentialVoteCast($p, $pollingStations);
         }
         
-        return $parties;
+        $objects = $this->sortByVoteCast($parties);
+        
+        foreach ($objects as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $objects;
     }
     
     /**
@@ -187,7 +252,13 @@ class StatisticHandler
             $this->setPresidentialVoteCast($p, $pollingStations);
         }
         
-        return $parties;
+        $objects = $this->sortByVoteCast($parties);
+        
+        foreach ($objects as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $objects;
     }
     
     /**
@@ -195,8 +266,82 @@ class StatisticHandler
      */
     public function getPresidentialNation()
     {
-        $parties = $this->em->getRepository('PrBundle:PrParty')->findAll();
-        return $parties;
+        //Get all the polling stations
+        $pollingStations = $this->em->getRepository('VtallyBundle:PollingStation')->findAll();
+        //Get all the presidential parties
+        $prParties = $this->em->getRepository('PrBundle:PrParty')->findAll();
+        //Set the vote cast for each prParty
+        foreach ($prParties as $prParty){
+            $this->setPresidentialVoteCast($prParty, $pollingStations);
+        }
+        
+        $prParties = $this->sortByVoteCast($prParties);
+        
+        foreach ($prParties as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $prParties;
+    }
+    
+    
+    /**
+     * @return array items can be prParties|paParty|any objects
+     * that have property voteCast and isPassed. Notice that
+     * all items are sorted based on the values of voteCast
+     * @param array $objects
+     * @deprecated since version 2.1
+     */
+    public function classify(array $objects)
+    {
+        
+        usort($objects, function($a, $b)
+        {
+            return strcmp($a->getVoteCast(), $b->getVoteCast());
+            
+        });
+        
+        $objects = array_reverse($objects);
+        
+        foreach ($objects as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $objects;
+    }
+    
+    public function sortByVoteCast(array $objects)
+    {
+        //Get the total number of the items in the array
+        $n = count($objects);
+        for($i = 1; $i < $n; $i++){
+            for($j = 0; $j < $n - 1; $j++){
+                if($objects[$j]->getVoteCast() > $objects[$j + 1]->getVoteCast()){
+                    $temp = $objects[$j];
+                    $objects[$j] = $objects[$j + 1];
+                    $objects[$j+1] = $temp;
+                }
+            }
+        }
+        
+        return array_reverse($objects);
+    }
+    
+    public function sortBySiteNumber(array $objects)
+    {
+        //Get the total number of the items in the array
+        $n = count($objects);
+        for($i = 1; $i < $n; $i++){
+            for($j = 0; $j < $n - 1; $j++){
+                if($objects[$j]->getSiteNumber() > $objects[$j + 1]->getSiteNumber()){
+                    $temp = $objects[$j];
+                    $objects[$j] = $objects[$j + 1];
+                    $objects[$j+1] = $temp;
+                }
+            }
+        }
+        
+        return array_reverse($objects);
     }
     
     

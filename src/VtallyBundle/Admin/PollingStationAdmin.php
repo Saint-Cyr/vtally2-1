@@ -67,10 +67,16 @@ class PollingStationAdmin extends Admin
             ->add('presidential')
             ->add('parliamentary')
             ->add('presidentialPinkSheet')
+            ->add('presidentialPinkSheetEdited')
             ->add('parliamentaryPinkSheet')
             ->add('parliamentaryEdited')
             ->add('parliamentaryPinkSheetEdited')
             ->add('users')
+            ->end();
+            $formMapper->with('General')
+                ->add('name', null, array(
+                    'help' => '<i style="color: black;">Set the name of the Polling station Exp: Lashbi Old School. Tema #455</i>'
+                ))
         ;
     }
 
@@ -83,6 +89,7 @@ class PollingStationAdmin extends Admin
             ->add('id')
             ->add('name')
             ->add('code')
+            ->add('voterNumber')
             ->add('users')
             ->add('district')
             ->add('prVoteCastsView')

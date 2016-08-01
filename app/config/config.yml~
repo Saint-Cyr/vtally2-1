@@ -29,6 +29,8 @@ sonata_block:
         vtally.block_import_csv: ~
 
 sonata_admin:
+  templates:
+      layout: VtallyBundle::standard_layout.html.twig
   title_logo: images/logo.png
   title: VTALLY2
   dashboard:
@@ -90,6 +92,8 @@ framework:
 
 # Twig Configuration
 twig:
+    form_themes:
+            - 'SonataCoreBundle:Form:datepicker.html.twig'
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
 

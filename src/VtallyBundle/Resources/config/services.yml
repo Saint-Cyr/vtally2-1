@@ -41,10 +41,24 @@ services:
         
     vtally.api_handler:
         class: VtallyBundle\Component\ApiHandler
-        arguments: ["@doctrine.orm.entity_manager", "@security.encoder_factory", "@fos_user.user_provider.username", "@security.token_storage", "@service_container"]
+        arguments: ["@doctrine.orm.entity_manager", "@security.encoder_factory", "@fos_user.user_provider.username", "@security.token_storage", "@service_container", "@vtally.notification_handler"]
     
+    vtally.notification_handler:
+        class: VtallyBundle\Component\NotificationHandler
+        arguments: ["@doctrine.orm.entity_manager", "@fos_user.user_provider.username"]
+        
     vtally.block_import_csv:
         class: VtallyBundle\Component\ImportCSVHandler
         arguments: ["vtally.block_upload", "@templating", "@service_container"]
         tags:
             - { name: sonata.block }
+
+    vtally.admin.notification:
+        class: VtallyBundle\Admin\NotificationAdmin
+        arguments: [~, VtallyBundle\Entity\Notification, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Default, label: Notification }
+    
+    vtally.default_handler:
+        class: VtallyBundle\Component\DefaultHandler
+        arguments: ["@doctrine.orm.entity_manager"]

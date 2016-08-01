@@ -54,10 +54,28 @@ class ApiHandlerTest extends WebTestCase
        $this->assertEquals($outPut->getData(), array('Bad credentials.'));
    }
    
+   public function testEditPresidentialVoteCast()
+   {
+       //Get the apiHandler service
+       $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
+       
+       //Case where edit presidential data does succed
+       $inputData = array('action' => 704, 'transaction_type' => 'presidential',
+                          'verifier_token' => 'ABCD1', 'pr_votes' => array('NPP' => 0, 'NDC' => 1));
+       //Set the $pollingStation->isPresidential() to true;
+       $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+       $pollingStation->setPresidential(true);
+       $outPut = $apiHandler->editPresidentialVoteCast($inputData);
+       $this->assertEquals($outPut->getData(), array('info' => 'presidential vote cast comfirmed.', 'verifier_token' => 'ABCD1'));
+   }
+   
    public function testSendPresidentialVoteCast()
    {
        //Get the ApiHandler service
        $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
+       //Set the $pollingStation->isPresidential() to false;
+       $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+       $pollingStation->setPresidential(false);
        //Refresh the user
        $user = $this->em->getRepository('UserBundle:User')->findOneBy(array('username' => 'verifier1'));
        $user->refreshTokenTime();
@@ -66,7 +84,7 @@ class ApiHandlerTest extends WebTestCase
                           'pr_votes' => array('NPP' => 0, 'NDC' => 0, 'UFP' => 0));
        
        $outPut = $apiHandler->process($inputData);
-       $this->assertEquals($outPut->getData(), array('presidential vote cast sent.', 'verifier_token' => 'ABCD1'));
+       $this->assertEquals($outPut->getData(), array('info' => 'presidential vote cast sent.', 'verifier_token' => 'ABCD1'));
        
        //Case where sending votes does not succed
        $inputData = array('transaction_type' => 'presidential', 'verifier_token' => 'ABCD####', 'action' => 702,
@@ -76,21 +94,6 @@ class ApiHandlerTest extends WebTestCase
        $this->assertEquals($outPut->getData(), array('user of verifier_token: ABCD#### not found in the DB'));
        
    }
-   
-   public function testEditPresidentialVoteCast()
-   {
-       //Get the apiHandler service
-       $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
-       
-       /*Case where sending presidential data does succed
-       $inputData = array('action' => 3, 'transaction_type' => 'presidential',
-                          'verifier_token' => 'ABCD2', 'votes' => array('NPP' => 0, 'NDC' => 1));
-       
-       $outPut = $apiHandler->editPresidentialVoteCast($inputData);
-       $this->assertEquals($outPut, array('presidential vote cast sent!'));*/
-   }
-   
-  
     
    public function testIsDataStructureValid()
    {
@@ -218,10 +221,10 @@ class ApiHandlerTest extends WebTestCase
                                             ["id" => 13,"vote_cast" => 98,"name" => "Sondra","candidacy_number" => 2],
                                             ["id" => 19,"vote_cast" => 0,"name" => "Fadde","candidacy_number" => 2]
                                         ],
-                    'verifier_token' => 'ABCD1'
+                    'verifier_token' => 'ABCD2'
                     ];
        
-       $inputData = array('verifier_token' => 'ABCD1', 'transaction_type' => 'parliamentary', 'action' => 801);
+       $inputData = array('verifier_token' => 'ABCD2', 'transaction_type' => 'parliamentary', 'action' => 801);
        $output = $apiHandler->process($inputData);
        $this->assertEquals($output->getData(), $candidates);
    }
@@ -362,9 +365,20 @@ class ApiHandlerTest extends WebTestCase
        $this->assertEquals($outPut->getData(), array('parliamentary vote cast sent.', 'verifier_token' => 'ABCD1'));
    }
    
-   public function testParliamentaryEdited()
+   public function testEditParliamentaryVoteCast()
    {
+       //Get the apiHandler service
+       $apiHandler = $this->application->getKernel()->getContainer()->get('vtally.api_handler');
        
+       //Case where edit parliamentary vote cast does not happend
+       $inputData = array('action' => 804, 'transaction_type' => 'parliamentary',
+                          'verifier_token' => 'ABCD1', 'pa_votes' => array('independent' => array(array('id' => 1, 'vote_cast' => 100, 'name' => 'Vivien', 'candidacy_number' => 1)), 
+                                                                            'dependent' => array(array('id' => 1, 'vote_cast' => 100, 'name' => 'Jhon', 'candidacy_number' => 1))));
+       //Set the $pollingStation->isPresidential() to true;
+       $pollingStation = $this->em->getRepository('VtallyBundle:PollingStation')->find(1);
+       $pollingStation->setParliamentary(true);
+       $outPut = $apiHandler->editParliamentaryVoteCast($inputData);
+       $this->assertEquals($outPut->getData(), array('info' => 'parliamentary vote cast confirmed.', 'verifier_token' => 'ABCD1'));
    }
 }
   

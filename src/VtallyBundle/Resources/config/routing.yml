@@ -1,6 +1,38 @@
+vtally_setting_general:
+    path:   /panel-setting
+    defaults: { _controller: VtallyBundle:Default:settingGeneral }
+
+vtally_pink_sheet:
+    path:  /pink-sheet/{transactionType}/{id}
+    defaults: { _controller: VtallyBundle:Default:pinkSheet }
+    
 vtally_dashboard:
     path:     /
     defaults: { _controller: VtallyBundle:Default:dashboard }
+
+vtally_constituencies_modal:
+    path:     /constituencies-modal/{id}
+    defaults: { _controller: PrBundle:Presidential:consituenciesPrModal }
+    
+vtally_polling_stations_modal:
+    path:   /polling-stations-modal/{id}/{type}
+    defaults: { _controller: PrBundle:Presidential:pollingStationsPrModal }
+    
+vtally_constituencies:
+    path:     /constituencies/{page}
+    defaults: { _controller: VtallyBundle:Default:constituency }
+    
+vtally_polling_stations:
+    path:     /polling-stations/{page}
+    defaults: { _controller: VtallyBundle:Default:pollingStation }
+    
+vtally_national:
+    path:     /national
+    defaults: { _controller: VtallyBundle:Default:national }
+    
+vtally_notification:
+    path:     /notification
+    defaults: { _controller: VtallyBundle:Default:notification }
 
 votes: 
   type: rest
@@ -10,3 +42,11 @@ votes:
 vtally_importCSV:
     path:  /admin/import/file
     defaults: { _controller: VtallyBundle:Default:importCSV }
+
+vtally_download_pinkSheet:
+    path:  /download/{transactionType}/{id}
+    defaults: { _controller: VtallyBundle:Default:download }
+
+vtally_single_notification:
+    path:  /notification/{type}/{id}
+    defaults: { _controller: VtallyBundle:Default:singleNotification }

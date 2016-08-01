@@ -40,13 +40,12 @@ class UserAdmin extends Admin
         }
         
         $listMapper
-            ->add('id')
-            ->add('username')
-            ->add('email')
+            ->add('image', null, array('template' => 'UserBundle:User:list.html.twig'))
             ->add('firstName')
             ->add('lastName')
             ->add('userToken')
-            ->add('isActive')
+            ->add('lastLogin')
+            ->add('active')
         ;
         
         if ($this->isGranted('EDIT')) {
@@ -69,50 +68,50 @@ class UserAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $typeContext = array('Verifier' => 'verifier',
+        
+        $typeContext = array('Verifier1' => 'verifier1',
+                             'Verifier2' => 'verifier2',
                              'Administrator' => 'administrator',
                              'Manager' => 'manager');
         
         if($this->isGranted('ROLE_SUPER_ADMIN')){
-            $typeContext[]['Super-Admin'] = 'super-admin';
+            $typeContext['Super-Admin'] = 'super-admin';
         }
         
         $passwordRequired = (preg_match('/_edit$/', $this->getRequest()->get('_route'))) ? false : true;
         $formMapper
-            ->add('username')
-            ->add('email')
-            ->add('plainPassword', 'repeated', array(
-                    'type' => 'password',
-                    'invalid_message' => 'The password fields must match.',
-                    'required' => $passwordRequired,
-                    'first_options'  => array('label' => 'Password'),
-                    'second_options' => array('label' => 'Repeat Password'),
-                ))
-            ->add('locked')
+            ->with('Connexion Information', array('class' => 'col-md-4'))
+                ->add('username')
+                ->add('email')
+                ->add('plainPassword', 'repeated', array(
+                        'type' => 'password',
+                        'invalid_message' => 'The password fields must match.',
+                        'required' => $passwordRequired,
+                        'first_options'  => array('label' => 'Password'),
+                        'second_options' => array('label' => 'Repeat Password'),
+                    ))
+                ->add('pollingStation', 'sonata_type_model_autocomplete', 
+                  array('required' => false,
+                        'property' => 'name',
+                        'to_string_callback' => function($entity, $property){return $entity->getName();}))
+            ->end()
+                
+        ->with('Personal information', array('class' => 'col-md-4'))
+            
             ->add('firstName')
             ->add('lastName')
-            ->add('image')
-            ->add('userToken')
-            ->add('address');
-        if($this->isGranted('ROLE_ADMIN')){
-            $formMapper->add('pollingStation');
-        }
+            ->add('phoneNumber')
+            ->add('address')
+            ->add('file', 'file', array('required' => true));
+        
         
         if ($this->isGranted('EDIT')) {
-            $formMapper
-                ->add('enabled', 'checkbox', array(
-                    'label' => 'Account Enabled',
-                    'required' => false
-                    ))
-                ->add('locked', 'checkbox', array(
-                    'label' => 'Account Locked',
-                    'required' => false
-                    ))
+            $formMapper->end()
+            ->with('Security', array('class' => 'col-md-4'))
                 ->add('type', 'choice', array('choices' => $typeContext,
                                               'expanded' => true))
-            ;
+            ->end();
         }
-        ;
     }
 
     /**
@@ -121,37 +120,65 @@ class UserAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('username')
             ->add('pollingStation')
             ->add('email')
-            ->add('emailCanonical')
-            ->add('enabled')
-            ->add('salt')
             ->add('lastLogin')
             ->add('locked')
             ->add('expired')
             ->add('expiresAt')
-            ->add('confirmationToken')
-            ->add('passwordRequestedAt')
             ->add('roles')
-            ->add('credentialsExpired')
-            ->add('credentialsExpireAt')
-            ->add('id')
             ->add('firstName')
             ->add('lastName')
-            ->add('createdAt')
             ->add('image')
-            ->add('address')
         ;
     }
     
-    public function preUpdate($user) {
-        $this->userManager->updateCanonicalFields($user);
-        $this->userManager->updatePassword($user);
+    public function preValidate($user) {
+        switch ($user->getType()){
+        case 'super-admin':
+            $user->setRoles(array('ROLE_SUPER_ADMIN'));
+        break;
+        case 'administrator':
+            $user->setRoles(array('ROLE_ADMIN'));
+        break;
+        case 'manager':
+            $user->setRoles(array('ROLE_MANAGER'));
+        break;
+        case 'verifier1':
+            $user->setRoles(array('ROLE_VERIFIER'));
+            $user->setVerifierType(true);
+        break;
+        case 'verifier2':
+            $user->setRoles(array('ROLE_VERIFIER'));
+            $user->setVerifierType(false);
+        break;
+        case 'third-party':
+            $user->setRoles(array('ROLE_THIRD_PARTY'));
+        break;
+    
+        }
     }
     
     public function __construct($code, $class, $baseControllerName, $manager = null) {
         parent::__construct($code, $class, $baseControllerName);
         $this->userManager = $manager;
+    }
+    
+    public function prePersist($user)
+    {
+        $this->manageFileUpload($user);
+    }
+    
+    public function preUpdate($user) {
+        $this->userManager->updateCanonicalFields($user);
+        $this->userManager->updatePassword($user);
+        $this->manageFileUpload($user);
+    }
+
+    private function manageFileUpload($image)
+    {
+        if ($image->getFile()) {
+            $image->refreshUpdated();
+        }
     }
 }

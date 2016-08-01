@@ -1,6 +1,7 @@
 <?php
 
 namespace VtallyBundle\Repository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * ConstituencyRepository
@@ -10,4 +11,29 @@ namespace VtallyBundle\Repository;
  */
 class ConstituencyRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getConstituencies($numberPerPage, $page)
+    {
+        $query = $this->createQueryBuilder('c');
+        if($page < 1){
+            throw new \InvalidArgumentException('The argument   $page cannot be negative. Value: '.$page);
+        }
+        
+        $query->setFirstResult(($page - 1)*$numberPerPage)
+              ->setMaxResults($numberPerPage);
+        
+        return new Paginator($query);
+    }
+    
+    public function getForSearch($keyWord)
+    {
+        $query = $this->_em->createQueryBuilder();
+                 $query->select('c')
+                    ->from('VtallyBundle:Constituency', 'c')
+                    ->where($query->expr()->like('c.name', $query->expr()->literal('%' . $keyWord . '%')))
+                    ->orderBy('c.name', 'ASC')
+                    ->getQuery()
+                    ->setParameter('keyWord', '%'.$keyWord.'%');
+              
+        return $query->getQuery()->getResult();
+    }
 }

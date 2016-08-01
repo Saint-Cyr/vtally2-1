@@ -26,8 +26,9 @@ class PrPartyAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
+            ->add('Logo', null, array('template' => 'PrBundle:PrParty:list.html.twig'))
             ->add('name')
+            ->add('prDependentCandidate')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -44,7 +45,10 @@ class PrPartyAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('name')
+            ->with('Details', array('class' => 'col-md-6'))      
+                ->add('name')
+                ->add('file', 'file', array('required' => true))
+            ->end()
             
         ;
     }
@@ -60,4 +64,22 @@ class PrPartyAdmin extends Admin
             ->add('prVoteCasts')
         ;
     }
+    
+    public function prePersist($image)
+    {
+        $this->manageFileUpload($image);
+    }
+
+    public function preUpdate($image)
+    {
+        $this->manageFileUpload($image);
+    }
+
+    private function manageFileUpload($image)
+    {
+        if ($image->getFile()) {
+            $image->refreshUpdated();
+        }
+    }
+
 }

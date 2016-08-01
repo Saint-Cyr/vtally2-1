@@ -1,0 +1,110 @@
+{% extends "VtallyBundle::layout.html.twig" %}
+{% block content %}
+<div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+    
+    <form id="topbar-search" action="{{ path('vtally_constituencies', {'page':1}) }}" method="" class="hidden-sm hidden-xs">
+        <div class="input-icon right"><a href="#"><i class="fa fa-search"></i></a>
+            <input name="keyWord" type="text" placeholder="Type any string in the constituency name here to search..." class="form-control"/>
+        </div>
+    </form>
+    
+    <div class="clearfix"></div>
+</div>
+<div class="page-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">Constituencies Data Grid</div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Constituency</th>
+                                            <th>Collation center</th>
+                                            <th>Pr. Vote cast</th>
+                                            <th>Seat winner</th>
+                                            <th>Pa. Pink Sheet <img src="{{ asset('images/zip.png') }}" width="30px" /></th>
+                                            <th>Pr. Pink Sheet <img src="{{ asset('images/zip.png') }}" width="30px" /></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for object in constituencies %}
+                                            <tr>
+                                                <td>{{ object.id }}</td>
+                                                <td>{{ object.name }}</td>
+                                                <td>{{ object.collationCenter.name }}</td>
+                                                <td>
+                                                    <a href="{{ path('vtally_constituencies_modal', {'id':object.id}) }}" data-toggle="modal" data-target="#myModal" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-search-plus"></i>
+                                                        Show
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('pa_constituency', {'id':object.id}) }}" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-search-plus"></i>
+                                                        Show
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('vtally_download_pinkSheet', {'transactionType':'parliamentary_constituency', 'id':object.id}) }}" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-download"></i>
+                                                        Download
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('vtally_download_pinkSheet', {'transactionType':'presidential_constituency', 'id':object.id}) }}" class="btn btn-sm btn-default view_link" title="Show">
+                                                        <i class="fa fa-download"></i>
+                                                        Download
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                                        
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <span> </span>
+                                    <img src="{{ asset('images/spinner.gif') }}" width="70%" />
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <!-- /.modal -->
+                        </div>
+                            <ul class="pagination mtm mbm">
+                                <li {% if 1 == page %}class="active"{% endif %}>
+                                    <a href="{{ path('vtally_constituencies', {'page':1}) }}">&laquo;</a>
+                                </li>
+                                {% for p in range(1, numberPerPage) %}
+                                    {% if p == page and 1 != page%}
+                                        <li>
+                                            <a href="{{ path('vtally_constituencies', {'page':p-1}) }}"> < </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                    <li>
+                                        <a>...</a>
+                                    </li>
+                                {% for p in range(1, numberPerPage) %}
+                                    {% if p == page and numberPerPage != page %}
+                                        <li>
+                                            <a href="{{ path('vtally_constituencies', {'page':p+1}) }}"> > </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                    <li {% if numberPerPage == page %}class="active"{% endif %}>
+                                        <a href="{{ path('vtally_constituencies', {'page':numberPerPage}) }}">&raquo;</a>
+                                    </li>
+                            </ul>
+                    </div>
+                    </div>    
+                </div>
+{% endblock %}

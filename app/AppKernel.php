@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new PrBundle\PrBundle(),
             new PaBundle\PaBundle(),
             new Sonata\CoreBundle\SonataCoreBundle(),
+	    new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
@@ -35,6 +36,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new Hautelook\AliceBundle\HautelookAliceBundle();
+  	    $bundles[] = new Kendrick\SymfonyDebugToolbarGit\SymfonyDebugToolbarGit();
         }
 
         return $bundles;

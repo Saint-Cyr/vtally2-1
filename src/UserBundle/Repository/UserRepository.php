@@ -1,6 +1,7 @@
 <?php
 
 namespace UserBundle\Repository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * UserRepository
@@ -10,4 +11,25 @@ namespace UserBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getOnlineUsers($numberPerPage, $page)
+    {
+        $query = $this->createQueryBuilder('u');
+        if($page < 1){
+            throw new \InvalidArgumentException('The argument   $page cannot be negative. Value: '.$page);
+        }
+        
+        $query->setFirstResult(($page - 1)*$numberPerPage)
+              ->where('u.active = :var')
+              ->setParameter('var', true)
+              ->setMaxResults($numberPerPage);
+        
+        return new Paginator($query);
+        
+        /*$queryBuilder = $this->createQueryBuilder('u');
+        $queryBuilder->where('u.active = :var')
+                     ->setParameter('var', true);
+        $result = $queryBuilder->getQuery()->getResult();
+        
+        return $result;*/
+    }
 }

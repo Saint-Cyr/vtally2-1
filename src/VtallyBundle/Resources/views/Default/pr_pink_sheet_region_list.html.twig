@@ -1,0 +1,8 @@
+{% for object in regions %}
+    <li>
+        <a href="{{ path('vtally_download_pinkSheet',{'transactionType':'presidential_region', 'id':object.id}) }}">
+            <img src="{{ asset('images/zip.png') }}" width="20px" /><i class="fa fa-download"></i>
+            <span class="submenu-title">{{ object.name }}</span>
+        </a>
+    </li>
+{% endfor %}

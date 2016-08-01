@@ -1,0 +1,118 @@
+<nav id="sidebar" role="navigation" data-step="2" data-intro="Template has &lt;b&gt;many navigation styles&lt;/b&gt;" data-position="right" class="navbar-default navbar-static-side">
+            <div class="sidebar-collapse menu-scroll">
+                <ul id="side-menu" class="nav">
+                    <li class="user-panel">
+                        <div class="thumb">
+                            {% if is_granted("ROLE_SUPER_ADMIN") %}
+                                <img src="{{ asset('upload/images/user/')~app.user.image }}" alt="{{ app.user.firstName }}" class="img-circle"/>
+                            {% endif %}
+                        </div>
+                        {% if is_granted("ROLE_SUPER_ADMIN") %}
+                            <div class="info"><p>{{ app.user.firstName }}</p><p>Manager</p>
+                                <ul class="list-inline list-unstyled">
+                                    <!--<li><a href="#" data-hover="tooltip" title="Profile"><i class="fa fa-user"></i></a></li>-->
+                                    <li><a href="{{ path('fos_user_security_logout') }}" data-hover="tooltip" title="Logout"><i class="fa fa-sign-out"></i></a></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <div class="clearfix"></div>
+                    </li>
+                    <li><a href="{{ path('vtally_dashboard') }}"><i class="fa fa-tachometer fa-fw">
+                        <div class="icon-bg bg-orange"></div>
+                    </i><span class="menu-title">Dashboard</span></a></li>
+                    
+                    <li><a href="#"><i class="fa fa-bar-chart-o">
+                        <div class="icon-bg bg-dark"></div>
+                    </i><span class="menu-title">Presidential Vote Cast</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="ui-generals.html"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a>
+                                <ul class="nav nav-third-level">
+                                    {{ render(controller('VtallyBundle:Default:prRegionList')) }}
+                                </ul>
+                            </li>
+                            <li><a href="{{ path('vtally_constituencies', {'page':1}) }}"><i class="fa fa-filter"></i><span class="submenu-title">By Constituency</span></a></li>
+                            
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fa fa-file-text">
+                        <div class="icon-bg bg-dark"></div>
+                    </i><span class="menu-title">Presidential Pink Sheet</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="ui-generals.html"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a>
+                                <ul class="nav nav-third-level">
+                                    {{ render(controller('VtallyBundle:Default:prPinkSheetRegionList')) }}
+                                </ul>
+                            </li>
+                            <li><a href="{{ path('vtally_constituencies', {'page':1}) }}"><i class="fa fa-archive"></i><span class="submenu-title">By Consituency</span></a></li>
+                            <li><a href="{{ path('vtally_download_pinkSheet',{'transactionType':'presidential_all', 'id':'all'}) }}"><img src="{{ asset('images/zip.png') }}" width="20px" /><i class="fa fa-download"></i></i>
+                                    <span class="submenu-title">Download (All)</span></a></li>
+                        </ul>
+                    </li>
+                    
+                    <li><a href="#"><i class="fa fa-bar-chart-o">
+                        <div class="icon-bg bg-dark"></div>
+                    </i><span class="menu-title">Parliamentary Vote Cast</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="{{ path('vtally_dashboard') }}"><i class="fa fa-bar-chart-o"></i><span class="submenu-title">National</span></a></li>
+                            <li><a href="ui-generals.html"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a>
+                                <ul class="nav nav-third-level">
+                                    {{ render(controller('VtallyBundle:Default:paRegionList')) }}
+                                </ul>
+                            </li>
+                            <li><a href="{{ path('vtally_constituencies', {'page':1}) }}"><i class="fa fa-filter"></i><span class="submenu-title">By Constituency</span></a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fa fa-file-text">
+                        <div class="icon-bg bg-dark"></div>
+                    </i><span class="menu-title">Parliamentary Pink Sheet</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="ui-generals.html"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a>
+                                <ul class="nav nav-third-level">
+                                    {{ render(controller('VtallyBundle:Default:paPinkSheetRegionList')) }}
+                                </ul>
+                            </li>
+                            <li><a href="{{ path('vtally_constituencies', {'page':1}) }}"><i class="fa fa-archive"></i><span class="submenu-title">By Consituency (seat)</span></a></li>
+                            <li>
+                                <a href="{{ path('vtally_download_pinkSheet',{'transactionType':'parliamentary_all', 'id':'all'}) }}">
+                                    <img src="{{ asset('images/zip.png') }}" width="20px" />
+                                    <i class="fa fa-download"></i><span class="submenu-title">Download (All)</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <!--<li><a href="#"><i class="fa fa-database">
+                        <div class="icon-bg bg-green"></div>
+                    </i><span class="menu-title">Collation center</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#"><i class="fa fa-filter"></i><span class="submenu-title">By region</span></a></li>
+                            <li><a href="#"><i class="fa fa-table"></i><span class="submenu-title">All</span></a></li>
+                        </ul>
+                    </li>-->
+                    <li><a href="#"><i class="fa fa-users">
+                        <div class="icon-bg bg-green"></div>
+                    </i><span class="menu-title">Verifiers</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="{{ path('online_users', {'page':1}) }}">
+                                    <span class="badge badge-green">
+                                        {{ render(controller('UserBundle:Default:onlineNumber')) }}
+                                    </span>
+                                    <span class="submenu-title">Online</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{{ path('vtally_setting_general') }}">
+                            <i class="glyphicon glyphicon-wrench">
+                                <div class="icon-bg bg-orange"></div>
+                            </i>
+                            <span class="menu-title">System preference</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </nav>
+        <!--END SIDEBAR MENU--><!--BEGIN CHAT FORM-->

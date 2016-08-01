@@ -14,8 +14,6 @@ namespace Sonata\CoreBundle\Test\Validator\Constraints;
 use Sonata\CoreBundle\Validator\Constraints\InlineConstraint;
 
 /**
- * Test for InlineConstraint.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class InlineConstraintTest extends \PHPUnit_Framework_TestCase
@@ -31,13 +29,16 @@ class InlineConstraintTest extends \PHPUnit_Framework_TestCase
         $constraint = new InlineConstraint(array('service' => 'foo', 'method' => 'bar'));
         $this->assertFalse($constraint->isClosure());
 
-        $constraint = new InlineConstraint(array('service' => 'foo', 'method' => function () {}, 'serializingWarning' => true));
+        $constraint = new InlineConstraint(array('service' => 'foo', 'method' => function () {
+        }, 'serializingWarning' => true));
         $this->assertTrue($constraint->isClosure());
     }
 
     public function testGetClosure()
     {
-        $closure = function () {return 'FOO'; };
+        $closure = function () {
+            return 'FOO';
+        };
 
         $constraint = new InlineConstraint(array('service' => 'foo', 'method' => $closure, 'serializingWarning' => true));
         $this->assertSame($closure, $constraint->getClosure());
@@ -69,7 +70,8 @@ class InlineConstraintTest extends \PHPUnit_Framework_TestCase
 
     public function testClosureSerialization()
     {
-        $constraint = new InlineConstraint(array('service' => 'foo', 'method' => function () {}, 'serializingWarning' => true));
+        $constraint = new InlineConstraint(array('service' => 'foo', 'method' => function () {
+        }, 'serializingWarning' => true));
 
         $expected = 'O:56:"Sonata\CoreBundle\Validator\Constraints\InlineConstraint":0:{}';
 
@@ -93,5 +95,27 @@ class InlineConstraintTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($constraint->getService(), 'foo');
         $this->assertSame($constraint->getMethod(), 'bar');
         $this->assertNull($constraint->getSerializingWarning());
+    }
+
+    public function testSerializingWarningIsFalseWithServiceIsNotString()
+    {
+        $this->setExpectedException(
+            'RuntimeException',
+            'You are using a closure with the `InlineConstraint`, this constraint'.
+            ' cannot be serialized. You need to re-attach the `InlineConstraint` on each request.'.
+            ' Once done, you can set the `serializingWarning` option to `true` to avoid this message.');
+
+        new InlineConstraint(array('service' => 1, 'method' => 'foo', 'serializingWarning' => false));
+    }
+
+    public function testSerializingWarningIsFalseWithMethodIsNotString()
+    {
+        $this->setExpectedException(
+            'RuntimeException',
+            'You are using a closure with the `InlineConstraint`, this constraint'.
+            ' cannot be serialized. You need to re-attach the `InlineConstraint` on each request.'.
+            ' Once done, you can set the `serializingWarning` option to `true` to avoid this message.');
+
+        new InlineConstraint(array('service' => 'foo', 'method' => 1, 'serializingWarning' => false));
     }
 }

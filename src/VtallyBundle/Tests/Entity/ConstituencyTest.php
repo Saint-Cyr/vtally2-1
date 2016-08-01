@@ -43,12 +43,44 @@ class DefaultControllerTest extends WebTestCase
             //$this->initialization();  
     }
     
+    public function testGetCandidatesWithVoteCasts()
+    {
+        //Test for constituency 1
+        $const1 = $this->em->getRepository('VtallyBundle:Constituency')->find(1);
+        $candidates = $const1->getCandidatesWithVoteCasts();
+        $this->assertEquals($candidates[0]->getTotalVoteCast(), 900);
+        $this->assertEquals($candidates[0]->getFirstName(), 'Jhon');
+        $this->assertEquals($candidates[1]->getTotalVoteCast(), 798);
+        $this->assertEquals($candidates[1]->getFirstName(), 'Sondra');
+        $this->assertEquals($candidates[2]->getTotalVoteCast(), 700);
+        $this->assertEquals($candidates[2]->getFirstName(), 'Jannette');
+        $this->assertEquals($candidates[3]->getTotalVoteCast(), 623);
+        $this->assertEquals($candidates[3]->getFirstName(), 'Fadde');
+        $this->assertEquals($candidates[4]->getTotalVoteCast(), 600);
+        $this->assertEquals($candidates[4]->getFirstName(), 'Vivien');
+        $this->assertEquals($candidates[5]->getTotalVoteCast(), 502);
+        $this->assertEquals($candidates[5]->getFirstName(), 'Adde');
+        $this->assertEquals($candidates[6]->getTotalVoteCast(), 307);
+        $this->assertEquals($candidates[6]->getFirstName(), 'Joella');
+        
+        //Test the total number of candidates (parliamentary ind + dep) for consttituency1
+        //not that it must 7 as defined in the fixtures
+        $nb = count($const1->getCandidatesWithVoteCasts());
+        $this->assertEquals($nb, 7);
+        
+         //Test for constituency 2
+        /*$const1 = $this->em->getRepository('VtallyBundle:Constituency')->find(2);
+        $candidates = $const1->getCandidatesWithVoteCasts();
+        $this->assertEquals($candidates[0]->getTotalVoteCast(), 721);
+        $this->assertEquals($candidates[0]->getFirstName(), 'Olga');*/
+    }
+    
     public function testHomePage()
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/');
         
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals($client->getResponse()->getStatusCode(), 302);
     }
     
     public function testGetTotalVoteCast()
@@ -60,6 +92,7 @@ class DefaultControllerTest extends WebTestCase
         $depCandidate4 = $this->em->getRepository('PaBundle:DependentCandidate')->find(4);
         $depCandidate5 = $this->em->getRepository('PaBundle:DependentCandidate')->find(5);
         $depCandidate6 = $this->em->getRepository('PaBundle:DependentCandidate')->find(6);
+        $depCandidate7 = $this->em->getRepository('PaBundle:DependentCandidate')->find(7);
         //...
         $depCandidate13 = $this->em->getRepository('PaBundle:DependentCandidate')->find(13);
         
@@ -78,6 +111,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Bambi', $depCandidate4->getFirstName());
         $this->assertEquals('Joel', $depCandidate5->getFirstName());
         $this->assertEquals('Jehu', $depCandidate6->getFirstName());
+        $this->assertEquals('Jannette', $depCandidate7->getFirstName());
         
         //Test whether the test scenario in the documentation is synchronized with the code (independent candidates)
         $this->assertEquals('Vivien', $indepCandidate1->getFirstName());
@@ -94,6 +128,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals(380, $depCandidate4->getTotalVoteCast());
         $this->assertEquals(498, $depCandidate5->getTotalVoteCast());
         $this->assertEquals(150, $depCandidate6->getTotalVoteCast());
+        $this->assertEquals(700, $depCandidate7->getTotalVoteCast());
         $this->assertEquals(798, $depCandidate13->getTotalVoteCast());
         
         //Test the total vote cast methode for independentCandidate (only 6 first)

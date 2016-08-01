@@ -5,6 +5,7 @@ namespace VtallyBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use PaBundle\Entity\IndependentCandidate;
 use PaBundle\Entity\DependentCandidate;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * PollingStation
@@ -99,6 +100,13 @@ class PollingStation
      * @ORM\Column(name="code", type="string", length=255, unique=true)
      */
     private $code;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="voterNumber", type="integer", length=255, unique=false)
+     */
+    private $voterNumber;
 
     /**
      * @var string
@@ -117,6 +125,11 @@ class PollingStation
      * @ORM\OneToMany(targetEntity="PrBundle\Entity\PrNotification", mappedBy="pollingStation", cascade={"remove"})
      */
     private $prNotifications;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="VtallyBundle\Entity\Notification", mappedBy="pollingStation", cascade={"remove"})
+     */
+    private $notifications;
     
     /**
      * @ORM\OneToMany(targetEntity="PaBundle\Entity\PaNotification", mappedBy="pollingStation", cascade={"remove"})
@@ -169,6 +182,47 @@ class PollingStation
     public function __toString() 
     {
         return $this->name;
+    }
+    
+    /**
+     * @Assert\IsTrue(message = "Polling Station inactif or it allready has 2 verifiers")
+     */
+    public function isVerifierValid()
+    {
+       if((count($this->getUsers()) < 2) && ($this->isActive())){
+           return true;
+       }
+       
+       return false;
+    }
+    
+    /**
+     * 
+     * @return type UserBundle:User
+     */
+    public function getFirstVerifier()
+    {
+        //Get all the linked users (1st & 2nd verifier)
+        $users = $this->getUsers();
+        foreach ($users as $user){
+            if($user->getVerifierType()){
+                return $user;
+            }
+        }
+    }
+    
+    /**
+     * @return UserBundle:User Description
+     */
+    public function getSecondVerifier()
+    {
+        //Get all the linked users (1st & 2nd verifier)
+        $users = $this->getUsers();
+        foreach ($users as $user){
+            if(!$user->getVerifierType()){
+                return $user;
+            }
+        }
     }
 
     /**
@@ -858,6 +912,28 @@ class PollingStation
     {
         return $this->parliamentary;
     }
+    
+    public function getParliamentaryCandidateWithVoteCast()
+    {
+        $candidates = array();
+        $voteCasts = $this->getPaVoteCasts();
+        //Populate candidate with voteCast
+        foreach ($voteCasts as $v){
+            $depCandidate = $v->getDependentCandidate();
+            $indCandidate = $v->getIndependentCandidate();
+            //Remember a paVoteCast can have only on candidate type at a time
+            //means IndCandidate | DepCandidate
+            if($depCandidate){
+                $depCandidate->setVoteCast($v->getFigureValue());
+                $candidates[] = $depCandidate;
+            }else{
+                $indCandidate->setVoteCast($v->getFigureValue());
+                $candidates[] = $indCandidate;
+            }
+        }
+        
+        return $candidates;
+    }
 
     /**
      * Set parliamentaryEdited
@@ -983,5 +1059,73 @@ class PollingStation
     public function isPresidentialPinkSheetEdited()
     {
         return $this->presidentialPinkSheetEdited;
+    }
+
+    /**
+     * Get presidentialPinkSheetEdited
+     *
+     * @return boolean
+     */
+    public function getPresidentialPinkSheetEdited()
+    {
+        return $this->presidentialPinkSheetEdited;
+    }
+
+    /**
+     * Set voterNumber
+     *
+     * @param integer $voterNumber
+     *
+     * @return PollingStation
+     */
+    public function setVoterNumber($voterNumber)
+    {
+        $this->voterNumber = $voterNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get voterNumber
+     *
+     * @return integer
+     */
+    public function getVoterNumber()
+    {
+        return $this->voterNumber;
+    }
+
+    /**
+     * Add notification
+     *
+     * @param \VtallyBundle\Entity\Notification $notification
+     *
+     * @return PollingStation
+     */
+    public function addNotification(\VtallyBundle\Entity\Notification $notification)
+    {
+        $this->notifications[] = $notification;
+
+        return $this;
+    }
+
+    /**
+     * Remove notification
+     *
+     * @param \VtallyBundle\Entity\Notification $notification
+     */
+    public function removeNotification(\VtallyBundle\Entity\Notification $notification)
+    {
+        $this->notifications->removeElement($notification);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
     }
 }

@@ -28,13 +28,15 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
         "friendsofsymfony/user-bundle": "2.0.x-dev",
-        "sonata-project/admin-bundle": "dev-master",
-        "sonata-project/doctrine-orm-admin-bundle": "dev-master",
+        "sonata-project/admin-bundle":  "^3.0",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.0",
         "sonata-project/easy-extends-bundle": "^2.1",
         "friendsofsymfony/rest-bundle": "^1.7",
         "ddeboer/data-import-bundle": "~0.1",
         "hautelook/alice-bundle": "1.2.2",
-        "knplabs/knp-time-bundle": "dev-master"
+        "knplabs/knp-time-bundle": "dev-master",
+        "doctrine/doctrine-migrations-bundle": "^1.0",
+        "kendrick/symfony-debug-toolbar-git": "1.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -77,3 +79,5 @@
         }
     }
 }
+
+#comment

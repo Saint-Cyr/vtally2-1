@@ -29,6 +29,7 @@ class RegionAdmin extends Admin
         $listMapper
             ->add('id')
             ->add('name')
+            ->add('code')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),

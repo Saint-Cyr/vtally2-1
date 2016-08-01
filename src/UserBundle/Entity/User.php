@@ -4,11 +4,14 @@ namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * User
  *
  * @ORM\Table(name="user")
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UserRepository")
  */
 class User extends BaseUser
@@ -23,11 +26,29 @@ class User extends BaseUser
     protected $id;
     
     private $type;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
+    
+    /**
+     * Unmapped property to handle file uploads
+     */
+    private $file;
 
     /**
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=255)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $firstName;
     
@@ -41,6 +62,13 @@ class User extends BaseUser
     /**
      * @var string
      *
+     * @ORM\Column(name="active", type="boolean", nullable=true)
+     */
+    private $active;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="userToken", type="string", length=255, nullable=true)
      */
     private $userToken;
@@ -48,7 +76,20 @@ class User extends BaseUser
     /**
      * @var string
      *
+     * @ORM\Column(name="phoneNumber", type="integer", length=255, nullable=true)
+     */
+    private $phoneNumber;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="lastName", type="string", length=255, nullable=true)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "The last name must be at least {{ limit }} characters long",
+     *      maxMessage = "The last name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $lastName;
 
@@ -60,6 +101,7 @@ class User extends BaseUser
     private $createdAt;
     
     /**
+     * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="VtallyBundle\Entity\PollingStation", inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
      */
@@ -85,6 +127,26 @@ class User extends BaseUser
      * @ORM\Column(name="tokenTime", type="datetime", length=255, nullable=true)
      */
     private $tokenTime;
+    
+    /**
+    * Sets file.
+    *
+    * @param UploadedFile $file
+    */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+    }
+
+    /**
+    * Get file.
+    *
+    * @return UploadedFile
+    */
+    public function getFile()
+    {
+        return $this->file;
+    }
     
     public function isUserTokenValid($configuredTime)
     {
@@ -126,11 +188,62 @@ class User extends BaseUser
     
     public function isFirstVerifier()
     {
-        if($this->getRoles() === array('ROLE_FIRST_VERIFIER')){
+        if($this->getVerifierType()){
+            return true;
+        }
+        return false;
+    }
+    
+    public function isSecondVerifier()
+    {
+        if(!$this->getVerifierType()){
             return true;
         }
         
         return false;
+    }
+    
+    /**
+    * @ORM\PostPersist()
+    * @ORM\PostUpdate()
+    */
+    public function lifecycleFileUpload()
+    {
+        $this->upload();
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function refreshUpdated()
+    {
+        $this->setUpdated(new \DateTime());
+    }
+    
+    /**
+     * @ORM\PreRemove()
+     */
+    public function removeUPdate()
+    {
+        //Check whether the file exists first
+        if (file_exists(getcwd().'/upload/images/user/'.$this->getImage())){
+            //Remove it
+            @unlink(getcwd().'/upload/images/user/'.$this->getImage());
+        }
+        
+        return;
+    }
+    
+    public function upload()
+    {
+        // the file property can be empty if the field is not required
+        if (null === $this->getFile()) {
+            return;
+        }
+        // move takes the target directory and target filename as params
+        $this->getFile()->move(getcwd().'/upload/images/user', $this->getId().'.'.$this->getFile()->guessExtension());
+        // clean up the file property as you won't need it anymore
+        $this->setFile(null);
     }
     
     public function __construct() 
@@ -138,6 +251,18 @@ class User extends BaseUser
         parent::__construct();
         $this->setCreatedAt(new \DateTime("now"));
         $this->setTokenTime(new \DateTime("now"));
+    }
+    
+    /**
+     * @Assert\IsTrue(message = "A verifier has to be linked to a polling station")
+     */
+    public function isPollingStationValid()
+    {
+        if(!$this->getPollingStation() && ($this->getType() == 'verifier1' || $this->getType() == 'verifier2')){
+            return false;
+        }
+       
+        return true;
     }
 
 
@@ -224,16 +349,17 @@ class User extends BaseUser
     }
 
     /**
-     * Set image
-     *
-     * @param string $image
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
      *
      * @return User
      */
     public function setImage($image)
     {
-        $this->image = $image;
-
+        if($this->getFile() !== null){
+            $this->image = $this->getFile()->guessExtension();
+        }
+        
         return $this;
     }
 
@@ -244,7 +370,7 @@ class User extends BaseUser
      */
     public function getImage()
     {
-        return $this->image;
+        return $this->getId().'.'.$this->image;
     }
 
     /**
@@ -322,13 +448,7 @@ class User extends BaseUser
         }
         return $this->getUserToken();
         /**** to be removed in production **********/
-        
-        $p = new OAuthProvider();
-
-        $t = $p->generateToken(4);
-        //$token = rand(1, 99999);
-        //Update 
-        $this->setUserToken($this->getId().$token.$this->getLastName());
+        $this->setUserToken(base_convert(sha1(uniqid(mt_rand(), true)), 16, 36));
         //Issue it.
         return $this->getUserToken();
     }
@@ -391,5 +511,88 @@ class User extends BaseUser
     public function getVerifierType()
     {
         return $this->verifierType;
+    }
+
+    /**
+     * Set phoneNumber
+     *
+     * @param integer $phoneNumber
+     *
+     * @return User
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get phoneNumber
+     *
+     * @return integer
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return User
+     */
+    public function setActive($active)
+    {
+        //Make sure to set lastLogin
+        $this->setLastLogin(new \DateTime("now"));
+        $this->active = $active;
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return User
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

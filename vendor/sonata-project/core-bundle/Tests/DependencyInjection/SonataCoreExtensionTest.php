@@ -16,13 +16,6 @@ use Sonata\CoreBundle\DependencyInjection\SonataCoreExtension;
 
 class SonataCoreExtensionTest extends AbstractExtensionTestCase
 {
-    protected function getContainerExtensions()
-    {
-        return array(
-            new SonataCoreExtension(),
-        );
-    }
-
     public function testAfterLoadingTheWrappingParameterIsSet()
     {
         $this->load();
@@ -59,8 +52,8 @@ class SonataCoreExtensionTest extends AbstractExtensionTestCase
 
         $containerBuilder->getExtensionConfig('sonata_admin')->willReturn(array(
             array('some_key_we_do_not_care_about' => 42),
-            array('options' => array('form_type'  => 'standard')),
-            array('options' => array('form_type'  => 'horizontal')),
+            array('options' => array('form_type' => 'standard')),
+            array('options' => array('form_type' => 'horizontal')),
         ));
 
         $containerBuilder->prependExtensionConfig(
@@ -75,5 +68,12 @@ class SonataCoreExtensionTest extends AbstractExtensionTestCase
 
         $extension = new SonataCoreExtension();
         $extension->prepend($containerBuilder->reveal());
+    }
+
+    protected function getContainerExtensions()
+    {
+        return array(
+            new SonataCoreExtension(),
+        );
     }
 }

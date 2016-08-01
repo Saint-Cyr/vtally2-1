@@ -67,6 +67,53 @@ class Constituency
         return $this->name;
     }
     
+    /**
+     * @return array PaDepCandidate | PaIndCandidate
+     */
+    public function getCandidatesWithVoteCasts()
+    {
+        $depCandidates = $this->getDependentCandidates();
+        $indCandidates = $this->getIndependentCandidates();
+        $candidates = array();
+        
+        foreach ($depCandidates as $d){
+            $candidates[] = $d;
+        }
+        
+        foreach ($indCandidates as $i){
+            $candidates[] = $i;
+        }
+        
+        $candidates = $this->sortByTotalVoteCast($candidates);
+        
+        foreach ($candidates as $key => $item){
+            $item->setOrder($key + 1);
+        }
+        
+        return $candidates;
+    }
+    
+    /**
+     * 
+     * @param array $candidates
+     */
+    public function sortByTotalVoteCast(array $objects)
+    {
+        //Get the total number of the items in the array
+        $n = count($objects);
+        for($i = 1; $i < $n; $i++){
+            for($j = 0; $j < $n - 1; $j++){
+                if($objects[$j]->getTotalVoteCast() > $objects[$j + 1]->getTotalVoteCast()){
+                    $temp = $objects[$j];
+                    $objects[$j] = $objects[$j + 1];
+                    $objects[$j+1] = $temp;
+                }
+            }
+        }
+        
+        return array_reverse($objects);
+    }
+    
     public function getWinner()
     {
         //return null if one Dependent or Independent candidate as been link to this consituency
